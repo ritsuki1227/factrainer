@@ -1,0 +1,35 @@
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+    "python.analysis.completeFunctionParens": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.include": ["${workspaceFolder}/src"],
+    "python.languageServer": "Pylance",
+    "python.testing.pytestEnabled": true,
+    "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",
+    "notebook.formatOnSave.enabled": true,
+    "notebook.lineNumbers": "on",
+    "notebook.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.formatOnSave": "explicit"
+    },
+    "[python]": {
+      "diffEditor.ignoreTrimWhitespace": false,
+      "editor.formatOnType": true,
+      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.wordBasedSuggestions": "matchingDocuments",
+      "editor.codeActionsOnSave": {
+        "source.fixAll.ruff": "explicit",
+        "source.organizeImports.ruff": "explicit"
+      },
+      "editor.formatOnSaveMode": "file",
+      "editor.formatOnSave": true
+    },
+    "mypy-type-checker.args": ["--config-file=pyproject.toml"],
+    "mypy-type-checker.path": ["${workspaceFolder}/.venv/bin/mypy"],
+    "black-formatter.path": ["${workspaceFolder}/.venv/bin/black"],
+    "ruff.fixAll": true,
+    "ruff.organizeImports": true,
+    "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
+    "python.testing.pytestArgs": ["tests"]
+}
