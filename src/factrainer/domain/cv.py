@@ -142,7 +142,7 @@ class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
         self._n_jobs = n_jobs
 
     def predict(
-        self, dataset: IndexedDatasets[T], model: CvRawModels[U], config: W
+        self, dataset: IndexedDatasets[T], model: CvRawModels[U], config: W | None
     ) -> NumericNDArray:
         for i, (_model, _dataset) in enumerate(zip(model.models, dataset.datasets)):
             y_pred = self._predictor.predict(_dataset.data, _model, config)
@@ -171,17 +171,17 @@ class CvMlModel[
     def __init__(
         self,
         train_config: V,
-        pred_config: W,
         learner: BaseLearner[T, U, V],
         predictor: BasePredictor[T, U, W],
+        pred_config: W | None = None,
         n_jobs_train: int | None = None,
         n_jobs_predict: int | None = None,
     ) -> None:
         super().__init__(
             train_config,
-            pred_config,
             CvLearner(learner, n_jobs_train),
             CvPredictor(predictor, n_jobs_predict),
+            pred_config,
         )
 
     def train(

@@ -63,7 +63,7 @@ class BaseLearner[T: BaseDataset, U: RawModel, V: BaseTrainConfig](ABC):
 
 class BasePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](ABC):
     @abstractmethod
-    def predict(self, dataset: T, model: U, config: W) -> NumericNDArray:
+    def predict(self, dataset: T, model: U, config: W | None) -> NumericNDArray:
         raise NotImplementedError
 
 

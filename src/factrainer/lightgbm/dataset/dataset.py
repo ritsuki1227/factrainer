@@ -98,7 +98,7 @@ class LgbLearner(BaseLearner[LgbDataset, LgbModel, LgbTrainConfig]):
 
 class LgbPredictor(BasePredictor[LgbDataset, LgbModel, LgbPredConfig]):
     def predict(
-        self, dataset: LgbDataset, model: LgbModel, config: LgbPredConfig
+        self, dataset: LgbDataset, model: LgbModel, config: LgbPredConfig | None
     ) -> NumericNDArray:
         raise NotImplementedError
         # return model.model.predict(dataset.dataset)

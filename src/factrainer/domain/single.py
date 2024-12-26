@@ -18,14 +18,14 @@ class SingleMlModel[
     def __init__(
         self,
         train_config: V,
-        pred_config: W,
         learner: BaseLearner[T, U, V],
         predictor: BasePredictor[T, U, W],
+        pred_config: W | None = None,
     ) -> None:
         self.train_config = train_config
-        self.pred_config = pred_config
         self._learner = learner
         self._predictor = predictor
+        self.pred_config = pred_config
 
     def train(self, train_dataset: T, val_dataset: T | None = None) -> None:
         self._model = self._learner.train(train_dataset, val_dataset, self.train_config)
