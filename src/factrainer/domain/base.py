@@ -11,7 +11,6 @@ from sklearn.model_selection._split import _BaseKFold
 
 type NumericNDArray = npt.NDArray[np.number[Any]]
 type DataIndices = list[int]
-# type DataIndices = npt.NDArray[np.int_] | Sequence[int]
 
 
 class BaseTrainConfig(BaseModel):

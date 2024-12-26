@@ -27,6 +27,10 @@ class IndexedDataset[T: IndexableDataset](BaseDataset):
         return len(self.indices)
 
 
+class IndexedDatasets[T: IndexableDataset](BaseDataset):
+    datasets: Sequence[IndexedDataset[T]]
+
+
 class SplittedDataset[T: IndexableDataset](BaseDataset):
     train: IndexedDataset[T]
     val: IndexedDataset[T]
@@ -38,6 +42,18 @@ class SplittedDatasets[T: IndexableDataset](BaseDataset):
 
     def __len__(self) -> int:
         return sum([len(dataset.test) for dataset in self.datasets])
+
+    @property
+    def train(self) -> IndexedDatasets[T]:
+        return IndexedDatasets(datasets=[dataset.train for dataset in self.datasets])
+
+    @property
+    def val(self) -> IndexedDatasets[T]:
+        return IndexedDatasets(datasets=[dataset.val for dataset in self.datasets])
+
+    @property
+    def test(self) -> IndexedDatasets[T]:
+        return IndexedDatasets(datasets=[dataset.test for dataset in self.datasets])
 
     @classmethod
     def create(
