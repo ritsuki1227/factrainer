@@ -4,6 +4,7 @@ from .base import (
     BaseDataset,
     BaseLearner,
     BaseMlModel,
+    BasePredictConfig,
     BasePredictor,
     BaseTrainConfig,
     NumericNDArray,
@@ -11,19 +12,26 @@ from .base import (
 )
 
 
-class SingleMlModel[T: BaseDataset, U: RawModel, V: BaseTrainConfig](BaseMlModel[T, U]):
+class SingleMlModel[
+    T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+](BaseMlModel[T, U]):
     def __init__(
-        self, config: V, learner: BaseLearner[T, U, V], predictor: BasePredictor[T, U]
+        self,
+        train_config: V,
+        pred_config: W,
+        learner: BaseLearner[T, U, V],
+        predictor: BasePredictor[T, U, W],
     ) -> None:
-        self.config = config
+        self.train_config = train_config
+        self.pred_config = pred_config
         self._learner = learner
         self._predictor = predictor
 
     def train(self, train_dataset: T, val_dataset: T | None = None) -> None:
-        self._model = self._learner.train(train_dataset, val_dataset, self.config)
+        self._model = self._learner.train(train_dataset, val_dataset, self.train_config)
 
     def predict(self, dataset: T) -> NumericNDArray:
-        return self._predictor.predict(dataset, self.model)
+        return self._predictor.predict(dataset, self.model, self.pred_config)
 
     @property
     def model(self) -> U:

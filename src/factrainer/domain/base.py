@@ -17,6 +17,10 @@ class BaseTrainConfig(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
+class BasePredictConfig(BaseModel):
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+
 class BaseDataset(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
@@ -57,10 +61,23 @@ class BaseLearner[T: BaseDataset, U: RawModel, V: BaseTrainConfig](ABC):
         raise NotImplementedError
 
 
-class BasePredictor[T: BaseDataset, U: RawModel](ABC):
+class BasePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](ABC):
     @abstractmethod
-    def predict(self, dataset: T, model: U) -> NumericNDArray:
+    def predict(self, dataset: T, model: U, config: W) -> NumericNDArray:
         raise NotImplementedError
+
+
+# class BaseMlModelConfig[T: BaseDataset, U: RawModel, V: BaseTrainConfig](
+#     BaseModel, ABC
+# ):
+#     train_config: V
+#     learner: BaseLearner[T, U, V]
+#     predictor: BasePredictor[T, U]
+
+#     @classmethod
+#     @abstractmethod
+#     def create(cls, train_config: V) -> Self:
+#         raise NotImplementedError
 
 
 class BaseMlModel[T: BaseDataset, U: RawModel](ABC):

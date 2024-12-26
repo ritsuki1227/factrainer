@@ -9,6 +9,7 @@ from sklearn.model_selection._split import _BaseKFold
 from .base import (
     BaseDataset,
     BaseLearner,
+    BasePredictConfig,
     BasePredictor,
     BaseTrainConfig,
     DataIndices,
@@ -131,20 +132,20 @@ class CvLearner[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
         self._n_jobs = n_jobs
 
 
-class CvPredictor[T: IndexableDataset, U: RawModel](
-    BasePredictor[IndexedDatasets[T], CvRawModels[U]]
+class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
+    BasePredictor[IndexedDatasets[T], CvRawModels[U], W]
 ):
     def __init__(
-        self, predictor: BasePredictor[T, U], n_jobs: int | None = None
+        self, predictor: BasePredictor[T, U, W], n_jobs: int | None = None
     ) -> None:
         self._predictor = predictor
         self._n_jobs = n_jobs
 
     def predict(
-        self, dataset: IndexedDatasets[T], model: CvRawModels[U]
+        self, dataset: IndexedDatasets[T], model: CvRawModels[U], config: W
     ) -> NumericNDArray:
         for i, (_model, _dataset) in enumerate(zip(model.models, dataset.datasets)):
-            y_pred = self._predictor.predict(_dataset.data, _model)
+            y_pred = self._predictor.predict(_dataset.data, _model, config)
             if i == 0:
                 y_oof_pred = self._init_pred(len(dataset), y_pred.shape)
             y_oof_pred[_dataset.indices] = y_pred
@@ -164,19 +165,21 @@ class CvPredictor[T: IndexableDataset, U: RawModel](
         self._n_jobs = n_jobs
 
 
-class CvMlModel[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
-    SingleMlModel[IndexedDatasets[T], CvRawModels[U], V]
-):
+class CvMlModel[
+    T: IndexableDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+](SingleMlModel[IndexedDatasets[T], CvRawModels[U], V, W]):
     def __init__(
         self,
-        config: V,
+        train_config: V,
+        pred_config: W,
         learner: BaseLearner[T, U, V],
-        predictor: BasePredictor[T, U],
+        predictor: BasePredictor[T, U, W],
         n_jobs_train: int | None = None,
         n_jobs_predict: int | None = None,
     ) -> None:
         super().__init__(
-            config,
+            train_config,
+            pred_config,
             CvLearner(learner, n_jobs_train),
             CvPredictor(predictor, n_jobs_predict),
         )

@@ -14,6 +14,7 @@ from sklearn.model_selection._split import _BaseKFold
 
 from ...domain.base import (
     BaseLearner,
+    BasePredictConfig,
     BasePredictor,
     BaseTrainConfig,
     DataIndices,
@@ -37,6 +38,9 @@ class LgbTrainConfig(BaseTrainConfig):
     categorical_feature: _LGBM_CategoricalFeatureConfiguration = "auto"
     keep_training_booster: bool = False
     callbacks: list[Callable[..., Any]] | None = None
+
+
+class LgbPredConfig(BasePredictConfig): ...
 
 
 class LgbDataset(IndexableDataset):
@@ -92,8 +96,10 @@ class LgbLearner(BaseLearner[LgbDataset, LgbModel, LgbTrainConfig]):
         )
 
 
-class LgbPredictor(BasePredictor[LgbDataset, LgbModel]):
-    def predict(self, dataset: LgbDataset, model: LgbModel) -> NumericNDArray:
+class LgbPredictor(BasePredictor[LgbDataset, LgbModel, LgbPredConfig]):
+    def predict(
+        self, dataset: LgbDataset, model: LgbModel, config: LgbPredConfig
+    ) -> NumericNDArray:
         raise NotImplementedError
         # return model.model.predict(dataset.dataset)
 
