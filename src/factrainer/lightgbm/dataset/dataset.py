@@ -79,17 +79,17 @@ class LgbModel(RawModel):
 class LgbLearner(BaseLearner[LgbDataset, LgbModel, LgbTrainConfig]):
     def train(
         self,
-        dataset: LgbDataset,
+        train_dataset: LgbDataset,
+        val_dataset: LgbDataset | None,
         config: LgbTrainConfig,
     ) -> LgbModel:
-        raise NotImplementedError
-        # return LgbModel(
-        #     model=lgb.train(
-        #         **dict(config),
-        #         train_set=train_dataset.dataset,
-        #         valid_sets=[val_dataset.dataset] if val_dataset else None,
-        #     )
-        # )
+        return LgbModel(
+            model=lgb.train(
+                **dict(config),
+                train_set=train_dataset.dataset,
+                valid_sets=[val_dataset.dataset] if val_dataset else None,
+            )
+        )
 
 
 class LgbPredictor(BasePredictor[LgbDataset, LgbModel]):

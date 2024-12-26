@@ -19,12 +19,10 @@ class SingleMlModel[T: BaseDataset, U: RawModel, V: BaseTrainConfig](BaseMlModel
         self._learner = learner
         self._predictor = predictor
 
-    def train(self, dataset: T) -> None:
-        self._model = self._learner.train(dataset, self.config)
+    def train(self, train_dataset: T, val_dataset: T | None = None) -> None:
+        self._model = self._learner.train(train_dataset, val_dataset, self.config)
 
-    def predict(self, dataset: T | None) -> NumericNDArray:
-        if dataset is None:
-            raise ValueError("dataset is required for prediction")
+    def predict(self, dataset: T) -> NumericNDArray:
         return self._predictor.predict(dataset, self.model)
 
     @property

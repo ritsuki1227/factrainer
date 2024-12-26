@@ -30,6 +30,9 @@ class IndexedDataset[T: IndexableDataset](BaseDataset):
 class IndexedDatasets[T: IndexableDataset](BaseDataset):
     datasets: Sequence[IndexedDataset[T]]
 
+    def __len__(self) -> int:
+        return sum([len(dataset) for dataset in self.datasets])
+
 
 class SplittedDataset[T: IndexableDataset](BaseDataset):
     train: IndexedDataset[T]
@@ -94,7 +97,7 @@ def _resolve_n_jobs(n_jobs: int | None) -> int:
 
 
 class CvLearner[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
-    BaseLearner[SplittedDatasets[T], CvRawModels[U], V]
+    BaseLearner[IndexedDatasets[T], CvRawModels[U], V]
 ):
     def __init__(
         self, learner: BaseLearner[T, U, V], n_jobs: int | None = None
@@ -102,11 +105,21 @@ class CvLearner[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
         self._learner = learner
         self._n_jobs = n_jobs
 
-    def train(self, dataset: SplittedDatasets[T], config: V) -> CvRawModels[U]:
+    def train(
+        self,
+        train_dataset: IndexedDatasets[T],
+        val_dataset: IndexedDatasets[T] | None,
+        config: V,
+    ) -> CvRawModels[U]:
         models = []
-        for _dataset in dataset.datasets:
-            model = self._learner.train(_dataset.train.data, config)
-            models.append(model)
+        if val_dataset is not None:
+            for train, val in zip(train_dataset.datasets, val_dataset.datasets):
+                model = self._learner.train(train.data, val.data, config)
+                models.append(model)
+        else:
+            for train in train_dataset.datasets:
+                model = self._learner.train(train.data, None, config)
+                models.append(model)
         return CvRawModels(models=models)
 
     @property
@@ -119,7 +132,7 @@ class CvLearner[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
 
 
 class CvPredictor[T: IndexableDataset, U: RawModel](
-    BasePredictor[SplittedDatasets[T], CvRawModels[U]]
+    BasePredictor[IndexedDatasets[T], CvRawModels[U]]
 ):
     def __init__(
         self, predictor: BasePredictor[T, U], n_jobs: int | None = None
@@ -128,13 +141,13 @@ class CvPredictor[T: IndexableDataset, U: RawModel](
         self._n_jobs = n_jobs
 
     def predict(
-        self, dataset: SplittedDatasets[T], model: CvRawModels[U]
+        self, dataset: IndexedDatasets[T], model: CvRawModels[U]
     ) -> NumericNDArray:
         for i, (_model, _dataset) in enumerate(zip(model.models, dataset.datasets)):
-            y_pred = self._predictor.predict(_dataset.test.data, _model)
+            y_pred = self._predictor.predict(_dataset.data, _model)
             if i == 0:
                 y_oof_pred = self._init_pred(len(dataset), y_pred.shape)
-            y_oof_pred[_dataset.test.indices] = y_pred
+            y_oof_pred[_dataset.indices] = y_pred
         return y_oof_pred
 
     def _init_pred(
@@ -152,7 +165,7 @@ class CvPredictor[T: IndexableDataset, U: RawModel](
 
 
 class CvMlModel[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
-    SingleMlModel[SplittedDatasets[T], CvRawModels[U], V]
+    SingleMlModel[IndexedDatasets[T], CvRawModels[U], V]
 ):
     def __init__(
         self,
@@ -168,22 +181,33 @@ class CvMlModel[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
             CvPredictor(predictor, n_jobs_predict),
         )
 
-    def train(self, dataset: SplittedDatasets[T]) -> None:
-        self.datasets = dataset
-        super().train(self.datasets)
+    def train(
+        self,
+        train_dataset: IndexedDatasets[T],
+        val_dataset: IndexedDatasets[T] | None = None,
+    ) -> None:
+        self.train_datasets = train_dataset
+        self.val_datasets = val_dataset
+        super().train(self.train_datasets, self.val_datasets)
 
-    def predict(self, dataset: SplittedDatasets[T] | None = None) -> NumericNDArray:
-        if dataset is None:
-            super().predict(self.datasets)
-        raise NotImplementedError
+    def predict(self, dataset: IndexedDatasets[T]) -> NumericNDArray:
+        return super().predict(dataset)
 
     @property
-    def datasets(self) -> SplittedDatasets[T]:
-        return self._datasets
+    def train_datasets(self) -> IndexedDatasets[T]:
+        return self._train_datasets
 
-    @datasets.setter
-    def datasets(self, datasets: SplittedDatasets[T]) -> None:
-        self._datasets = datasets
+    @train_datasets.setter
+    def train_datasets(self, datasets: IndexedDatasets[T]) -> None:
+        self._train_datasets = datasets
+
+    @property
+    def val_datasets(self) -> IndexedDatasets[T] | None:
+        return self._val_datasets
+
+    @val_datasets.setter
+    def val_datasets(self, datasets: IndexedDatasets[T] | None) -> None:
+        self._val_datasets = datasets
 
     @property
     def n_jobs_train(self) -> int | None:
@@ -200,58 +224,3 @@ class CvMlModel[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
     @n_jobs_predict.setter
     def n_jobs_predict(self, n_jobs: int | None) -> None:
         self._predictor.n_jobs = n_jobs  # type: ignore
-
-
-# class CvMlModel[T: Dataset, U: RawModel, V: BaseTrainConfig](
-#     BaseMlModel[T, CvRawModels[U]]
-# ):
-#     def __init__(
-#         self,
-#         k_fold: BaseCrossValidator,
-#         config: V,
-#         learner: BaseLearner[T, U, V],
-#         predictor: BasePredictor[T, U],
-#         n_jobs_train: int | None = None,
-#         n_jobs_predict: int | None = None,
-#     ) -> None:
-#         self._k_fold = k_fold
-#         self.config = config
-#         self._learner = CvLearner(learner, n_jobs_train)
-#         self._predictor = CvPredictor(predictor, n_jobs_predict)
-
-#     def train(self, dataset: T) -> None:
-#         self.datasets = IndexedTrainValDatasets.create(self._k_fold, dataset)
-#         self._model = self._learner.train(self.datasets, self.config)
-
-#     def predict(self, dataset: T | None = None) -> NumericNDArray:
-#         if dataset is None:
-#             return self._predictor.predict(self.datasets, self.model)
-#         raise NotImplementedError
-
-#     @property
-#     def model(self) -> CvRawModels[U]:
-#         return self._model
-
-#     @property
-#     def datasets(self) -> IndexedTrainValDatasets[T]:
-#         return self._datasets
-
-#     @datasets.setter
-#     def datasets(self, datasets: IndexedTrainValDatasets[T]) -> None:
-#         self._datasets = datasets
-
-#     @property
-#     def n_jobs_train(self) -> int | None:
-#         return self._learner.n_jobs
-
-#     @n_jobs_train.setter
-#     def n_jobs_train(self, n_jobs: int | None) -> None:
-#         self._learner.n_jobs = n_jobs
-
-#     @property
-#     def n_jobs_predict(self) -> int | None:
-#         return self._predictor.n_jobs
-
-#     @n_jobs_predict.setter
-#     def n_jobs_predict(self, n_jobs: int | None) -> None:
-#         self._predictor.n_jobs = n_jobs

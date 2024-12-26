@@ -53,7 +53,7 @@ class RawModel(BaseModel):
 
 class BaseLearner[T: BaseDataset, U: RawModel, V: BaseTrainConfig](ABC):
     @abstractmethod
-    def train(self, dataset: T, config: V) -> U:
+    def train(self, train_dataset: T, val_dataset: T | None, config: V) -> U:
         raise NotImplementedError
 
 
@@ -65,11 +65,11 @@ class BasePredictor[T: BaseDataset, U: RawModel](ABC):
 
 class BaseMlModel[T: BaseDataset, U: RawModel](ABC):
     @abstractmethod
-    def train(self, dataset: T) -> None:
+    def train(self, train_dataset: T, val_dataset: T | None = None) -> None:
         raise NotImplementedError
 
     @abstractmethod
-    def predict(self, dataset: T | None) -> NumericNDArray:
+    def predict(self, dataset: T) -> NumericNDArray:
         raise NotImplementedError
 
     @property
