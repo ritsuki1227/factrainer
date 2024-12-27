@@ -9,6 +9,7 @@ from sklearn.model_selection._split import _BaseKFold
 from .base import (
     BaseDataset,
     BaseLearner,
+    BaseMlModelConfig,
     BasePredictConfig,
     BasePredictor,
     BaseTrainConfig,
@@ -165,23 +166,35 @@ class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
         self._n_jobs = n_jobs
 
 
+class CvMlModelConfig[
+    T: IndexableDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+](BaseMlModelConfig[IndexedDatasets[T], CvRawModels[U], V, W]):
+    @classmethod
+    def from_config(
+        cls,
+        config: BaseMlModelConfig[T, U, V, W],
+        n_jobs_train: int | None = None,
+        n_jobs_predict: int | None = None,
+    ) -> Self:
+        return cls(
+            train_config=config.train_config,
+            learner=CvLearner(config.learner, n_jobs_train),
+            predictor=CvPredictor(config.predictor, n_jobs_predict),
+            pred_config=config.pred_config,
+        )
+
+
 class CvMlModel[
     T: IndexableDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
 ](SingleMlModel[IndexedDatasets[T], CvRawModels[U], V, W]):
     def __init__(
         self,
-        train_config: V,
-        learner: BaseLearner[T, U, V],
-        predictor: BasePredictor[T, U, W],
-        pred_config: W | None = None,
+        config: BaseMlModelConfig[T, U, V, W],
         n_jobs_train: int | None = None,
         n_jobs_predict: int | None = None,
     ) -> None:
         super().__init__(
-            train_config,
-            CvLearner(learner, n_jobs_train),
-            CvPredictor(predictor, n_jobs_predict),
-            pred_config,
+            CvMlModelConfig.from_config(config, n_jobs_train, n_jobs_predict)
         )
 
     def train(
@@ -227,3 +240,67 @@ class CvMlModel[
     @n_jobs_predict.setter
     def n_jobs_predict(self, n_jobs: int | None) -> None:
         self._predictor.n_jobs = n_jobs  # type: ignore
+
+
+# class CvMlModel[
+#     T: IndexableDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+# ](SingleMlModel[IndexedDatasets[T], CvRawModels[U], V, W]):
+#     def __init__(
+#         self,
+#         train_config: V,
+#         learner: BaseLearner[T, U, V],
+#         predictor: BasePredictor[T, U, W],
+#         pred_config: W | None = None,
+#         n_jobs_train: int | None = None,
+#         n_jobs_predict: int | None = None,
+#     ) -> None:
+#         super().__init__(
+#             train_config,
+#             CvLearner(learner, n_jobs_train),
+#             CvPredictor(predictor, n_jobs_predict),
+#             pred_config,
+#         )
+
+#     def train(
+#         self,
+#         train_dataset: IndexedDatasets[T],
+#         val_dataset: IndexedDatasets[T] | None = None,
+#     ) -> None:
+#         self.train_datasets = train_dataset
+#         self.val_datasets = val_dataset
+#         super().train(self.train_datasets, self.val_datasets)
+
+#     def predict(self, dataset: IndexedDatasets[T]) -> NumericNDArray:
+#         return super().predict(dataset)
+
+#     @property
+#     def train_datasets(self) -> IndexedDatasets[T]:
+#         return self._train_datasets
+
+#     @train_datasets.setter
+#     def train_datasets(self, datasets: IndexedDatasets[T]) -> None:
+#         self._train_datasets = datasets
+
+#     @property
+#     def val_datasets(self) -> IndexedDatasets[T] | None:
+#         return self._val_datasets
+
+#     @val_datasets.setter
+#     def val_datasets(self, datasets: IndexedDatasets[T] | None) -> None:
+#         self._val_datasets = datasets
+
+#     @property
+#     def n_jobs_train(self) -> int | None:
+#         return self._learner.n_jobs  # type: ignore
+
+#     @n_jobs_train.setter
+#     def n_jobs_train(self, n_jobs: int | None) -> None:
+#         self._learner.n_jobs = n_jobs  # type: ignore
+
+#     @property
+#     def n_jobs_predict(self) -> int | None:
+#         return self._predictor.n_jobs  # type: ignore
+
+#     @n_jobs_predict.setter
+#     def n_jobs_predict(self, n_jobs: int | None) -> None:
+#         self._predictor.n_jobs = n_jobs  # type: ignore

@@ -67,6 +67,25 @@ class BasePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](ABC):
         raise NotImplementedError
 
 
+class BaseMlModelConfig[
+    T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+](BaseModel, ABC):
+    train_config: V
+    learner: BaseLearner[T, U, V]
+    predictor: BasePredictor[T, U, W]
+    pred_config: W | None = None
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+
+class PresettableTrait[
+    T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+](ABC):
+    @classmethod
+    @abstractmethod
+    def create(cls, train_config: V, pred_config: W | None = None) -> Self:
+        raise NotImplementedError
+
+
 # class BaseMlModelConfig[T: BaseDataset, U: RawModel, V: BaseTrainConfig](
 #     BaseModel, ABC
 # ):
