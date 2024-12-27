@@ -86,19 +86,6 @@ class PresettableTrait[
         raise NotImplementedError
 
 
-# class BaseMlModelConfig[T: BaseDataset, U: RawModel, V: BaseTrainConfig](
-#     BaseModel, ABC
-# ):
-#     train_config: V
-#     learner: BaseLearner[T, U, V]
-#     predictor: BasePredictor[T, U]
-
-#     @classmethod
-#     @abstractmethod
-#     def create(cls, train_config: V) -> Self:
-#         raise NotImplementedError
-
-
 class BaseMlModel[T: BaseDataset, U: RawModel](ABC):
     @abstractmethod
     def train(self, train_dataset: T, val_dataset: T | None = None) -> None:

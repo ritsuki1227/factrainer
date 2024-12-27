@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Generator
 from pathlib import Path
-from typing import Any, Callable
+from typing import Any, Callable, Self
 
 import lightgbm as lgb
 from lightgbm.basic import (
@@ -14,12 +14,14 @@ from sklearn.model_selection._split import _BaseKFold
 
 from ...domain.base import (
     BaseLearner,
+    BaseMlModelConfig,
     BasePredictConfig,
     BasePredictor,
     BaseTrainConfig,
     DataIndices,
     IndexableDataset,
     NumericNDArray,
+    PresettableTrait,
     RawModel,
 )
 from .equality_checker import LgbDatasetEqualityChecker
@@ -104,7 +106,22 @@ class LgbPredictor(BasePredictor[LgbDataset, LgbModel, LgbPredConfig]):
         # return model.model.predict(dataset.dataset)
 
 
-# # class LgbSingleTrainerFactory(BaseTrainerFactory[LgbDataset, LgbTrainConfig]):
-# #     @classmethod
-# #     def create(cls, config: LgbTrainConfig) -> BaseTrainer[LgbDataset]:
-# #         return SingleTrainer(config, LgbLearner(), LgbPredictor())
+class LgbConfig(
+    BaseMlModelConfig[LgbDataset, LgbModel, LgbTrainConfig, LgbPredConfig],
+    PresettableTrait[LgbDataset, LgbModel, LgbTrainConfig, LgbPredConfig],
+):
+    learner: LgbLearner
+    predictor: LgbPredictor
+    train_config: LgbTrainConfig
+    pred_config: LgbPredConfig | None = None
+
+    @classmethod
+    def create(
+        cls, train_config: LgbTrainConfig, pred_config: LgbPredConfig | None = None
+    ) -> Self:
+        return cls(
+            learner=LgbLearner(),
+            predictor=LgbPredictor(),
+            train_config=train_config,
+            pred_config=pred_config,
+        )
