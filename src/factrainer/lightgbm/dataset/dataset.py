@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any, Callable, Self
 
 import lightgbm as lgb
+import scipy
 from lightgbm.basic import (
     _LGBM_CategoricalFeatureConfiguration,
     _LGBM_FeatureNameConfiguration,
@@ -20,7 +21,7 @@ from ...domain.base import (
     BaseTrainConfig,
     DataIndices,
     IndexableDataset,
-    NumericNDArray,
+    Prediction,
     PresettableTrait,
     RawModel,
 )
@@ -101,9 +102,13 @@ class LgbLearner(BaseLearner[LgbDataset, LgbModel, LgbTrainConfig]):
 class LgbPredictor(BasePredictor[LgbDataset, LgbModel, LgbPredConfig]):
     def predict(
         self, dataset: LgbDataset, model: LgbModel, config: LgbPredConfig | None
-    ) -> NumericNDArray:
-        raise NotImplementedError
-        # return model.model.predict(dataset.dataset)
+    ) -> Prediction:
+        y_pred = model.model.predict(dataset.dataset)
+        if isinstance(y_pred, list):
+            raise NotImplementedError
+        elif isinstance(y_pred, scipy.sparse.spmatrix):
+            raise NotImplementedError
+        return y_pred
 
 
 class LgbConfig(

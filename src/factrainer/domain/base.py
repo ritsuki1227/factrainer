@@ -9,7 +9,8 @@ import numpy.typing as npt
 from pydantic import BaseModel, ConfigDict
 from sklearn.model_selection._split import _BaseKFold
 
-type NumericNDArray = npt.NDArray[np.number[Any]]
+# type Prediction = npt.NDArray[Any] | scipy.sparse.spmatrix | list[scipy.sparse.spmatrix]
+type Prediction = npt.NDArray[np.number[Any]]
 type DataIndices = list[int]
 
 
@@ -63,7 +64,7 @@ class BaseLearner[T: BaseDataset, U: RawModel, V: BaseTrainConfig](ABC):
 
 class BasePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](ABC):
     @abstractmethod
-    def predict(self, dataset: T, model: U, config: W | None) -> NumericNDArray:
+    def predict(self, dataset: T, model: U, config: W | None) -> Prediction:
         raise NotImplementedError
 
 
@@ -92,7 +93,7 @@ class BaseMlModel[T: BaseDataset, U: RawModel](ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def predict(self, dataset: T) -> NumericNDArray:
+    def predict(self, dataset: T) -> Prediction:
         raise NotImplementedError
 
     @property

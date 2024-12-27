@@ -6,7 +6,7 @@ from .base import (
     BaseMlModelConfig,
     BasePredictConfig,
     BaseTrainConfig,
-    NumericNDArray,
+    Prediction,
     RawModel,
 )
 
@@ -25,7 +25,7 @@ class SingleMlModel[
             train_dataset, val_dataset, self.config.train_config
         )
 
-    def predict(self, dataset: T) -> NumericNDArray:
+    def predict(self, dataset: T) -> Prediction:
         return self.config.predictor.predict(
             dataset, self.model, self.config.pred_config
         )
@@ -53,7 +53,7 @@ class SingleMlModel[
 #     def train(self, train_dataset: T, val_dataset: T | None = None) -> None:
 #         self._model = self._learner.train(train_dataset, val_dataset, self.train_config)
 
-#     def predict(self, dataset: T) -> NumericNDArray:
+#     def predict(self, dataset: T) -> Prediction:
 #         return self._predictor.predict(dataset, self.model, self.pred_config)
 
 #     @property

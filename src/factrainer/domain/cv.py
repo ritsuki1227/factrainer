@@ -15,7 +15,7 @@ from .base import (
     BaseTrainConfig,
     DataIndices,
     IndexableDataset,
-    NumericNDArray,
+    Prediction,
     RawModel,
 )
 from .single import SingleMlModel
@@ -144,7 +144,7 @@ class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
 
     def predict(
         self, dataset: IndexedDatasets[T], model: CvRawModels[U], config: W | None
-    ) -> NumericNDArray:
+    ) -> Prediction:
         for i, (_model, _dataset) in enumerate(zip(model.models, dataset.datasets)):
             y_pred = self._predictor.predict(_dataset.data, _model, config)
             if i == 0:
@@ -154,7 +154,7 @@ class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
 
     def _init_pred(
         self, total_length: int, y_pred_shape: tuple[int, ...]
-    ) -> NumericNDArray:
+    ) -> Prediction:
         return np.empty(tuple([total_length] + list(y_pred_shape[1:])))
 
     @property
@@ -206,7 +206,7 @@ class CvMlModel[
         self.val_datasets = val_dataset
         super().train(self.train_datasets, self.val_datasets)
 
-    def predict(self, dataset: IndexedDatasets[T]) -> NumericNDArray:
+    def predict(self, dataset: IndexedDatasets[T]) -> Prediction:
         return super().predict(dataset)
 
     @property
@@ -270,7 +270,7 @@ class CvMlModel[
 #         self.val_datasets = val_dataset
 #         super().train(self.train_datasets, self.val_datasets)
 
-#     def predict(self, dataset: IndexedDatasets[T]) -> NumericNDArray:
+#     def predict(self, dataset: IndexedDatasets[T]) -> Prediction:
 #         return super().predict(dataset)
 
 #     @property
