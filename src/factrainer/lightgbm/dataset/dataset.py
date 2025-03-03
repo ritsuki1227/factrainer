@@ -19,10 +19,10 @@ from ...domain.base import (
     BasePredictConfig,
     BasePredictor,
     BaseTrainConfig,
-    DataIndices,
+    DataIndex,
     IndexableDataset,
+    ModelConfigFactoryTrait,
     Prediction,
-    PresettableTrait,
     RawModel,
 )
 from .equality_checker import LgbDatasetEqualityChecker
@@ -49,14 +49,14 @@ class LgbPredConfig(BasePredictConfig): ...
 class LgbDataset(IndexableDataset):
     dataset: lgb.Dataset
 
-    def get_indices(
+    def get_index(
         self, k_fold: _BaseKFold
-    ) -> Generator[tuple[DataIndices, DataIndices], None, None]:
+    ) -> Generator[tuple[DataIndex, DataIndex], None, None]:
         for train_index, val_index in k_fold.split(self.dataset.data):  # type: ignore
             yield train_index.tolist(), val_index.tolist()
 
     def split(
-        self, train_index: DataIndices, val_index: DataIndices, test_index: DataIndices
+        self, train_index: DataIndex, val_index: DataIndex, test_index: DataIndex
     ) -> tuple["LgbDataset", "LgbDataset", "LgbDataset"]:
         train_dataset = LgbDatasetSlicer(reference=None).slice(
             self.dataset, train_index
@@ -103,7 +103,7 @@ class LgbPredictor(BasePredictor[LgbDataset, LgbModel, LgbPredConfig]):
     def predict(
         self, dataset: LgbDataset, model: LgbModel, config: LgbPredConfig | None
     ) -> Prediction:
-        y_pred = model.model.predict(dataset.dataset)
+        y_pred = model.model.predict(dataset.dataset.data)
         if isinstance(y_pred, list):
             raise NotImplementedError
         elif isinstance(y_pred, scipy.sparse.spmatrix):
@@ -111,9 +111,9 @@ class LgbPredictor(BasePredictor[LgbDataset, LgbModel, LgbPredConfig]):
         return y_pred
 
 
-class LgbConfig(
+class LgbModelConfig(
     BaseMlModelConfig[LgbDataset, LgbModel, LgbTrainConfig, LgbPredConfig],
-    PresettableTrait[LgbDataset, LgbModel, LgbTrainConfig, LgbPredConfig],
+    ModelConfigFactoryTrait[LgbDataset, LgbModel, LgbTrainConfig, LgbPredConfig],
 ):
     learner: LgbLearner
     predictor: LgbPredictor

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from collections.abc import Generator
-from typing import Any, Self
+from typing import Any, Self, Sequence
 
 import numpy as np
 import numpy.typing as npt
@@ -11,7 +11,8 @@ from sklearn.model_selection._split import _BaseKFold
 
 # type Prediction = npt.NDArray[Any] | scipy.sparse.spmatrix | list[scipy.sparse.spmatrix]
 type Prediction = npt.NDArray[np.number[Any]]
-type DataIndices = list[int]
+type DataIndex = list[int]
+type DataIndices = Sequence[DataIndex]
 
 
 class BaseTrainConfig(BaseModel):
@@ -28,14 +29,14 @@ class BaseDataset(BaseModel):
 
 class IndexableDataset(BaseDataset):
     @abstractmethod
-    def get_indices(
+    def get_index(
         self, k_fold: _BaseKFold
-    ) -> Generator[tuple[DataIndices, DataIndices], None, None]:
+    ) -> Generator[tuple[DataIndex, DataIndex], None, None]:
         raise NotImplementedError
 
     @abstractmethod
     def split(
-        self, train_index: DataIndices, val_index: DataIndices, test_index: DataIndices
+        self, train_index: DataIndex, val_index: DataIndex, test_index: DataIndex
     ) -> tuple[Self, Self, Self]:
         raise NotImplementedError
 
@@ -48,7 +49,7 @@ class BaseDatasetEqualityChecker[T](ABC):
 
 class BaseDatasetSlicer[T](ABC):
     @abstractmethod
-    def slice(self, data: T, index: DataIndices) -> T:
+    def slice(self, data: T, index: DataIndex) -> T:
         raise NotImplementedError
 
 
@@ -78,7 +79,7 @@ class BaseMlModelConfig[
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
-class PresettableTrait[
+class ModelConfigFactoryTrait[
     T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
 ](ABC):
     @classmethod

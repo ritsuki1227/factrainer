@@ -90,7 +90,7 @@ def test_dataset_equality(left: Data, right: Data | None, expected: bool) -> Non
         ),
     ],
 )
-def test_get_indices(data: Data) -> None:
+def test_get_index(data: Data) -> None:
     k_fold = KFold(n_splits=2, shuffle=True, random_state=1)
     k_fold.split = MagicMock(
         return_value=iter(
@@ -104,7 +104,7 @@ def test_get_indices(data: Data) -> None:
     )
     expected = [([0, 1], [2, 3]), ([2, 3], [0, 1])]
 
-    actual = sut.get_indices(k_fold=k_fold)
+    actual = sut.get_index(k_fold=k_fold)
 
     assert list(actual) == expected
     k_fold.split.assert_called_once_with(sut.dataset.data)
@@ -158,13 +158,13 @@ class TestCreateSplittedDatasets:
             datasets=[
                 SplittedDataset(
                     train=IndexedDataset(
-                        indices=[0, 1],
+                        index=[0, 1],
                         data=LgbDataset(
                             dataset=lgb.Dataset(data=np.array([[100, 10], [200, 20]]))
                         ),
                     ),
                     val=IndexedDataset(
-                        indices=[3, 2],
+                        index=[3, 2],
                         data=LgbDataset(
                             dataset=lgb.Dataset(
                                 data=np.array([[400, 40], [300, 30]]),
@@ -175,7 +175,7 @@ class TestCreateSplittedDatasets:
                         ),
                     ),
                     test=IndexedDataset(
-                        indices=[3, 2],
+                        index=[3, 2],
                         data=LgbDataset(
                             dataset=lgb.Dataset(
                                 data=np.array([[400, 40], [300, 30]]),
@@ -188,13 +188,13 @@ class TestCreateSplittedDatasets:
                 ),
                 SplittedDataset(
                     train=IndexedDataset(
-                        indices=[3, 2],
+                        index=[3, 2],
                         data=LgbDataset(
                             dataset=lgb.Dataset(data=np.array([[400, 40], [300, 30]]))
                         ),
                     ),
                     val=IndexedDataset(
-                        indices=[0, 1],
+                        index=[0, 1],
                         data=LgbDataset(
                             dataset=lgb.Dataset(
                                 data=np.array([[100, 10], [200, 20]]),
@@ -205,7 +205,7 @@ class TestCreateSplittedDatasets:
                         ),
                     ),
                     test=IndexedDataset(
-                        indices=[0, 1],
+                        index=[0, 1],
                         data=LgbDataset(
                             dataset=lgb.Dataset(
                                 data=np.array([[100, 10], [200, 20]]),

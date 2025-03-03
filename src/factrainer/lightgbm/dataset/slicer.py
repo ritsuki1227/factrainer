@@ -13,7 +13,7 @@ from lightgbm.compat import (  # type: ignore
     pd_Series,
 )
 
-from ...domain.base import BaseDatasetSlicer, DataIndices
+from ...domain.base import BaseDatasetSlicer, DataIndex
 from .type import (
     LgbDataType,
     LgbGroupType,
@@ -25,7 +25,7 @@ from .type import (
 
 
 class LgbDataSlicer(BaseDatasetSlicer[LgbDataType]):
-    def slice(self, data: LgbDataType, index: DataIndices) -> LgbDataType:
+    def slice(self, data: LgbDataType, index: DataIndex) -> LgbDataType:
         match data:
             case str():
                 raise NotImplementedError
@@ -48,7 +48,7 @@ class LgbDataSlicer(BaseDatasetSlicer[LgbDataType]):
 
 
 class LgbLabelSlicer(BaseDatasetSlicer[LgbLabelType]):
-    def slice(self, data: LgbLabelType, index: DataIndices) -> LgbLabelType:
+    def slice(self, data: LgbLabelType, index: DataIndex) -> LgbLabelType:
         match data:
             case list():
                 raise NotImplementedError
@@ -71,22 +71,22 @@ class LgbLabelSlicer(BaseDatasetSlicer[LgbLabelType]):
 
 
 class LgbWeightSlicer(BaseDatasetSlicer[LgbWeightType]):
-    def slice(self, data: LgbWeightType, index: DataIndices) -> LgbWeightType:
+    def slice(self, data: LgbWeightType, index: DataIndex) -> LgbWeightType:
         raise NotImplementedError
 
 
 class LgbInitScoreSlicer(BaseDatasetSlicer[LgbInitScoreType]):
-    def slice(self, data: LgbInitScoreType, index: DataIndices) -> LgbInitScoreType:
+    def slice(self, data: LgbInitScoreType, index: DataIndex) -> LgbInitScoreType:
         raise NotImplementedError
 
 
 class LgbGroupSlicer(BaseDatasetSlicer[LgbGroupType]):
-    def slice(self, data: LgbGroupType, index: DataIndices) -> LgbGroupType:
+    def slice(self, data: LgbGroupType, index: DataIndex) -> LgbGroupType:
         raise NotImplementedError
 
 
 class LgbPositionSlicer(BaseDatasetSlicer[LgbPositionType]):
-    def slice(self, data: LgbPositionType, index: DataIndices) -> LgbPositionType:
+    def slice(self, data: LgbPositionType, index: DataIndex) -> LgbPositionType:
         raise NotImplementedError
 
 
@@ -94,7 +94,7 @@ class LgbDatasetSlicer(BaseDatasetSlicer[lgb.Dataset]):
     def __init__(self, reference: lgb.Dataset | None) -> None:
         self.reference = reference
 
-    def slice(self, data: lgb.Dataset, index: DataIndices) -> lgb.Dataset:
+    def slice(self, data: lgb.Dataset, index: DataIndex) -> lgb.Dataset:
         return lgb.Dataset(
             data=LgbDataSlicer().slice(data.data, index),
             label=(

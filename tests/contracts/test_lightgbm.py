@@ -51,18 +51,6 @@ def test_train_signature() -> None:
                 default=None,
             ),
             Parameter(
-                "feature_name",
-                Parameter.POSITIONAL_OR_KEYWORD,
-                annotation=lgb.basic._LGBM_FeatureNameConfiguration,
-                default="auto",
-            ),
-            Parameter(
-                "categorical_feature",
-                Parameter.POSITIONAL_OR_KEYWORD,
-                annotation=lgb.basic._LGBM_CategoricalFeatureConfiguration,
-                default="auto",
-            ),
-            Parameter(
                 "keep_training_booster",
                 Parameter.POSITIONAL_OR_KEYWORD,
                 annotation=bool,
@@ -78,6 +66,7 @@ def test_train_signature() -> None:
         return_annotation=lgb.Booster,
     )
     actual = signature(lgb.train)
+
     assert actual == expected
 
 
