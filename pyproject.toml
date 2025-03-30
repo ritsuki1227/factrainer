@@ -1,32 +1,41 @@
 [project]
 name = "factrainer"
 version = "0.1.0"
-description = "Framework Agnostic Cross-validation Trainer"
+description = "Framwork Agnostic Cross-validation Trainer"
 readme = "README.md"
 authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
-requires-python = ">=3.12"
-dependencies = ["joblib>=1.4.2", "pydantic>=2.10.6", "scikit-learn>=1.6.1"]
+requires-python = ">=3.10"
+dependencies = ["factrainer-core"]
+
+[project.optional-dependencies]
+lightgbm = ["factrainer-lightgbm"]
+xgboost = ["factrainer-xgboost"]
+catboost = ["factrainer-catboost"]
+all = ["factrainer-lightgbm", "factrainer-xgboost", "factrainer-catboost"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
+[tool.uv.sources]
+factrainer-xgboost = { workspace = true }
+factrainer-catboost = { workspace = true }
+factrainer-core = { workspace = true }
+factrainer-lightgbm = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+    "packages/core",
+    "packages/lightgbm",
+    "packages/xgboost",
+    "packages/catboost",
+]
+
 [dependency-groups]
 dev = [
     "black>=25.1.0",
-    "jupyterlab>=4.3.5",
+    "jupyterlab>=4.3.6",
     "mypy>=1.15.0",
-    "pandas-stubs>=2.2.3.241126",
     "pytest>=8.3.5",
-    "ruff>=0.9.9",
-    "scipy-stubs>=1.15.2.0",
+    "ruff>=0.11.2",
 ]
-lightgbm = ["lightgbm>=4.6.0", "pandas>=2.2.3"]
-xgboost = ["xgboost>=2.1.4"]
-catboost = ["catboost>=1.2.7"]
-
-[tool.mypy]
-files = "src,tests"
-mypy_path = "stubs"
-strict = true
-plugins = "numpy.typing.mypy_plugin"
