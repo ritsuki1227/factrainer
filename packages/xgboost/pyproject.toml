@@ -4,11 +4,8 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
-requires-python = ">=3.10"
-dependencies = [
-    "factrainer-core",
-    "xgboost>=3.0.0",
-]
+requires-python = ">=3.12"
+dependencies = ["factrainer-core", "xgboost>=3.0.0"]
 
 [build-system]
 requires = ["hatchling"]
