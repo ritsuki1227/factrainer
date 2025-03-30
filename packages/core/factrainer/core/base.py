@@ -24,7 +24,7 @@ class BaseDataset(BaseModel):
 class Dataset(BaseDataset): ...
 
 
-class IndexableDataset(BaseDataset):
+class IndexableDataset(Dataset):
     @abstractmethod
     def get_index(
         self, k_fold: _BaseKFold
