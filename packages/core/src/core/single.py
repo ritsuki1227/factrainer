@@ -1,11 +1,14 @@
-from .base import (
+from base.config import (
     BaseMlModelConfig,
     BasePredictConfig,
     BaseTrainConfig,
-    Dataset,
     Prediction,
+)
+from base.dataset import Dataset
+from base.raw_model import RawModel
+
+from .trait import (
     PredictorTrait,
-    RawModel,
     TrainValDataset,
     ValidatableTrainerTrait,
 )

@@ -1,6 +1,10 @@
 from collections.abc import Sequence
 
-from .base import Dataset, Prediction, PredictorTrait, RawModel, TrainerTrait
+from base.config import Prediction
+from base.dataset import Dataset
+from base.raw_model import RawModel
+
+from .trait import PredictorTrait, TrainerTrait
 
 
 class CvRawModels[U: RawModel](RawModel):

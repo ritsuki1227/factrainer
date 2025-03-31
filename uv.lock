@@ -3,11 +3,12 @@ requires-python = ">=3.12"
 
 [manifest]
 members = [
+    "base",
+    "core",
     "factrainer",
-    "factrainer-catboost",
-    "factrainer-core",
-    "factrainer-lightgbm",
-    "factrainer-xgboost",
+    "plugin-catboost",
+    "plugin-lightgbm",
+    "plugin-xgboost",
 ]
 
 [[package]]
@@ -122,6 +123,21 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/7d/6b/d52e42361e1aa00709585ecc30b3f9684b3ab62530771402248b1b1d6240/babel-2.17.0.tar.gz", hash = "sha256:0c54cffb19f690cdcc52a3b50bcbf71e07a808d1c80d549f2459b9d2cf0afb9d", size = 9951852 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b7/b8/3fe70c75fe32afc4bb507f75563d39bc5642255d1d94f1f23604725780bf/babel-2.17.0-py3-none-any.whl", hash = "sha256:4d0b53093fdfb4b21c92b5213dba5a1b23885afa8383709427046b21c366e5f2", size = 10182537 },
+]
+
+[[package]]
+name = "base"
+version = "0.1.0"
+source = { editable = "packages/base" }
+dependencies = [
+    { name = "pydantic" },
+    { name = "scikit-learn" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "pydantic", specifier = ">=2.11.1" },
+    { name = "scikit-learn", specifier = ">=1.6.1" },
 ]
 
 [[package]]
@@ -351,6 +367,21 @@ wheels = [
 ]
 
 [[package]]
+name = "core"
+version = "0.1.0"
+source = { editable = "packages/core" }
+dependencies = [
+    { name = "base" },
+    { name = "joblib" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "base", editable = "packages/base" },
+    { name = "joblib", specifier = ">=1.4.2" },
+]
+
+[[package]]
 name = "cycler"
 version = "0.12.1"
 source = { registry = "https://pypi.org/simple" }
@@ -408,23 +439,23 @@ name = "factrainer"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "factrainer-core" },
+    { name = "core" },
 ]
 
 [package.optional-dependencies]
 all = [
-    { name = "factrainer-catboost" },
-    { name = "factrainer-lightgbm" },
-    { name = "factrainer-xgboost" },
+    { name = "plugin-catboost" },
+    { name = "plugin-lightgbm" },
+    { name = "plugin-xgboost" },
 ]
 catboost = [
-    { name = "factrainer-catboost" },
+    { name = "plugin-catboost" },
 ]
 lightgbm = [
-    { name = "factrainer-lightgbm" },
+    { name = "plugin-lightgbm" },
 ]
 xgboost = [
-    { name = "factrainer-xgboost" },
+    { name = "plugin-xgboost" },
 ]
 
 [package.dev-dependencies]
@@ -438,13 +469,13 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "factrainer-catboost", marker = "extra == 'all'", editable = "packages/catboost" },
-    { name = "factrainer-catboost", marker = "extra == 'catboost'", editable = "packages/catboost" },
-    { name = "factrainer-core", editable = "packages/core" },
-    { name = "factrainer-lightgbm", marker = "extra == 'all'", editable = "packages/lightgbm" },
-    { name = "factrainer-lightgbm", marker = "extra == 'lightgbm'", editable = "packages/lightgbm" },
-    { name = "factrainer-xgboost", marker = "extra == 'all'", editable = "packages/xgboost" },
-    { name = "factrainer-xgboost", marker = "extra == 'xgboost'", editable = "packages/xgboost" },
+    { name = "core", editable = "packages/core" },
+    { name = "plugin-catboost", marker = "extra == 'all'", editable = "packages/plugin-catboost" },
+    { name = "plugin-catboost", marker = "extra == 'catboost'", editable = "packages/plugin-catboost" },
+    { name = "plugin-lightgbm", marker = "extra == 'all'", editable = "packages/plugin-lightgbm" },
+    { name = "plugin-lightgbm", marker = "extra == 'lightgbm'", editable = "packages/plugin-lightgbm" },
+    { name = "plugin-xgboost", marker = "extra == 'all'", editable = "packages/plugin-xgboost" },
+    { name = "plugin-xgboost", marker = "extra == 'xgboost'", editable = "packages/plugin-xgboost" },
 ]
 
 [package.metadata.requires-dev]
@@ -454,70 +485,6 @@ dev = [
     { name = "mypy", specifier = ">=1.15.0" },
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "ruff", specifier = ">=0.11.2" },
-]
-
-[[package]]
-name = "factrainer-catboost"
-version = "0.1.0"
-source = { editable = "packages/catboost" }
-dependencies = [
-    { name = "catboost" },
-    { name = "factrainer-core" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "catboost", specifier = ">=1.2.7" },
-    { name = "factrainer-core", editable = "packages/core" },
-]
-
-[[package]]
-name = "factrainer-core"
-version = "0.1.0"
-source = { editable = "packages/core" }
-dependencies = [
-    { name = "joblib" },
-    { name = "pydantic" },
-    { name = "scikit-learn" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "joblib", specifier = ">=1.4.2" },
-    { name = "pydantic", specifier = ">=2.11.1" },
-    { name = "scikit-learn", specifier = ">=1.6.1" },
-]
-
-[[package]]
-name = "factrainer-lightgbm"
-version = "0.1.0"
-source = { editable = "packages/lightgbm" }
-dependencies = [
-    { name = "factrainer-core" },
-    { name = "lightgbm" },
-    { name = "pandas" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "factrainer-core", editable = "packages/core" },
-    { name = "lightgbm", specifier = ">=4.6.0" },
-    { name = "pandas", specifier = ">=2.2.3" },
-]
-
-[[package]]
-name = "factrainer-xgboost"
-version = "0.1.0"
-source = { editable = "packages/xgboost" }
-dependencies = [
-    { name = "factrainer-core" },
-    { name = "xgboost" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "factrainer-core", editable = "packages/core" },
-    { name = "xgboost", specifier = ">=3.0.0" },
 ]
 
 [[package]]
@@ -1394,6 +1361,53 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/96/2d/02d4312c973c6050a18b314a5ad0b3210edb65a906f868e31c111dede4a6/pluggy-1.5.0.tar.gz", hash = "sha256:2cffa88e94fdc978c4c574f15f9e59b7f4201d439195c3715ca9e2486f1d0cf1", size = 67955 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/88/5f/e351af9a41f866ac3f1fac4ca0613908d9a41741cfcf2228f4ad853b697d/pluggy-1.5.0-py3-none-any.whl", hash = "sha256:44e1ad92c8ca002de6377e165f3e0f1be63266ab4d554740532335b9d75ea669", size = 20556 },
+]
+
+[[package]]
+name = "plugin-catboost"
+version = "0.1.0"
+source = { editable = "packages/plugin-catboost" }
+dependencies = [
+    { name = "base" },
+    { name = "catboost" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "base", editable = "packages/base" },
+    { name = "catboost", specifier = ">=1.2.7" },
+]
+
+[[package]]
+name = "plugin-lightgbm"
+version = "0.1.0"
+source = { editable = "packages/plugin-lightgbm" }
+dependencies = [
+    { name = "base" },
+    { name = "lightgbm" },
+    { name = "pandas" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "base", editable = "packages/base" },
+    { name = "lightgbm", specifier = ">=4.6.0" },
+    { name = "pandas", specifier = ">=2.2.3" },
+]
+
+[[package]]
+name = "plugin-xgboost"
+version = "0.1.0"
+source = { editable = "packages/plugin-xgboost" }
+dependencies = [
+    { name = "base" },
+    { name = "xgboost" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "base", editable = "packages/base" },
+    { name = "xgboost", specifier = ">=3.0.0" },
 ]
 
 [[package]]

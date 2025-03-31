@@ -5,31 +5,17 @@ description = "Framwork Agnostic Cross-validation Trainer"
 readme = "README.md"
 authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = ["factrainer-core"]
-
-[project.optional-dependencies]
-lightgbm = ["factrainer-lightgbm"]
-xgboost = ["factrainer-xgboost"]
-catboost = ["factrainer-catboost"]
-all = ["factrainer-lightgbm", "factrainer-xgboost", "factrainer-catboost"]
+dependencies = ["core"]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[tool.uv.sources]
-factrainer-xgboost = { workspace = true }
-factrainer-catboost = { workspace = true }
-factrainer-core = { workspace = true }
-factrainer-lightgbm = { workspace = true }
-
-[tool.uv.workspace]
-members = [
-    "packages/core",
-    "packages/lightgbm",
-    "packages/xgboost",
-    "packages/catboost",
-]
+[project.optional-dependencies]
+lightgbm = ["plugin-lightgbm"]
+xgboost = ["plugin-xgboost"]
+catboost = ["plugin-catboost"]
+all = ["plugin-lightgbm", "plugin-xgboost", "plugin-catboost"]
 
 [dependency-groups]
 dev = [
@@ -45,4 +31,19 @@ files = "src,tests,packages"
 mypy_path = "stubs"
 strict = true
 plugins = "numpy.typing.mypy_plugin"
-explicit_package_bases = true
+
+[tool.uv.sources]
+base = { workspace = true }
+core = { workspace = true }
+plugin-lightgbm = { workspace = true }
+plugin-xgboost = { workspace = true }
+plugin-catboost = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+    "packages/base",
+    "packages/core",
+    "packages/plugin-lightgbm",
+    "packages/plugin-xgboost",
+    "packages/plugin-catboost",
+]
