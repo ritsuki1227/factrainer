@@ -1,13 +1,7 @@
 from abc import ABC, abstractmethod
 
-from base.config import Prediction
-from base.dataset import BaseDataset, Dataset
+from base.dataset import Dataset, Prediction
 from base.raw_model import RawModel
-
-
-class TrainValDataset[T: Dataset](BaseDataset):
-    train: T
-    val: T | None = None
 
 
 class PredictorTrait[T: Dataset, U: RawModel](ABC):
@@ -29,5 +23,5 @@ class TrainerTrait[T: Dataset](ABC):
 
 class ValidatableTrainerTrait[T: Dataset](ABC):
     @abstractmethod
-    def train(self, dataset: TrainValDataset[T]) -> None:
+    def train(self, train_dataset: T, val_dataset: T | None = None) -> None:
         raise NotImplementedError

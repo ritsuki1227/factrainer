@@ -1,15 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import Any, Self
+from typing import Self
 
-import numpy as np
-import numpy.typing as npt
 from pydantic import BaseModel, ConfigDict
 
-from base.dataset import Dataset
+from base.dataset import Dataset, Prediction
 from base.raw_model import RawModel
-
-# type Prediction = npt.NDArray[Any] | scipy.sparse.spmatrix | list[scipy.sparse.spmatrix]
-type Prediction = npt.NDArray[np.number[Any]]
 
 
 class BaseTrainConfig(BaseModel):
