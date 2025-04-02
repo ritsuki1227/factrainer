@@ -11,7 +11,7 @@ class PredictorTrait[T: BaseDataset, U: RawModel](ABC):
 
     @property
     @abstractmethod
-    def model(self) -> U:
+    def raw_model(self) -> U:
         raise NotImplementedError
 
 

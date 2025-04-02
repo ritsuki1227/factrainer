@@ -12,9 +12,9 @@ from .trait import (
 )
 
 
-class MlClient[T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig](
-    ValidatableTrainerTrait[T], PredictorTrait[T, U]
-):
+class SingleMlModel[
+    T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+](ValidatableTrainerTrait[T], PredictorTrait[T, U]):
     def __init__(
         self,
         model_config: BaseMlModelConfig[T, U, V, W],
@@ -28,9 +28,9 @@ class MlClient[T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictCo
 
     def predict(self, dataset: T) -> Prediction:
         return self.model_config.predictor.predict(
-            dataset, self.model, self.model_config.pred_config
+            dataset, self.raw_model, self.model_config.pred_config
         )
 
     @property
-    def model(self) -> U:
+    def raw_model(self) -> U:
         return self._model

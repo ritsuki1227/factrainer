@@ -23,7 +23,7 @@ class BaseLearner[T: BaseDataset, U: RawModel, V: BaseTrainConfig](ABC):
 
 class BasePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](ABC):
     @abstractmethod
-    def predict(self, dataset: T, model: U, config: W | None) -> Prediction:
+    def predict(self, dataset: T, raw_model: U, config: W | None) -> Prediction:
         raise NotImplementedError
 
 

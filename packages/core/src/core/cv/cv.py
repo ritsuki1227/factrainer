@@ -8,7 +8,7 @@ from base.raw_model import RawModel
 from ..trait import PredictorTrait, TrainerTrait
 
 
-class CvMlClient[T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig](
+class CvMlModel[T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig](
     TrainerTrait[T], PredictorTrait[T, U]
 ):
     def __init__(self) -> None:
@@ -21,5 +21,5 @@ class CvMlClient[T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredict
         raise NotImplementedError
 
     @property
-    def model(self) -> U:
+    def raw_model(self) -> U:
         raise NotImplementedError
