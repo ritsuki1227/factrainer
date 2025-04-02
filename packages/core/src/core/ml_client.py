@@ -3,7 +3,7 @@ from base.config import (
     BasePredictConfig,
     BaseTrainConfig,
 )
-from base.dataset import Dataset, Prediction
+from base.dataset import BaseDataset, Prediction
 from base.raw_model import RawModel
 
 from .trait import (
@@ -12,7 +12,7 @@ from .trait import (
 )
 
 
-class SingleMlModel[T: Dataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig](
+class MlClient[T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig](
     ValidatableTrainerTrait[T], PredictorTrait[T, U]
 ):
     def __init__(

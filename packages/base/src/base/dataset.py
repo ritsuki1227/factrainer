@@ -17,10 +17,7 @@ class BaseDataset(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
-class Dataset(BaseDataset): ...
-
-
-class IndexableDataset(Dataset):
+class IndexableDataset(BaseDataset):
     @abstractmethod
     def get_index(
         self, k_fold: _BaseKFold

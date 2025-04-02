@@ -3,7 +3,7 @@ from typing import Self
 
 from pydantic import BaseModel, ConfigDict
 
-from base.dataset import Dataset, Prediction
+from base.dataset import BaseDataset, Prediction
 from base.raw_model import RawModel
 
 
@@ -15,20 +15,20 @@ class BasePredictConfig(BaseModel):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
-class BaseLearner[T: Dataset, U: RawModel, V: BaseTrainConfig](ABC):
+class BaseLearner[T: BaseDataset, U: RawModel, V: BaseTrainConfig](ABC):
     @abstractmethod
     def train(self, train_dataset: T, val_dataset: T | None, config: V) -> U:
         raise NotImplementedError
 
 
-class BasePredictor[T: Dataset, U: RawModel, W: BasePredictConfig](ABC):
+class BasePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](ABC):
     @abstractmethod
     def predict(self, dataset: T, model: U, config: W | None) -> Prediction:
         raise NotImplementedError
 
 
 class BaseMlModelConfig[
-    T: Dataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+    T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
 ](BaseModel, ABC):
     train_config: V
     learner: BaseLearner[T, U, V]
@@ -38,7 +38,7 @@ class BaseMlModelConfig[
 
 
 class ModelConfigFactoryTrait[
-    T: Dataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+    T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
 ](ABC):
     @classmethod
     @abstractmethod
