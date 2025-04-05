@@ -11,7 +11,10 @@ from .raw_model import CvRawModels
 
 
 class CvMlModel[
-    T: IndexableDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+    T: IndexableDataset,
+    U: RawModel,
+    V: BaseTrainConfig,
+    W: BasePredictConfig,
 ](TrainerTrait[T, V], PredictorTrait[T, CvRawModels[U], W]):
     def __init__(
         self,

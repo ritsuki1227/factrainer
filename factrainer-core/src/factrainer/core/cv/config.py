@@ -85,7 +85,10 @@ class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
 
 
 class CvMlModelConfig[
-    T: IndexableDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+    T: IndexableDataset,
+    U: RawModel,
+    V: BaseTrainConfig,
+    W: BasePredictConfig,
 ](BaseMlModelConfig[IndexedDatasets[T], CvRawModels[U], V, W]):
     learner: CvLearner[T, U, V]
     predictor: CvPredictor[T, U, W]

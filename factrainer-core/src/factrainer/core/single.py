@@ -13,7 +13,10 @@ from .trait import (
 
 
 class SingleMlModel[
-    T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
+    T: BaseDataset,
+    U: RawModel,
+    V: BaseTrainConfig,
+    W: BasePredictConfig,
 ](ValidatableTrainerTrait[T, V], PredictorTrait[T, U, W]):
     def __init__(
         self,
