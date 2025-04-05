@@ -21,9 +21,10 @@ dev = [
 ]
 
 [tool.uv.workspace]
-members = ["factrainer-core"]
+members = ["factrainer-core", "factrainer-base"]
 
 [tool.uv.sources]
+factrainer-base = { workspace = true }
 factrainer-core = { workspace = true }
 
 [tool.hatch.build.targets.wheel]
