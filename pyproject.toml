@@ -25,3 +25,6 @@ members = ["factrainer-core"]
 
 [tool.uv.sources]
 factrainer-core = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["factrainer-core/src/factrainer"]
