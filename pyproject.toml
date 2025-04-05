@@ -8,7 +8,16 @@ requires-python = ">=3.12"
 dependencies = ["factrainer-core"]
 
 [project.optional-dependencies]
+sklearn = ["factrainer-sklearn"]
 lightgbm = ["factrainer-lightgbm"]
+xgboost = ["factrainer-xgboost"]
+catboost = ["factrainer-catboost"]
+all = [
+    "factrainer-sklearn",
+    "factrainer-lightgbm",
+    "factrainer-xgboost",
+    "factrainer-catboost",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -24,15 +33,28 @@ dev = [
 ]
 
 [tool.uv.workspace]
-members = ["factrainer-core", "factrainer-base", "factrainer-lightgbm"]
+members = [
+    "factrainer-base",
+    "factrainer-core",
+    "factrainer-sklearn",
+    "factrainer-lightgbm",
+    "factrainer-xgboost",
+    "factrainer-catboost",
+]
 
 [tool.uv.sources]
 factrainer-base = { workspace = true }
 factrainer-core = { workspace = true }
+factrainer-sklearn = { workspace = true }
 factrainer-lightgbm = { workspace = true }
+factrainer-xgboost = { workspace = true }
+factrainer-catboost = { workspace = true }
 
 [tool.hatch.build.targets.wheel]
 packages = [
     "factrainer-core/src/factrainer",
+    "factrainer-sklearn/src/factrainer",
     "factrainer-lightgbm/src/factrainer",
+    "factrainer-xgboost/src/factrainer",
+    "factrainer-catboost/src/factrainer",
 ]

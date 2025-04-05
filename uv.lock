@@ -5,8 +5,11 @@ requires-python = ">=3.12"
 members = [
     "factrainer",
     "factrainer-base",
+    "factrainer-catboost",
     "factrainer-core",
     "factrainer-lightgbm",
+    "factrainer-sklearn",
+    "factrainer-xgboost",
 ]
 
 [[package]]
@@ -331,8 +334,23 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+all = [
+    { name = "factrainer-catboost" },
+    { name = "factrainer-lightgbm" },
+    { name = "factrainer-sklearn" },
+    { name = "factrainer-xgboost" },
+]
+catboost = [
+    { name = "factrainer-catboost" },
+]
 lightgbm = [
     { name = "factrainer-lightgbm" },
+]
+sklearn = [
+    { name = "factrainer-sklearn" },
+]
+xgboost = [
+    { name = "factrainer-xgboost" },
 ]
 
 [package.dev-dependencies]
@@ -346,8 +364,15 @@ dev = [
 
 [package.metadata]
 requires-dist = [
+    { name = "factrainer-catboost", marker = "extra == 'all'", editable = "factrainer-catboost" },
+    { name = "factrainer-catboost", marker = "extra == 'catboost'", editable = "factrainer-catboost" },
     { name = "factrainer-core", editable = "factrainer-core" },
+    { name = "factrainer-lightgbm", marker = "extra == 'all'", editable = "factrainer-lightgbm" },
     { name = "factrainer-lightgbm", marker = "extra == 'lightgbm'", editable = "factrainer-lightgbm" },
+    { name = "factrainer-sklearn", marker = "extra == 'all'", editable = "factrainer-sklearn" },
+    { name = "factrainer-sklearn", marker = "extra == 'sklearn'", editable = "factrainer-sklearn" },
+    { name = "factrainer-xgboost", marker = "extra == 'all'", editable = "factrainer-xgboost" },
+    { name = "factrainer-xgboost", marker = "extra == 'xgboost'", editable = "factrainer-xgboost" },
 ]
 
 [package.metadata.requires-dev]
@@ -365,6 +390,17 @@ version = "0.1.0"
 source = { editable = "factrainer-base" }
 
 [[package]]
+name = "factrainer-catboost"
+version = "0.1.0"
+source = { editable = "factrainer-catboost" }
+dependencies = [
+    { name = "factrainer-base" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "factrainer-base", editable = "factrainer-base" }]
+
+[[package]]
 name = "factrainer-core"
 version = "0.1.0"
 source = { editable = "factrainer-core" }
@@ -379,6 +415,28 @@ requires-dist = [{ name = "factrainer-base", editable = "factrainer-base" }]
 name = "factrainer-lightgbm"
 version = "0.1.0"
 source = { editable = "factrainer-lightgbm" }
+dependencies = [
+    { name = "factrainer-base" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "factrainer-base", editable = "factrainer-base" }]
+
+[[package]]
+name = "factrainer-sklearn"
+version = "0.1.0"
+source = { editable = "factrainer-sklearn" }
+dependencies = [
+    { name = "factrainer-base" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "factrainer-base", editable = "factrainer-base" }]
+
+[[package]]
+name = "factrainer-xgboost"
+version = "0.1.0"
+source = { editable = "factrainer-xgboost" }
 dependencies = [
     { name = "factrainer-base" },
 ]
