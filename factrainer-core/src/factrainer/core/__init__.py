@@ -1,7 +1,6 @@
 from factrainer.base import Foo
 
 
-def hello():
+def hello() -> None:
     Foo()
     print("Hello, World!")
-    return "Hello, World!"

@@ -5,7 +5,7 @@ description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = ["factrainer-base"]
+dependencies = ["factrainer-base", "xgboost>=3.0.0"]
 
 [build-system]
 requires = ["hatchling"]

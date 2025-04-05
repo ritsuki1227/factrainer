@@ -58,3 +58,20 @@ packages = [
     "factrainer-xgboost/src/factrainer",
     "factrainer-catboost/src/factrainer",
 ]
+
+[tool.mypy]
+files = "."
+mypy_path = [
+    "$MYPY_CONFIG_FILE_DIR/factrainer-base/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-core/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-sklearn/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-lightgbm/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-xgboost/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-catboost/src",
+    "tests",
+    "stubs",
+]
+strict = true
+plugins = "numpy.typing.mypy_plugin"
+namespace_packages = true
+explicit_package_bases = true
