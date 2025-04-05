@@ -14,7 +14,7 @@ from .trait import (
 
 class SingleMlModel[
     T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
-](ValidatableTrainerTrait[T], PredictorTrait[T, U]):
+](ValidatableTrainerTrait[T, V], PredictorTrait[T, U, W]):
     def __init__(
         self,
         model_config: BaseMlModelConfig[T, U, V, W],
@@ -34,3 +34,19 @@ class SingleMlModel[
     @property
     def raw_model(self) -> U:
         return self._model
+
+    @property
+    def train_config(self) -> V:
+        return self.model_config.train_config
+
+    @train_config.setter
+    def train_config(self, config: V) -> None:
+        self.model_config.train_config = config
+
+    @property
+    def pred_config(self) -> W | None:
+        return self.model_config.pred_config
+
+    @pred_config.setter
+    def pred_config(self, config: W | None) -> None:
+        self.model_config.pred_config = config

@@ -28,18 +28,24 @@ class BasePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](ABC):
 
 
 class BaseMlModelConfig[
-    T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
-](BaseModel, ABC):
-    train_config: V
+    T: BaseDataset,
+    U: RawModel,
+    V: BaseTrainConfig,
+    W: BasePredictConfig,
+](BaseModel):
     learner: BaseLearner[T, U, V]
     predictor: BasePredictor[T, U, W]
+    train_config: V
     pred_config: W | None = None
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
-class ModelConfigFactoryTrait[
-    T: BaseDataset, U: RawModel, V: BaseTrainConfig, W: BasePredictConfig
-](ABC):
+class MlModelConfig[
+    T: BaseDataset,
+    U: RawModel,
+    V: BaseTrainConfig,
+    W: BasePredictConfig,
+](BaseMlModelConfig[T, U, V, W], ABC):
     @classmethod
     @abstractmethod
     def create(cls, train_config: V, pred_config: W | None = None) -> Self:
