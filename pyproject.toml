@@ -3,11 +3,9 @@ name = "factrainer"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-authors = [
-    { name = "ritsuki1227", email = "ritsuki1227@gmail.com" }
-]
+authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = ["factrainer-core"]
 
 [build-system]
 requires = ["hatchling"]
@@ -21,3 +19,9 @@ dev = [
     "pytest>=8.3.5",
     "ruff>=0.11.4",
 ]
+
+[tool.uv.workspace]
+members = ["factrainer-core"]
+
+[tool.uv.sources]
+factrainer-core = { workspace = true }

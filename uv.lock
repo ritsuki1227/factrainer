@@ -1,6 +1,12 @@
 version = 1
 requires-python = ">=3.12"
 
+[manifest]
+members = [
+    "factrainer",
+    "factrainer-core",
+]
+
 [[package]]
 name = "anyio"
 version = "4.9.0"
@@ -318,6 +324,9 @@ wheels = [
 name = "factrainer"
 version = "0.1.0"
 source = { editable = "." }
+dependencies = [
+    { name = "factrainer-core" },
+]
 
 [package.dev-dependencies]
 dev = [
@@ -329,6 +338,7 @@ dev = [
 ]
 
 [package.metadata]
+requires-dist = [{ name = "factrainer-core", editable = "factrainer-core" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -338,6 +348,11 @@ dev = [
     { name = "pytest", specifier = ">=8.3.5" },
     { name = "ruff", specifier = ">=0.11.4" },
 ]
+
+[[package]]
+name = "factrainer-core"
+version = "0.1.0"
+source = { editable = "factrainer-core" }
 
 [[package]]
 name = "fastjsonschema"
