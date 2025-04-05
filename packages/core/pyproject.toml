@@ -1,0 +1,20 @@
+[project]
+name = "core"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "ritsuki1227", email = "ritsuki1227@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "base",
+    "joblib>=1.4.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv.sources]
+base = { workspace = true }
