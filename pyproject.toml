@@ -1,49 +1,77 @@
 [project]
 name = "factrainer"
 version = "0.1.0"
-description = "Framwork Agnostic Cross-validation Trainer"
+description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
 requires-python = ">=3.12"
-dependencies = ["core"]
+dependencies = ["factrainer-core"]
+
+[project.optional-dependencies]
+sklearn = ["factrainer-sklearn"]
+lightgbm = ["factrainer-lightgbm"]
+xgboost = ["factrainer-xgboost"]
+catboost = ["factrainer-catboost"]
+all = [
+    "factrainer-sklearn",
+    "factrainer-lightgbm",
+    "factrainer-xgboost",
+    "factrainer-catboost",
+]
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[project.optional-dependencies]
-lightgbm = ["plugin-lightgbm"]
-xgboost = ["plugin-xgboost"]
-catboost = ["plugin-catboost"]
-all = ["plugin-lightgbm", "plugin-xgboost", "plugin-catboost"]
-
 [dependency-groups]
 dev = [
     "black>=25.1.0",
-    "jupyterlab>=4.3.6",
+    "jupyterlab>=4.4.0",
     "mypy>=1.15.0",
     "pytest>=8.3.5",
-    "ruff>=0.11.2",
+    "ruff>=0.11.4",
 ]
-
-[tool.mypy]
-files = "src,tests,packages"
-mypy_path = "stubs"
-strict = true
-plugins = "numpy.typing.mypy_plugin"
-
-[tool.uv.sources]
-base = { workspace = true }
-core = { workspace = true }
-plugin-lightgbm = { workspace = true }
-plugin-xgboost = { workspace = true }
-plugin-catboost = { workspace = true }
 
 [tool.uv.workspace]
 members = [
-    "packages/base",
-    "packages/core",
-    "packages/plugin-lightgbm",
-    "packages/plugin-xgboost",
-    "packages/plugin-catboost",
+    "factrainer-base",
+    "factrainer-core",
+    "factrainer-sklearn",
+    "factrainer-lightgbm",
+    "factrainer-xgboost",
+    "factrainer-catboost",
 ]
+
+[tool.uv.sources]
+factrainer-base = { workspace = true }
+factrainer-core = { workspace = true }
+factrainer-sklearn = { workspace = true }
+factrainer-lightgbm = { workspace = true }
+factrainer-xgboost = { workspace = true }
+factrainer-catboost = { workspace = true }
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "factrainer-core/src/factrainer",
+    "factrainer-sklearn/src/factrainer",
+    "factrainer-lightgbm/src/factrainer",
+    "factrainer-xgboost/src/factrainer",
+    "factrainer-catboost/src/factrainer",
+]
+
+[tool.mypy]
+files = "."
+mypy_path = [
+    "$MYPY_CONFIG_FILE_DIR/factrainer-base/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-core/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-sklearn/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-lightgbm/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-xgboost/src",
+    "$MYPY_CONFIG_FILE_DIR/factrainer-catboost/src",
+    "tests",
+    "stubs",
+]
+strict = true
+plugins = "numpy.typing.mypy_plugin"
+namespace_packages = true
+explicit_package_bases = true

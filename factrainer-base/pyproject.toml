@@ -1,0 +1,18 @@
+[project]
+name = "factrainer-base"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.11.2",
+    "scikit-learn>=1.6.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/factrainer"]
