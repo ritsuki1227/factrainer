@@ -7,6 +7,9 @@ authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = ["factrainer-core"]
 
+[project.optional-dependencies]
+lightgbm = ["factrainer-lightgbm"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -21,11 +24,15 @@ dev = [
 ]
 
 [tool.uv.workspace]
-members = ["factrainer-core", "factrainer-base"]
+members = ["factrainer-core", "factrainer-base", "factrainer-lightgbm"]
 
 [tool.uv.sources]
 factrainer-base = { workspace = true }
 factrainer-core = { workspace = true }
+factrainer-lightgbm = { workspace = true }
 
 [tool.hatch.build.targets.wheel]
-packages = ["factrainer-core/src/factrainer"]
+packages = [
+    "factrainer-core/src/factrainer",
+    "factrainer-lightgbm/src/factrainer",
+]

@@ -6,6 +6,7 @@ members = [
     "factrainer",
     "factrainer-base",
     "factrainer-core",
+    "factrainer-lightgbm",
 ]
 
 [[package]]
@@ -329,6 +330,11 @@ dependencies = [
     { name = "factrainer-core" },
 ]
 
+[package.optional-dependencies]
+lightgbm = [
+    { name = "factrainer-lightgbm" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "black" },
@@ -339,7 +345,10 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "factrainer-core", editable = "factrainer-core" }]
+requires-dist = [
+    { name = "factrainer-core", editable = "factrainer-core" },
+    { name = "factrainer-lightgbm", marker = "extra == 'lightgbm'", editable = "factrainer-lightgbm" },
+]
 
 [package.metadata.requires-dev]
 dev = [
@@ -359,6 +368,17 @@ source = { editable = "factrainer-base" }
 name = "factrainer-core"
 version = "0.1.0"
 source = { editable = "factrainer-core" }
+dependencies = [
+    { name = "factrainer-base" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "factrainer-base", editable = "factrainer-base" }]
+
+[[package]]
+name = "factrainer-lightgbm"
+version = "0.1.0"
+source = { editable = "factrainer-lightgbm" }
 dependencies = [
     { name = "factrainer-base" },
 ]
