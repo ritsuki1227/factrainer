@@ -56,7 +56,7 @@ class LgbLabelSlicer(BaseDatasetSlicer[LgbLabelType]):
             case pd_DataFrame():
                 return data.iloc[index]
             case pd_Series():
-                return data.iloc[index]  # type: ignore
+                return data.iloc[index]
             case dt_DataTable():
                 raise NotImplementedError
             case scipy.sparse.spmatrix():

@@ -1,0 +1,3 @@
+from typing import Any
+
+def fetch_california_housing() -> dict[str, Any]: ...
