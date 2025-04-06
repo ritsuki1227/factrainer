@@ -178,7 +178,7 @@ class LgbPositionEqualityChecker(BaseDatasetEqualityChecker[_LGBM_PositionType |
     def check(
         self, left: _LGBM_PositionType | None, right: _LGBM_PositionType | None
     ) -> bool:
-        return left == right  # type: ignore
+        return left == right
 
 
 class LgbDatasetEqualityChecker(BaseDatasetEqualityChecker[lgb.Dataset | None]):

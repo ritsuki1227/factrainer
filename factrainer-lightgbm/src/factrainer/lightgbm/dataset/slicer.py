@@ -122,7 +122,7 @@ class LgbDatasetSlicer(BaseDatasetSlicer[lgb.Dataset]):
             params=data.params,
             free_raw_data=data.free_raw_data,
             position=(
-                LgbPositionSlicer().slice(data.position, index)  # type: ignore
+                LgbPositionSlicer().slice(data.position, index)
                 if data.position is not None
                 else None
             ),
