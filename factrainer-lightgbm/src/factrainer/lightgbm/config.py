@@ -12,10 +12,6 @@ from factrainer.base.config import (
 from factrainer.base.dataset import Prediction
 
 import lightgbm as lgb
-from lightgbm.basic import (
-    _LGBM_CategoricalFeatureConfiguration,
-    _LGBM_FeatureNameConfiguration,
-)
 from lightgbm.engine import _LGBM_CustomMetricFunction
 
 from .dataset.dataset import LgbDataset
@@ -28,8 +24,6 @@ class LgbTrainConfig(BaseTrainConfig):
     valid_names: list[str] | None = None
     feval: _LGBM_CustomMetricFunction | list[_LGBM_CustomMetricFunction] | None = None
     init_model: str | Path | lgb.Booster | None = None
-    feature_name: _LGBM_FeatureNameConfiguration = "auto"
-    categorical_feature: _LGBM_CategoricalFeatureConfiguration = "auto"
     keep_training_booster: bool = False
     callbacks: list[Callable[..., Any]] | None = None
 
