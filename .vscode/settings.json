@@ -16,7 +16,7 @@
     "[python]": {
       "diffEditor.ignoreTrimWhitespace": false,
       "editor.formatOnType": true,
-      "editor.defaultFormatter": "ms-python.black-formatter",
+      "editor.defaultFormatter": "charliermarsh.ruff",
       "editor.wordBasedSuggestions": "matchingDocuments",
       "editor.codeActionsOnSave": {
         "source.fixAll.ruff": "explicit",
@@ -27,7 +27,6 @@
     },
     "mypy-type-checker.args": ["--config-file=pyproject.toml"],
     "mypy-type-checker.path": ["${workspaceFolder}/.venv/bin/mypy"],
-    "black-formatter.path": ["${workspaceFolder}/.venv/bin/black"],
     "ruff.fixAll": true,
     "ruff.organizeImports": true,
     "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
