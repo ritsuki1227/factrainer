@@ -33,7 +33,7 @@ class LgbDataSlicer(BaseDatasetSlicer[LgbDataType]):
             case np.ndarray():
                 return data[index]
             case pd_DataFrame():
-                return data.iloc[index]
+                return data.iloc[index]  # type: ignore
             case dt_DataTable():
                 raise NotImplementedError
             case scipy.sparse.spmatrix():
