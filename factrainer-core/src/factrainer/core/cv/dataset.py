@@ -3,15 +3,15 @@ from typing import Self
 
 from factrainer.base.dataset import (
     BaseDataset,
-    DataIndex,
-    DataIndices,
     IndexableDataset,
+    RowIndex,
+    RowIndices,
 )
 from sklearn.model_selection._split import _BaseKFold
 
 
 class IndexedDataset[T: IndexableDataset](BaseDataset):
-    index: DataIndex
+    index: RowIndex
     data: T
 
     def __len__(self) -> int:
@@ -25,11 +25,17 @@ class IndexedDatasets[T: IndexableDataset](BaseDataset):
         return sum([len(dataset) for dataset in self.datasets])
 
     @classmethod
-    def create(cls, dataset: T, k_fold: _BaseKFold | DataIndices) -> Self:
-        raise NotImplementedError
+    def create(cls, dataset: T, k_fold: _BaseKFold | RowIndices) -> Self:
+        if isinstance(k_fold, _BaseKFold):
+            raise NotImplementedError
+        return cls(
+            datasets=[
+                IndexedDataset(index=index, data=dataset[index]) for index in k_fold
+            ]
+        )
 
     @property
-    def indices(self) -> DataIndices:
+    def indices(self) -> RowIndices:
         return [dataset.index for dataset in self.datasets]
 
 
@@ -40,9 +46,9 @@ class SplittedDataset[T: IndexableDataset](BaseDataset):
 
 
 class SplittedDatasetsIndices(BaseDataset):
-    train: DataIndices
-    val: DataIndices | None
-    test: DataIndices
+    train: RowIndices
+    val: RowIndices | None
+    test: RowIndices
 
 
 class SplittedDatasets[T: IndexableDataset](BaseDataset):
@@ -83,14 +89,11 @@ class SplittedDatasets[T: IndexableDataset](BaseDataset):
                 test_index = val_index
             else:
                 raise NotImplementedError
-            train_dataset, val_dataset, test_dataset = dataset.split(
-                train_index, val_index, test_index
-            )
             datasets.append(
                 SplittedDataset(
-                    train=IndexedDataset(index=train_index, data=train_dataset),
-                    val=IndexedDataset(index=val_index, data=val_dataset),
-                    test=IndexedDataset(index=test_index, data=test_dataset),
+                    train=IndexedDataset(index=train_index, data=dataset[train_index]),
+                    val=IndexedDataset(index=val_index, data=dataset[val_index]),
+                    test=IndexedDataset(index=test_index, data=dataset[test_index]),
                 )
             )
         return cls(datasets=datasets)

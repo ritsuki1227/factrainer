@@ -9,8 +9,10 @@ from sklearn.model_selection._split import _BaseKFold
 
 # type Prediction = npt.NDArray[Any] | scipy.sparse.spmatrix | list[scipy.sparse.spmatrix]
 type Prediction = npt.NDArray[np.number[Any]]
-type DataIndex = list[int]
-type DataIndices = Sequence[DataIndex]
+type RowIndex = list[int]
+type RowIndices = Sequence[RowIndex]
+type Rows = int | slice | RowIndex
+type RowsAndColumns = Rows | tuple[Rows, ...]
 
 
 class BaseDataset(BaseModel):
@@ -19,15 +21,13 @@ class BaseDataset(BaseModel):
 
 class IndexableDataset(BaseDataset):
     @abstractmethod
-    def get_index(
-        self, k_fold: _BaseKFold
-    ) -> Generator[tuple[DataIndex, DataIndex], None, None]:
+    def __getitem__(self, index: RowsAndColumns) -> Self:
         raise NotImplementedError
 
     @abstractmethod
-    def split(
-        self, train_index: DataIndex, val_index: DataIndex, test_index: DataIndex
-    ) -> tuple[Self, Self, Self]:
+    def get_index(
+        self, k_fold: _BaseKFold
+    ) -> Generator[tuple[RowIndex, RowIndex], None, None]:
         raise NotImplementedError
 
 
@@ -39,5 +39,5 @@ class BaseDatasetEqualityChecker[T](ABC):
 
 class BaseDatasetSlicer[T](ABC):
     @abstractmethod
-    def slice(self, data: T, index: DataIndex) -> T:
+    def slice(self, data: T, index: RowIndex) -> T:
         raise NotImplementedError

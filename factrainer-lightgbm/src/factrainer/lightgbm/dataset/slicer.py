@@ -3,7 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import scipy
-from factrainer.base.dataset import BaseDatasetSlicer, DataIndex
+from factrainer.base.dataset import BaseDatasetSlicer, RowIndex
 
 import lightgbm as lgb
 from lightgbm.compat import (  # type: ignore
@@ -24,7 +24,7 @@ from .type import (
 
 
 class LgbDataSlicer(BaseDatasetSlicer[LgbDataType]):
-    def slice(self, data: LgbDataType, index: DataIndex) -> LgbDataType:
+    def slice(self, data: LgbDataType, index: RowIndex) -> LgbDataType:
         match data:
             case str():
                 raise NotImplementedError
@@ -47,7 +47,7 @@ class LgbDataSlicer(BaseDatasetSlicer[LgbDataType]):
 
 
 class LgbLabelSlicer(BaseDatasetSlicer[LgbLabelType]):
-    def slice(self, data: LgbLabelType, index: DataIndex) -> LgbLabelType:
+    def slice(self, data: LgbLabelType, index: RowIndex) -> LgbLabelType:
         match data:
             case list():
                 raise NotImplementedError
@@ -70,30 +70,30 @@ class LgbLabelSlicer(BaseDatasetSlicer[LgbLabelType]):
 
 
 class LgbWeightSlicer(BaseDatasetSlicer[LgbWeightType]):
-    def slice(self, data: LgbWeightType, index: DataIndex) -> LgbWeightType:
+    def slice(self, data: LgbWeightType, index: RowIndex) -> LgbWeightType:
         raise NotImplementedError
 
 
 class LgbInitScoreSlicer(BaseDatasetSlicer[LgbInitScoreType]):
-    def slice(self, data: LgbInitScoreType, index: DataIndex) -> LgbInitScoreType:
+    def slice(self, data: LgbInitScoreType, index: RowIndex) -> LgbInitScoreType:
         raise NotImplementedError
 
 
 class LgbGroupSlicer(BaseDatasetSlicer[LgbGroupType]):
-    def slice(self, data: LgbGroupType, index: DataIndex) -> LgbGroupType:
+    def slice(self, data: LgbGroupType, index: RowIndex) -> LgbGroupType:
         raise NotImplementedError
 
 
 class LgbPositionSlicer(BaseDatasetSlicer[LgbPositionType]):
-    def slice(self, data: LgbPositionType, index: DataIndex) -> LgbPositionType:
+    def slice(self, data: LgbPositionType, index: RowIndex) -> LgbPositionType:
         raise NotImplementedError
 
 
 class LgbDatasetSlicer(BaseDatasetSlicer[lgb.Dataset]):
-    def __init__(self, reference: lgb.Dataset | None) -> None:
+    def __init__(self, reference: lgb.Dataset | None = None) -> None:
         self.reference = reference
 
-    def slice(self, data: lgb.Dataset, index: DataIndex) -> lgb.Dataset:
+    def slice(self, data: lgb.Dataset, index: RowIndex) -> lgb.Dataset:
         return lgb.Dataset(
             data=LgbDataSlicer().slice(data.data, index),
             label=(

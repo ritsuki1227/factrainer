@@ -6,7 +6,7 @@ from sklearn.model_selection._split import _BaseKFold
 from ..single import SingleMlModel
 from ..trait import PredictorTrait, TrainerTrait
 from .config import CvMlModelConfig
-from .dataset import IndexedDatasets, SplittedDatasets
+from .dataset import IndexedDatasets, SplittedDatasets, SplittedDatasetsIndices
 from .raw_model import CvRawModels
 
 
@@ -34,12 +34,16 @@ class CvMlModel[
         self._cv_model.train(datasets.train, datasets.test)
 
     def predict(self, dataset: T) -> Prediction:
-        datasets = IndexedDatasets.create(dataset, self._cv_indices.test)
+        datasets = IndexedDatasets.create(dataset, self.cv_indices.test)
         return self._cv_model.predict(datasets)
 
     @property
     def raw_model(self) -> CvRawModels[U]:
         return self._cv_model.raw_model
+
+    @property
+    def cv_indices(self) -> SplittedDatasetsIndices:
+        return self._cv_indices
 
     @property
     def n_jobs_train(self) -> int | None:
