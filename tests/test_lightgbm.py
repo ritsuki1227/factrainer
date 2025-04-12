@@ -8,7 +8,7 @@ from sklearn.model_selection import KFold
 
 def test_cv_model() -> None:
     data = fetch_california_housing()
-    dataset = LgbDataset(dataset=lgb.Dataset(data.data, label=data.target))  # type: ignore
+    dataset = LgbDataset(dataset=lgb.Dataset(data.data, label=data.target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(params={"objective": "regression"})
     )
@@ -17,4 +17,4 @@ def test_cv_model() -> None:
 
     model.train(dataset)
     y_pred = model.predict(dataset)
-    r2_score(data.target, y_pred)  # type: ignore
+    r2_score(data.target, y_pred)

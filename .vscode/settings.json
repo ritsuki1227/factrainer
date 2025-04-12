@@ -1,7 +1,7 @@
 {
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
     "python.analysis.completeFunctionParens": true,
-    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.typeCheckingMode": "off",
     "python.analysis.diagnosticMode": "workspace",
     "python.analysis.include": ["${workspaceFolder}/src"],
     "python.languageServer": "Pylance",
