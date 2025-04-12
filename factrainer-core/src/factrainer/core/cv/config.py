@@ -65,10 +65,12 @@ class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
     def predict(
         self, dataset: IndexedDatasets[T], model: CvRawModels[U], config: W | None
     ) -> Prediction:
-        for i, (_model, _dataset) in enumerate(zip(model.models, dataset.datasets)):
-            y_pred = self._predictor.predict(_dataset.data, _model, config)
-            if i == 0:
-                y_oof_pred = self._init_pred(len(dataset), y_pred)
+        y_preds = Parallel(n_jobs=self.n_jobs)(
+            delayed(self._predictor.predict)(_dataset.data, _model, config)
+            for _model, _dataset in zip(model.models, dataset.datasets)
+        )
+        y_oof_pred = self._init_pred(len(dataset), y_preds[0])
+        for y_pred, _dataset in zip(y_preds, dataset.datasets):
             y_oof_pred[_dataset.index] = y_pred
         return y_oof_pred
 
