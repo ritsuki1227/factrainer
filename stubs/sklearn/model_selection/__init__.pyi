@@ -1,7 +1,7 @@
 from typing import Any
 
 import numpy as np
-from numpy import typing as npt
+import numpy.typing as npt
 
 from ._split import _BaseKFold
 

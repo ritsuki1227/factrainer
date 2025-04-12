@@ -1,3 +1,5 @@
+import time
+
 import lightgbm as lgb
 from factrainer.core import CvMlModel, SingleMlModel
 from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
@@ -7,13 +9,14 @@ from sklearn.utils._bunch import Bunch
 
 
 def test_cv_model(_california_housing_data: Bunch) -> None:
+    t0 = time.time()
     dataset = LgbDataset(
         dataset=lgb.Dataset(
             _california_housing_data.data, label=_california_housing_data.target
         )
     )
     config = LgbModelConfig.create(
-        train_config=LgbTrainConfig(params={"objective": "regression"})
+        train_config=LgbTrainConfig(params={"objective": "regression"}),
     )
     k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
     model = CvMlModel(config, k_fold)
@@ -23,6 +26,32 @@ def test_cv_model(_california_housing_data: Bunch) -> None:
     metric = r2_score(_california_housing_data.target, y_pred)
 
     assert (metric > 0.8) and (metric < 0.85)
+    print("==========")
+    print(time.time() - t0)
+    print("==========")
+
+
+def test_cv_model_parallel(_california_housing_data: Bunch) -> None:
+    t0 = time.time()
+    dataset = LgbDataset(
+        dataset=lgb.Dataset(
+            _california_housing_data.data, label=_california_housing_data.target
+        )
+    )
+    config = LgbModelConfig.create(
+        train_config=LgbTrainConfig(params={"objective": "regression"}),
+    )
+    k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
+    model = CvMlModel(config, k_fold, n_jobs_train=4)
+
+    model.train(dataset)
+    y_pred = model.predict(dataset)
+    metric = r2_score(_california_housing_data.target, y_pred)
+
+    assert (metric > 0.8) and (metric < 0.85)
+    print("==========")
+    print(time.time() - t0)
+    print("==========")
 
 
 def test_single_model(_california_housing_data: Bunch) -> None:

@@ -399,6 +399,7 @@ xgboost = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "joblib-stubs" },
     { name = "jupyterlab" },
     { name = "mypy" },
     { name = "pytest" },
@@ -420,6 +421,7 @@ requires-dist = [
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "joblib-stubs", specifier = ">=1.4.2.5.20240918" },
     { name = "jupyterlab", specifier = ">=4.4.0" },
     { name = "mypy", specifier = ">=1.15.0" },
     { name = "pytest", specifier = ">=8.3.5" },
@@ -717,6 +719,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/64/33/60135848598c076ce4b231e1b1895170f45fbcaeaa2c9d5e38b04db70c35/joblib-1.4.2.tar.gz", hash = "sha256:2382c5816b2636fbd20a09e0f4e9dad4736765fdfb7dca582943b9c1366b3f0e", size = 2116621 }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/91/29/df4b9b42f2be0b623cbd5e2140cafcaa2bef0759a00b7b70104dcfe2fb51/joblib-1.4.2-py3-none-any.whl", hash = "sha256:06d478d5674cbc267e7496a410ee875abd68e4340feff4490bcb7afb88060ae6", size = 301817 },
+]
+
+[[package]]
+name = "joblib-stubs"
+version = "1.4.2.5.20240918"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "typing-extensions" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e4/80/2f7a20ecb08aa6f7ba5b981cf91bcc61ad7fc78751d8265716645a8f0bc0/joblib_stubs-1.4.2.5.20240918.tar.gz", hash = "sha256:7434591e8144c79d0070153816c5cb3861a622069847300ca1f3e0d844840f62", size = 19777 }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5e/50/6331457d5d461af09cb57ecaa6d2b856564735506c15357a4a4f6e68c238/joblib_stubs-1.4.2.5.20240918-py3-none-any.whl", hash = "sha256:84df5e7b22955da9c9e4327b995ce6efb6b1d1c6e9e5b7b25eefb6516a554965", size = 35930 },
 ]
 
 [[package]]

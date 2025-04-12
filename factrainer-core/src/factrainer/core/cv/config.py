@@ -11,6 +11,7 @@ from factrainer.base.config import (
 )
 from factrainer.base.dataset import IndexableDataset, Prediction
 from factrainer.base.raw_model import RawModel
+from joblib import Parallel, delayed
 
 from .dataset import IndexedDatasets
 from .raw_model import CvRawModels
@@ -31,15 +32,16 @@ class CvLearner[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
         val_dataset: IndexedDatasets[T] | None,
         config: V,
     ) -> CvRawModels[U]:
-        models = []
         if val_dataset is not None:
-            for train, val in zip(train_dataset.datasets, val_dataset.datasets):
-                model = self._learner.train(train.data, val.data, config)
-                models.append(model)
+            models = Parallel(n_jobs=self.n_jobs)(
+                delayed(self._learner.train)(train.data, val.data, config)
+                for train, val in zip(train_dataset.datasets, val_dataset.datasets)
+            )
         else:
-            for train in train_dataset.datasets:
-                model = self._learner.train(train.data, None, config)
-                models.append(model)
+            models = Parallel(n_jobs=self.n_jobs)(
+                delayed(self._learner.train)(train.data, None, config)
+                for train in train_dataset.datasets
+            )
         return CvRawModels(models=models)
 
     @property

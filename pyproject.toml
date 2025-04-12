@@ -25,6 +25,7 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
+    "joblib-stubs>=1.4.2.5.20240918",
     "jupyterlab>=4.4.0",
     "mypy>=1.15.0",
     "pytest>=8.3.5",
