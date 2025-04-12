@@ -35,4 +35,4 @@ jobs:
           uv run mypy
           uv run pytest
           uv run ruff check
-          uv run format --check
+          uv run ruff format --check
