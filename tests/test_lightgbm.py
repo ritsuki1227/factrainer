@@ -1,16 +1,9 @@
 import lightgbm as lgb
-import pytest
 from factrainer.core import CvMlModel, SingleMlModel
 from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
-from sklearn.datasets import fetch_california_housing
 from sklearn.metrics import r2_score
 from sklearn.model_selection import KFold, train_test_split
 from sklearn.utils._bunch import Bunch
-
-
-@pytest.fixture
-def _california_housing_data() -> Bunch:
-    return fetch_california_housing()
 
 
 def test_cv_model(_california_housing_data: Bunch) -> None:
