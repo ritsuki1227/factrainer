@@ -41,8 +41,8 @@ jobs:
 
       - name: Configure Git user
         run: |
-          git config user.name "ritsuki1227"
-          git config user.email "ritsuki1227@gmail.com"
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
 
       - name: Bump version in all pyproject.toml files
         run: |
