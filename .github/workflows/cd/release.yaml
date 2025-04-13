@@ -1,0 +1,81 @@
+name: CD (Release)
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    branches: ["release/**/*"]
+    types:
+      - completed
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  approval:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    environment: release-approval
+    steps:
+      - name: Approval check
+        run: echo "Release approved!"
+
+  release:
+    needs: approval
+    runs-on: ubuntu-latest
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 0
+
+      - name: Extract version from branch name
+        id: extract_version
+        run: |
+          BRANCH="${{ github.event.workflow_run.head_branch }}"
+          VERSION="${BRANCH#release/}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: false
+
+      - name: BUild the project
+        run: uv build --all-packages
+
+      - name: Configure Git user
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Create & push Git tag
+        run: |
+          git tag -a "v${{ steps.extract_version.outputs.version }}" -m "AUTO COMMIT BY GITHUB ACTIONS: Release v${{ steps.extract_version.outputs.version }}"
+          git push origin "refs/tags/v${{ steps.extract_version.outputs.version }}"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: "v${{ steps.extract_version.outputs.version }}"
+          name: "Release v${{ steps.extract_version.outputs.version }}"
+          body: "This is an automated release created by GitHub Actions. If detailed information is needed, it will be added manually later. Please wait for updates."
+          files: dist/*.whl dist/*.tar.gz
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist/
+          verbose: true
+          print-hash: true
+
+      - name: Create Pull Request to main
+        run: |
+          gh pr create --base main --head "${{ github.event.workflow_run.head_branch }}" \
+            --title "Release v${{ steps.extract_version.outputs.version }}" \
+            --body "Automatically generated release PR (Version: v${{ steps.extract_version.outputs.version }})"

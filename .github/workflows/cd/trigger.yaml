@@ -1,0 +1,61 @@
+name: CD (Checkout Release Branch)
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: "Commit SHA to release (latest from main branch if not specified)"
+        required: false
+        default: ""
+        type: string
+      version:
+        description: "Semantic version to release (e.g. 0.1.0)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  create-release-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target commit
+        uses: actions/checkout@v4
+        with:
+          # Checkout the specified commit SHA if provided, otherwise checkout main branch
+          ref: ${{ inputs.commit || 'main' }}
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            **/pyproject.toml
+            **/uv.lock
+            **/requirements*.txt
+
+      - name: Install the project
+        run: uv sync --all-extras --locked --group dev
+
+      - name: Configure Git user
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+      - name: Bump version in all pyproject.toml files
+        run: |
+          find . -type d -name ".venv" -prune -o -name "pyproject.toml" -type f -exec sed -i -E 's/^version\s*=.*/version = \"${{ inputs.version }}\"/' {} \;
+          uv lock
+
+      - name: Commit version change
+        run: |
+          git checkout -b release/${{ inputs.version }}
+          git add .
+          git diff --staged --quiet || git commit -m "AUTO COMMIT BY GITHUB ACTIONS: Bump version to ${{ inputs.version }}"
+
+      - name: Push release branch
+        run: |
+          # Push the created release branch to remote
+          git push origin HEAD:refs/heads/release/${{ inputs.version }}

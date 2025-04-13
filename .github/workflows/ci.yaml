@@ -2,10 +2,16 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, "release/**/*"]
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to checkout'
+        required: false
+        default: 'main'
+        type: string
 
 jobs:
   test:
@@ -14,10 +20,11 @@ jobs:
       matrix:
         python-version:
           - "3.12"
-          # - "3.13"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.branch || github.ref }}
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
