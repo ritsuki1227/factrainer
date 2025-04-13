@@ -81,6 +81,8 @@ jobs:
           print-hash: true
 
       - name: Create Pull Request to main
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           gh pr create --base main --head "${{ github.event.workflow_run.head_branch }}" \
             --title "Release v${{ steps.extract_version.outputs.version }}" \
