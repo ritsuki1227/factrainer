@@ -31,7 +31,7 @@ jobs:
       - name: Use App token
         uses: actions/create-github-app-token@v1
         with:
-          app-id: ${{ vars.FACTRAINER_GITHUB_APP_CLIENT_ID }}
+          app-id: ${{ vars.FACTRAINER_GITHUB_APP_ID }}
           private-key: ${{ secrets.FACTRAINER_GITHUB_APP_PRIVATE_KEY }}
 
       - name: Checkout release branch
