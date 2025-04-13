@@ -51,8 +51,8 @@ jobs:
 
       - name: Configure Git user
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "ritsuki1227"
+          git config user.email "ritsuki1227@gmail.com"
 
       - name: Create & push Git tag
         run: |
