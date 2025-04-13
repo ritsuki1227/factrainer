@@ -24,9 +24,6 @@ jobs:
     needs: approval
     runs-on: ubuntu-latest
 
-    env:
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     steps:
       - name: Generate App token
         id: generate-token
@@ -40,6 +37,7 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Extract version from branch name
         id: extract_version
@@ -62,15 +60,11 @@ jobs:
           git config user.email "github-actions@github.com"
 
       - name: Create & push Git tag
-        env:
-          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           git tag -a "v${{ steps.extract_version.outputs.version }}" -m "AUTO COMMIT BY GITHUB ACTIONS: Release v${{ steps.extract_version.outputs.version }}"
           git push origin "refs/tags/v${{ steps.extract_version.outputs.version }}"
 
       - name: Create GitHub Release
-        env:
-          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         uses: softprops/action-gh-release@v2
         with:
           tag_name: "v${{ steps.extract_version.outputs.version }}"
@@ -86,8 +80,6 @@ jobs:
           print-hash: true
 
       - name: Create Pull Request to main
-        env:
-          GH_TOKEN: ${{ steps.generate-token.outputs.token }}
         run: |
           gh pr create --base main --head "${{ github.event.workflow_run.head_branch }}" \
             --title "Release v${{ steps.extract_version.outputs.version }}" \
