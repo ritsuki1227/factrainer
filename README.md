@@ -10,7 +10,7 @@ Modern ML frameworks have useful cross-validation functions, but they come with 
   - `cross_val_score`: cannot provide out-of-fold (OOF) predictions for each sample.
   - `cross_val_predict`: cannot retain the trained model from each fold (only returns predictions).
 - `LightGBM`:
-  - `lgb.cv`: does not supprot parallelized training of cv.
+  - `lgb.cv`: does not support parallelized training of cv.
 
 These gaps make it cumbersome to get both OOF predictions and reusable trained models in a single workflow.
 
