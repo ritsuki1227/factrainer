@@ -3,14 +3,14 @@ from factrainer.base.dataset import IndexableDataset, Prediction
 from factrainer.base.raw_model import RawModel
 from sklearn.model_selection._split import _BaseKFold
 
-from ..single import SingleMlModel
+from ..single import SingleModelContainer
 from ..trait import PredictorTrait, TrainerTrait
 from .config import CvMlModelConfig
 from .dataset import IndexedDatasets, SplittedDatasets, SplittedDatasetsIndices
 from .raw_model import CvRawModels
 
 
-class CvMlModel[
+class CvModelContainer[
     T: IndexableDataset,
     U: RawModel,
     V: BaseTrainConfig,
@@ -23,7 +23,7 @@ class CvMlModel[
         n_jobs_train: int | None = None,
         n_jobs_predict: int | None = None,
     ) -> None:
-        self._cv_model = SingleMlModel(
+        self._cv_model = SingleModelContainer(
             CvMlModelConfig.from_config(model_config, n_jobs_train, n_jobs_predict)
         )
         self._k_fold = k_fold

@@ -12,7 +12,7 @@ from .trait import (
 )
 
 
-class SingleMlModel[
+class SingleModelContainer[
     T: BaseDataset,
     U: RawModel,
     V: BaseTrainConfig,

@@ -1,7 +1,7 @@
-from .cv.cv import CvMlModel
-from .single import SingleMlModel
+from .cv.cv import CvModelContainer
+from .single import SingleModelContainer
 
 __all__ = [
-    "CvMlModel",
-    "SingleMlModel",
+    "CvModelContainer",
+    "SingleModelContainer",
 ]

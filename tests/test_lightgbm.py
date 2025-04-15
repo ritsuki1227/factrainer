@@ -1,5 +1,5 @@
 import lightgbm as lgb
-from factrainer.core import CvMlModel, SingleMlModel
+from factrainer.core import CvModelContainer, SingleModelContainer
 from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
 from sklearn.metrics import r2_score
 from sklearn.model_selection import KFold, train_test_split
@@ -19,7 +19,7 @@ def test_cv_model(_california_housing_data: Bunch) -> None:
         ),
     )
     k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
-    model = CvMlModel(config, k_fold)
+    model = CvModelContainer(config, k_fold)
     model.train(dataset)
     y_pred = model.predict(dataset)
     metric = r2_score(_california_housing_data.target, y_pred)
@@ -40,7 +40,7 @@ def test_cv_model_parallel_pred(_california_housing_data: Bunch) -> None:
         ),
     )
     k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
-    model = CvMlModel(config, k_fold, n_jobs_train=4, n_jobs_predict=4)
+    model = CvModelContainer(config, k_fold, n_jobs_train=4, n_jobs_predict=4)
     model.train(dataset)
     y_pred = model.predict(dataset)
     metric = r2_score(_california_housing_data.target, y_pred)
@@ -64,7 +64,7 @@ def test_single_model(_california_housing_data: Bunch) -> None:
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
     )
-    model = SingleMlModel(config)
+    model = SingleModelContainer(config)
 
     model.train(train_dataset, val_dataset)
     y_pred = model.predict(test_dataset)
