@@ -1,7 +1,7 @@
 # factrainer
 
 ![CI](https://github.com/ritsuki1227/factrainer/actions/workflows/ci.yaml/badge.svg)
-[![PyPI](https://img.shields.io/pypi/v/factrainer.svg)](https://pypi.org/project/factrainer/)
+[![PyPI](https://img.shields.io/pypi/v/factrainer.svg)](https://pypi.python.org/project/factrainer)
 ![Python](https://img.shields.io/pypi/pyversions/factrainer.svg)
 ![License](https://img.shields.io/github/license/ritsuki1227/factrainer.svg)
 ![Stars](https://img.shields.io/github/stars/ritsuki1227/factrainer.svg?style=social)
