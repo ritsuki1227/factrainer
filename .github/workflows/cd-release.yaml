@@ -53,17 +53,24 @@ jobs:
 
       - name: Build the project
         run: uv build --all-packages
-      
+
+      - name: Sign the dists with Sigstore
+        uses: sigstore/gh-action-sigstore-python@v3.0.0
+        with:
+          inputs: >-
+            ./dist/*.tar.gz
+            ./dist/*.whl
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: dist-files
           path: dist/
           retention-days: 1
-    
+
       - name: Save version
         run: echo "${{ steps.extract_version.outputs.version }}" > version.txt
-      
+
       - name: Upload version info
         uses: actions/upload-artifact@v4
         with:
@@ -106,12 +113,12 @@ jobs:
           ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
           token: ${{ steps.generate-token.outputs.token }}
-        
+
       - name: Download version info
         uses: actions/download-artifact@v4
         with:
           name: version-info
-        
+
       - name: Set version
         id: set_version
         run: echo "version=$(cat version.txt)" >> $GITHUB_OUTPUT
@@ -134,11 +141,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: version-info
-        
+
       - name: Set version
         id: set_version
         run: echo "version=$(cat version.txt)" >> $GITHUB_OUTPUT
-      
+
       - name: Download build artifacts
         uses: actions/download-artifact@v4
         with:
@@ -187,12 +194,12 @@ jobs:
           ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
           token: ${{ steps.generate-token.outputs.token }}
-        
+
       - name: Download version info
         uses: actions/download-artifact@v4
         with:
           name: version-info
-        
+
       - name: Set version
         id: set_version
         run: echo "version=$(cat version.txt)" >> $GITHUB_OUTPUT
