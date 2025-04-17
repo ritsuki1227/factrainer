@@ -47,7 +47,5 @@ jobs:
           uv run ruff format --check
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         if: github.ref == 'refs/heads/main'
-        with:
-          fail_ci_if_error: false
