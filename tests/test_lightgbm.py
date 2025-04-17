@@ -27,7 +27,7 @@ def test_cv_model(_california_housing_data: Bunch) -> None:
     assert (metric > 0.8) and (metric < 0.85)
 
 
-def test_cv_model_parallel_pred(_california_housing_data: Bunch) -> None:
+def test_cv_model_parallel(_california_housing_data: Bunch) -> None:
     dataset = LgbDataset(
         dataset=lgb.Dataset(
             _california_housing_data.data, label=_california_housing_data.target

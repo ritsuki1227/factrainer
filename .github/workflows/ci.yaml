@@ -13,6 +13,9 @@ on:
         default: "main"
         type: string
 
+permissions:
+  id-token: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -49,3 +52,5 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         if: github.ref == 'refs/heads/main'
+        with:
+          use_oidc: true
