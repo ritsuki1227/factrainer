@@ -84,3 +84,12 @@ strict = true
 plugins = "numpy.typing.mypy_plugin"
 namespace_packages = true
 explicit_package_bases = true
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
+markers = [
+    "sklearn: integration & unit test for sklearn plugin.",
+    "lightgbm: integration & unit test for lightgbm plugin.",
+    "xgboost: integration & unit test for xgboost plugin.",
+    "catboost: integration & unit test for catboost plugin.",
+]
