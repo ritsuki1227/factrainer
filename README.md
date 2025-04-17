@@ -1,6 +1,7 @@
 # factrainer
 
 ![CI](https://github.com/ritsuki1227/factrainer/actions/workflows/ci.yaml/badge.svg)
+[![codecov](https://codecov.io/gh/ritsuki1227/factrainer/branch/main/graph/badge.svg)](https://codecov.io/gh/ritsuki1227/factrainer)
 [![PyPI](https://img.shields.io/pypi/v/factrainer.svg)](https://pypi.python.org/project/factrainer)
 [![image](https://img.shields.io/pypi/pyversions/factrainer.svg)](https://pypi.python.org/pypi/factrainer)
 ![License](https://img.shields.io/github/license/ritsuki1227/factrainer.svg)

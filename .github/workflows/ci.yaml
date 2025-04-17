@@ -42,6 +42,12 @@ jobs:
       - name: Run tests
         run: |
           uv run mypy
-          uv run pytest -v --cov
+          uv run pytest -v --cov --cov-report=xml
           uv run ruff check
           uv run ruff format --check
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          fail_ci_if_error: false
