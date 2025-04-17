@@ -30,5 +30,4 @@
     "ruff.fixAll": true,
     "ruff.organizeImports": true,
     "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
-    "python.testing.pytestArgs": ["tests"]
 }

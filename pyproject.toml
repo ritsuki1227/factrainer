@@ -87,6 +87,7 @@ explicit_package_bases = true
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
+consider_namespace_packages = true
 markers = [
     "sklearn: integration & unit test for sklearn plugin.",
     "lightgbm: integration & unit test for lightgbm plugin.",
