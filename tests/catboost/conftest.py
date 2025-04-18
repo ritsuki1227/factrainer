@@ -11,4 +11,4 @@ def pytest_collection_modifyitems(
 ) -> None:
     for item in items:
         if THIS_DIR in Path(item.fspath).parents:
-            item.add_marker(pytest.mark.lightgbm)
+            item.add_marker(pytest.mark.catboost)
