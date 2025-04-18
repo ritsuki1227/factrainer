@@ -29,6 +29,7 @@ jobs:
       - name: Install libomp on macOS
         if: matrix.os == 'macos-latest'
         run: brew update && brew install libomp
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -64,7 +65,7 @@ jobs:
   test-package:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 3
+      max-parallel: 2
       matrix:
         package: [sklearn, lightgbm, xgboost, catboost]
         python-version: ["3.12", "3.13"]
