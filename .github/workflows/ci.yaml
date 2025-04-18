@@ -61,6 +61,7 @@ jobs:
   test-package:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 3
       matrix:
         package: [sklearn, lightgbm, xgboost, catboost]
         python-version: ["3.12", "3.13"]
