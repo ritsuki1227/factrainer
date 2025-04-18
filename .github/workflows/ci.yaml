@@ -84,7 +84,7 @@ jobs:
         run: uv sync --extra sklearn --locked --group dev
 
       - name: Run tests
-        run: uv run pytest -v -m sklearn
+        run: uv run pytest -v tests/sklearn
 
   test-lightgbm:
     runs-on: ubuntu-latest
@@ -113,7 +113,7 @@ jobs:
         run: uv sync --extra lightgbm --locked --group dev
 
       - name: Run tests
-        run: uv run pytest -v -m lightgbm
+        run: uv run pytest -v tests/lightgbm
 
   test-xgboost:
     runs-on: ubuntu-latest
@@ -142,7 +142,7 @@ jobs:
         run: uv sync --extra xgboost --locked --group dev
 
       - name: Run tests
-        run: uv run pytest -v -m xgboost
+        run: uv run pytest -v tests/xgboost
 
   test-catboost:
     runs-on: ubuntu-latest
@@ -170,4 +170,4 @@ jobs:
         run: uv sync --extra catboost --locked --group dev
 
       - name: Run tests
-        run: uv run pytest -v -m catboost
+        run: uv run pytest -v tests/catboost
