@@ -1,2 +1,2 @@
-def test_placeholder() -> None:
+def test_foo() -> None:
     import xgboost  # noqa: F401
