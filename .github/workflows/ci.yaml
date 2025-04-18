@@ -26,6 +26,9 @@ jobs:
         python-version:
           - "3.12"
     steps:
+      - name: Install libomp on macOS
+        if: matrix.os == 'macos-latest'
+        run: brew update && brew install libomp
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
