@@ -45,7 +45,7 @@ jobs:
             **/requirements*.txt
 
       - name: Install the project
-        run: uv sync --all-extras --locked --group dev
+        run: uv sync --all-extras --locked
 
       - name: Configure Git user
         run: |

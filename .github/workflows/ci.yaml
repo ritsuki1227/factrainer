@@ -57,13 +57,15 @@ jobs:
           use_oidc: true
           fail_ci_if_error: true
 
-  test-sklearn:
+  test-package:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version:
-          - "3.12"
-          - "3.13"
+        package: [sklearn, lightgbm, xgboost, catboost]
+        python-version: ["3.12", "3.13"]
+        exclude:
+          - package: catboost
+            python-version: "3.13"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -81,93 +83,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install the project
-        run: uv sync --extra sklearn --locked --group dev
+        run: uv sync --extra ${{ matrix.package }} --locked --group dev
 
       - name: Run tests
-        run: uv run pytest -v tests/sklearn
-
-  test-lightgbm:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version:
-          - "3.12"
-          - "3.13"
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.branch || github.ref }}
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-          cache-dependency-glob: |
-            **/pyproject.toml
-            **/uv.lock
-            **/requirements*.txt
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install the project
-        run: uv sync --extra lightgbm --locked --group dev
-
-      - name: Run tests
-        run: uv run pytest -v tests/lightgbm
-
-  test-xgboost:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version:
-          - "3.12"
-          - "3.13"
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.branch || github.ref }}
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-          cache-dependency-glob: |
-            **/pyproject.toml
-            **/uv.lock
-            **/requirements*.txt
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install the project
-        run: uv sync --extra xgboost --locked --group dev
-
-      - name: Run tests
-        run: uv run pytest -v tests/xgboost
-
-  test-catboost:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version:
-          - "3.12"
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.branch || github.ref }}
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v5
-        with:
-          enable-cache: true
-          cache-dependency-glob: |
-            **/pyproject.toml
-            **/uv.lock
-            **/requirements*.txt
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install the project
-        run: uv sync --extra catboost --locked --group dev
-
-      - name: Run tests
-        run: uv run pytest -v tests/catboost
+        run: uv run pytest -v tests/${{ matrix.package }}
