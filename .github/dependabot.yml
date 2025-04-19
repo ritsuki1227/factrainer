@@ -6,6 +6,18 @@
 version: 2
 updates:
   - package-ecosystem: "uv" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    directories: 
+      - "/"
+      - "/factrainer-base"
+      - "/factrainer-catboost"
+      - "/factrainer-core"
+      - "/factrainer-lightgbm"
+      - "/factrainer-sklearn"
+      - "/factrainer-xgboost"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: "increase"
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "weekly"
