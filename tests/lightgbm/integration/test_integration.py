@@ -74,7 +74,7 @@ def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     model.train(dataset)
     y_pred = model.predict(dataset)
     metric = accuracy_score(target, y_pred > 0.5)
-    
+
     assert (metric > 0.8) and (metric < 0.85)
 
 
