@@ -1,6 +1,10 @@
+from typing import cast
+
 import lightgbm as lgb
 import numpy as np
+import pandas as pd
 from factrainer.lightgbm import LgbDataset
+from pandas.testing import assert_frame_equal
 
 
 class TestLgbDatasetGetitem:
@@ -20,7 +24,25 @@ class TestLgbDatasetGetitem:
         actual = sut[[2, 0]]
         assert actual == expected
 
-    # def test_pandas(self) -> None:
-    #     data = fetch_openml(name="titanic", version=1, as_frame=True)
-    #     df = data.frame
-    #     # breakpoint()
+    def test_pandas(self) -> None:
+        sut = LgbDataset(
+            dataset=lgb.Dataset(
+                data=pd.DataFrame(
+                    {
+                        "a": [1, 2, 3],
+                        "b": ["4", pd.NA, "6"],
+                    }
+                )
+            )
+        )
+        expected = pd.DataFrame(
+            {
+                "a": [2, 1],
+                "b": [pd.NA, "4"],
+            },
+            index=[1, 0],
+        )
+
+        actual = sut[[1, 0]]
+
+        assert_frame_equal(cast(pd.DataFrame, actual.dataset.data), expected)
