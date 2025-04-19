@@ -20,7 +20,9 @@ classifiers = [
 ]
 license = "MIT"
 license-files = ["LICENSE"]
-dependencies = ["factrainer-core"]
+dependencies = [
+    "factrainer-core",
+]
 
 [project.optional-dependencies]
 sklearn = ["factrainer-sklearn"]
@@ -57,6 +59,7 @@ dev = [
     "line-profiler>=4.2.0",
     "pytest-cov>=6.1.1",
     "pytest-rerunfailures>=15.0",
+    "pandas-stubs>=2.2.3.250308",
 ]
 
 [tool.uv.workspace]

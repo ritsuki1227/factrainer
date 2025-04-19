@@ -178,7 +178,17 @@ class LgbPositionEqualityChecker(BaseDatasetEqualityChecker[_LGBM_PositionType |
     def check(
         self, left: _LGBM_PositionType | None, right: _LGBM_PositionType | None
     ) -> bool:
-        return left == right
+        match left:
+            case np.ndarray():
+                return (
+                    np.array_equal(left, right) if type(right) is np.ndarray else False
+                )
+            case pd_Series():
+                return left.equals(right) if type(right) is pd_Series else False
+            case None:
+                return right is None
+            case _:
+                raise TypeError("Invalid type")
 
 
 class LgbDatasetEqualityChecker(BaseDatasetEqualityChecker[lgb.Dataset | None]):

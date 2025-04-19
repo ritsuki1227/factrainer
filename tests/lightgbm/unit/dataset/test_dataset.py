@@ -4,7 +4,7 @@ from factrainer.lightgbm import LgbDataset
 
 
 class TestLgbDatasetGetitem:
-    def test_row(self) -> None:
+    def test_single_row(self) -> None:
         sut = LgbDataset(dataset=lgb.Dataset(data=np.array([[1, 2, 3], [4, 5, 6]])))
         expected = LgbDataset(dataset=lgb.Dataset(data=np.array([[1, 2, 3]])))
         actual = sut[0]
@@ -19,3 +19,8 @@ class TestLgbDatasetGetitem:
         )
         actual = sut[[2, 0]]
         assert actual == expected
+
+    # def test_pandas(self) -> None:
+    #     data = fetch_openml(name="titanic", version=1, as_frame=True)
+    #     df = data.frame
+    #     # breakpoint()
