@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.12, <3.14"
 
 [manifest]
@@ -410,7 +411,7 @@ wheels = [
 
 [[package]]
 name = "factrainer"
-version = "0.1.14"
+version = "0.1.15"
 source = { editable = "." }
 dependencies = [
     { name = "factrainer-core" },
@@ -463,6 +464,7 @@ requires-dist = [
     { name = "factrainer-xgboost", marker = "extra == 'all'", editable = "factrainer-xgboost" },
     { name = "factrainer-xgboost", marker = "extra == 'xgboost'", editable = "factrainer-xgboost" },
 ]
+provides-extras = ["sklearn", "lightgbm", "xgboost", "catboost", "all"]
 
 [package.metadata.requires-dev]
 dev = [
@@ -481,7 +483,7 @@ dev = [
 
 [[package]]
 name = "factrainer-base"
-version = "0.1.14"
+version = "0.1.15"
 source = { editable = "factrainer-base" }
 dependencies = [
     { name = "pydantic" },
@@ -496,7 +498,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-catboost"
-version = "0.1.14"
+version = "0.1.15"
 source = { editable = "factrainer-catboost" }
 dependencies = [
     { name = "catboost" },
@@ -511,7 +513,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-core"
-version = "0.1.14"
+version = "0.1.15"
 source = { editable = "factrainer-core" }
 dependencies = [
     { name = "factrainer-base" },
@@ -522,7 +524,7 @@ requires-dist = [{ name = "factrainer-base", editable = "factrainer-base" }]
 
 [[package]]
 name = "factrainer-lightgbm"
-version = "0.1.14"
+version = "0.1.15"
 source = { editable = "factrainer-lightgbm" }
 dependencies = [
     { name = "factrainer-base" },
@@ -539,7 +541,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-sklearn"
-version = "0.1.14"
+version = "0.1.15"
 source = { editable = "factrainer-sklearn" }
 dependencies = [
     { name = "factrainer-base" },
@@ -550,7 +552,7 @@ requires-dist = [{ name = "factrainer-base", editable = "factrainer-base" }]
 
 [[package]]
 name = "factrainer-xgboost"
-version = "0.1.14"
+version = "0.1.15"
 source = { editable = "factrainer-xgboost" }
 dependencies = [
     { name = "factrainer-base" },
@@ -684,7 +686,7 @@ name = "ipykernel"
 version = "6.29.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "appnope", marker = "platform_system == 'Darwin'" },
+    { name = "appnope", marker = "sys_platform == 'darwin'" },
     { name = "comm" },
     { name = "debugpy" },
     { name = "ipython" },
@@ -2231,7 +2233,7 @@ version = "3.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
-    { name = "nvidia-nccl-cu12", marker = "platform_machine != 'aarch64' and platform_system == 'Linux'" },
+    { name = "nvidia-nccl-cu12", marker = "platform_machine != 'aarch64' and sys_platform == 'linux'" },
     { name = "scipy" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/82/18/f58f9dcbcca811b30be945fd7f890f87a0ee822f7316e2ddd7a3e3056f08/xgboost-3.0.0.tar.gz", hash = "sha256:45e95416df6f6f01d9a62e60cf09fc57e5ee34697f3858337c796fac9ce3b9ed", size = 1156620 }
