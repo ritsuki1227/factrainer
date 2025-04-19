@@ -1,4 +1,5 @@
 import lightgbm as lgb
+import pytest
 from factrainer.core import CvModelContainer, SingleModelContainer
 from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
 from sklearn.metrics import r2_score
@@ -6,6 +7,7 @@ from sklearn.model_selection import KFold, train_test_split
 from sklearn.utils._bunch import Bunch
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2, only_rerun=["HTTPError"])
 def test_cv_model(_california_housing_data: Bunch) -> None:
     dataset = LgbDataset(
         dataset=lgb.Dataset(
@@ -27,6 +29,7 @@ def test_cv_model(_california_housing_data: Bunch) -> None:
     assert (metric > 0.8) and (metric < 0.85)
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2, only_rerun=["HTTPError"])
 def test_cv_model_parallel(_california_housing_data: Bunch) -> None:
     dataset = LgbDataset(
         dataset=lgb.Dataset(
@@ -48,6 +51,7 @@ def test_cv_model_parallel(_california_housing_data: Bunch) -> None:
     assert (metric > 0.8) and (metric < 0.85)
 
 
+@pytest.mark.flaky(reruns=3, reruns_delay=2, only_rerun=["HTTPError"])
 def test_single_model(_california_housing_data: Bunch) -> None:
     train_X, test_X, train_y, test_y = train_test_split(
         _california_housing_data.data,
