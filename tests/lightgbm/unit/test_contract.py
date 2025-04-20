@@ -59,7 +59,7 @@ def test_train_signature() -> None:
             Parameter(
                 "callbacks",
                 Parameter.POSITIONAL_OR_KEYWORD,
-                annotation=Optional[List[Callable[..., Any]]],
+                annotation=Optional[List[Callable]],  # type: ignore
                 default=None,
             ),
         ],
