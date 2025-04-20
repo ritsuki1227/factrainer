@@ -10,6 +10,7 @@ from factrainer.base.config import (
     MlModelConfig,
 )
 from factrainer.base.dataset import Prediction
+from pydantic import ConfigDict
 
 import lightgbm as lgb
 from lightgbm.engine import _LGBM_CustomMetricFunction
@@ -28,7 +29,15 @@ class LgbTrainConfig(BaseTrainConfig):
     callbacks: list[Callable[..., Any]] | None = None
 
 
-class LgbPredictConfig(BasePredictConfig): ...
+class LgbPredictConfig(BasePredictConfig):
+    start_iteration: int = 0
+    num_iteration: int | None = None
+    raw_score: bool = False
+    pred_leaf: bool = False
+    pred_contrib: bool = False
+    data_has_header: bool = False
+    validate_features: bool = False
+    model_config = ConfigDict(arbitrary_types_allowed=True, extra="allow")
 
 
 class LgbLearner(BaseLearner[LgbDataset, LgbModel, LgbTrainConfig]):
@@ -51,7 +60,10 @@ class LgbPredictor(BasePredictor[LgbDataset, LgbModel, LgbPredictConfig]):
     def predict(
         self, dataset: LgbDataset, model: LgbModel, config: LgbPredictConfig | None
     ) -> Prediction:
-        y_pred = model.model.predict(dataset.dataset.data)
+        if config is None:
+            y_pred = model.model.predict(dataset.dataset.data)
+        else:
+            y_pred = model.model.predict(data=dataset.dataset.data, **dict(config))
         if isinstance(y_pred, list):
             raise NotImplementedError
         elif isinstance(y_pred, scipy.sparse.spmatrix):

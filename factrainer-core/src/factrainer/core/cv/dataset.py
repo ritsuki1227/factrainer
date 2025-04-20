@@ -83,7 +83,7 @@ class SplittedDatasets[T: IndexableDataset](BaseDataset):
     def create(
         cls, dataset: T, k_fold: _BaseKFold, share_holdouts: bool = True
     ) -> Self:
-        datasets = []
+        datasets: list[SplittedDataset[T]] = []
         for train_index, val_index in dataset.get_index(k_fold):
             if share_holdouts:
                 test_index = val_index

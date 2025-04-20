@@ -20,9 +20,7 @@ classifiers = [
 ]
 license = "MIT"
 license-files = ["LICENSE"]
-dependencies = [
-    "factrainer-core",
-]
+dependencies = ["factrainer-core"]
 
 [project.optional-dependencies]
 sklearn = ["factrainer-sklearn"]
@@ -102,7 +100,7 @@ mypy_path = [
     "stubs",
 ]
 strict = true
-plugins = "numpy.typing.mypy_plugin"
+plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
 namespace_packages = true
 explicit_package_bases = true
 
