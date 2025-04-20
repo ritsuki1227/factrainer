@@ -2,6 +2,7 @@ from typing import Any
 from unittest.mock import MagicMock, patch
 
 import lightgbm as lgb
+import numpy as np
 from factrainer.lightgbm.dataset.slicer import (
     LgbDatasetSlicer,
     LgbDataSlicer,
@@ -21,9 +22,32 @@ from lightgbm.basic import (
     _LGBM_TrainDataType,
     _LGBM_WeightType,
 )
+from numpy.testing import assert_array_equal
 
 
 class TestDatasetSlicer:
+    @patch("factrainer.lightgbm.dataset.slicer.LgbDataSlicer", spec=LgbDataSlicer)
+    def test_dataset_slicer(self, data_slicer: MagicMock) -> None:
+        data = MagicMock(spec=_LGBM_TrainDataType)
+        dataset = lgb.Dataset(data)
+        expected = lgb.Dataset(
+            data=data_slicer.return_value.slice.return_value,
+        )
+        sut = LgbDatasetSlicer()
+
+        actual = sut.slice(dataset, [2, 0])
+
+        assert actual.data == expected.data
+        assert actual.label is None
+        assert expected.reference is None
+        assert actual.weight is None
+        assert actual.group is None
+        assert actual.init_score is None
+        assert actual.feature_name == "auto"
+        assert actual.categorical_feature == "auto"
+        assert actual.free_raw_data is True
+        data_slicer.return_value.slice.assert_called_once_with(data, [2, 0])
+
     @patch(
         "factrainer.lightgbm.dataset.slicer.LgbPositionSlicer", spec=LgbPositionSlicer
     )
@@ -34,7 +58,7 @@ class TestDatasetSlicer:
     @patch("factrainer.lightgbm.dataset.slicer.LgbWeightSlicer", spec=LgbWeightSlicer)
     @patch("factrainer.lightgbm.dataset.slicer.LgbLabelSlicer", spec=LgbLabelSlicer)
     @patch("factrainer.lightgbm.dataset.slicer.LgbDataSlicer", spec=LgbDataSlicer)
-    def test_dataset_slicer(
+    def test_dataset_slicer_with_params(
         self,
         data_slicer: MagicMock,
         label_slicer: MagicMock,
@@ -43,20 +67,18 @@ class TestDatasetSlicer:
         init_score_slicer: MagicMock,
         position_slicer: MagicMock,
     ) -> None:
-        dataset = MagicMock(spec=lgb.Dataset)
-        dataset.data = MagicMock(spec=_LGBM_TrainDataType)
-        dataset.label = MagicMock(spec=_LGBM_LabelType)
-        dataset.weight = MagicMock(spec=_LGBM_WeightType)
-        dataset.group = MagicMock(spec=_LGBM_GroupType)
-        dataset.init_score = MagicMock(spec=_LGBM_InitScoreType)
-        dataset.feature_name = MagicMock(spec=_LGBM_FeatureNameConfiguration)
-        dataset.categorical_feature = MagicMock(
-            spec=_LGBM_CategoricalFeatureConfiguration
+        dataset = lgb.Dataset(
+            data=MagicMock(spec=_LGBM_TrainDataType),
+            label=MagicMock(spec=_LGBM_LabelType),
+            weight=MagicMock(spec=_LGBM_WeightType),
+            group=MagicMock(spec=_LGBM_GroupType),
+            init_score=MagicMock(spec=_LGBM_InitScoreType),
+            feature_name=MagicMock(spec=_LGBM_FeatureNameConfiguration),
+            categorical_feature=MagicMock(spec=_LGBM_CategoricalFeatureConfiguration),
+            params=MagicMock(spec=dict[str, Any]),
+            free_raw_data=MagicMock(spec=bool),
+            position=MagicMock(spec=_LGBM_PositionType),
         )
-        dataset.params = MagicMock(spec=dict[str, Any])
-        dataset.free_raw_data = MagicMock(spec=bool)
-        dataset.raw_data = MagicMock(spec=str)
-        dataset.position = MagicMock(spec=_LGBM_PositionType)
         expected = lgb.Dataset(
             data=data_slicer.return_value.slice.return_value,
             label=label_slicer.return_value.slice.return_value,
@@ -76,6 +98,7 @@ class TestDatasetSlicer:
 
         assert actual.data == expected.data
         assert actual.label == expected.label
+        assert expected.reference is None
         assert actual.weight == expected.weight
         assert actual.group == expected.group
         assert actual.init_score == expected.init_score
@@ -83,7 +106,6 @@ class TestDatasetSlicer:
         assert actual.categorical_feature == expected.categorical_feature
         assert actual.free_raw_data == expected.free_raw_data
         assert actual.position == expected.position
-        assert expected.reference is None
         data_slicer.return_value.slice.assert_called_once_with(dataset.data, [2, 0])
         label_slicer.return_value.slice.assert_called_once_with(dataset.label, [2, 0])
         weight_slicer.return_value.slice.assert_called_once_with(dataset.weight, [2, 0])
@@ -94,3 +116,21 @@ class TestDatasetSlicer:
         position_slicer.return_value.slice.assert_called_once_with(
             dataset.position, [2, 0]
         )
+
+    def test_dataset_slicer_with_reference(
+        self,
+    ) -> None:
+        dataset = lgb.Dataset(np.array([[100, 200], [300, 400]]))
+        reference = lgb.Dataset(np.array([[1, 2], [3, 4]]))
+        expected = lgb.Dataset(np.array([[1, 2], [3, 4]]))
+        sut = LgbDatasetSlicer(reference=reference)
+
+        actual = sut.slice(dataset, [1])
+
+        if actual.reference is None:
+            raise TypeError
+        if not isinstance(actual.reference.data, np.ndarray):
+            raise TypeError
+        if not isinstance(expected.data, np.ndarray):
+            raise TypeError
+        assert_array_equal(actual.reference.data, expected.data)
