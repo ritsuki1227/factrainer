@@ -13,7 +13,7 @@ from sklearn.metrics import accuracy_score, r2_score
 from sklearn.model_selection import KFold, train_test_split
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=2, only_rerun=["HTTPError"])
+@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_model(
     california_housing_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
@@ -36,7 +36,7 @@ def test_cv_model(
     assert (metric > 0.8) and (metric < 0.85)
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=2, only_rerun=["HTTPError"])
+@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_model_parallel(
     california_housing_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
@@ -59,7 +59,7 @@ def test_cv_model_parallel(
     assert (metric > 0.8) and (metric < 0.85)
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=2, only_rerun=["HTTPError"])
+@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     features, target = titanic_data
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
@@ -78,7 +78,7 @@ def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     assert (metric > 0.8) and (metric < 0.85)
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=2, only_rerun=["HTTPError"])
+@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_single_model(
     california_housing_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
