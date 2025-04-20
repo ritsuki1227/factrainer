@@ -59,7 +59,7 @@ def test_train_signature() -> None:
             Parameter(
                 "callbacks",
                 Parameter.POSITIONAL_OR_KEYWORD,
-                annotation=Optional[List[Callable]],  # type: ignore
+                annotation=Optional[List[Callable[..., Any]]],
                 default=None,
             ),
         ],
@@ -71,6 +71,10 @@ def test_train_signature() -> None:
 
 
 @pytest.mark.skip
-def test_lgbm_train_data_type() -> None:
-    # actual = _LGBM_TrainDataType.__args__
+def test_predict_signature() -> None:
+    raise NotImplementedError
+
+
+@pytest.mark.skip
+def test_dataset_signature() -> None:
     raise NotImplementedError
