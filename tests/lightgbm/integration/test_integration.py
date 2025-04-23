@@ -6,7 +6,11 @@ import lightgbm as lgb
 import numpy as np
 import pandas as pd
 import pytest
-from factrainer.core import CvModelContainer, SingleModelContainer
+from factrainer.core import (
+    CvModelContainer,
+    SingleModelContainer,
+    SplittedDatasetsIndices,
+)
 from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
 from numpy import typing as npt
 from sklearn.metrics import accuracy_score, r2_score
@@ -74,6 +78,40 @@ def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     model.train(dataset)
     y_pred = model.predict(dataset)
     metric = accuracy_score(target, y_pred > 0.5)
+
+    assert (metric > 0.8) and (metric < 0.85)
+
+
+@pytest.mark.skip
+@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
+def test_cv_train_val_test_split(
+    california_housing_data: tuple[
+        npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
+    ],
+) -> None:
+    features, target = california_housing_data
+    dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
+    config = LgbModelConfig.create(
+        train_config=LgbTrainConfig(
+            params={"objective": "regression"},
+            callbacks=[lgb.early_stopping(100, verbose=False)],
+        ),
+    )
+    train_indices, val_indices, test_indices = [], [], []
+    k_fold = KFold(n_splits=5, shuffle=True, random_state=1)
+    for i, (_train_index, test_index) in enumerate(k_fold.split(features)):
+        splitted = train_test_split(_train_index, test_size=0.25, random_state=i + 1)
+        train_index, val_index = splitted[0], splitted[1]
+        train_indices.append(train_index)
+        val_indices.append(val_index)
+        test_indices.append(test_index)
+    indices = SplittedDatasetsIndices(
+        train=train_indices, val=val_indices, test=test_indices
+    )
+    model = CvModelContainer(config, indices)
+    model.train(dataset)
+    y_pred = model.predict(dataset)
+    metric = r2_score(target, y_pred)
 
     assert (metric > 0.8) and (metric < 0.85)
 
