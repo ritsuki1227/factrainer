@@ -6,7 +6,7 @@ from factrainer.base.config import (
 from factrainer.base.dataset import BaseDataset, Prediction
 from factrainer.base.raw_model import RawModel
 
-from .trait import BaseModelContainer
+from .model_container import BaseModelContainer
 
 
 class SingleModelContainer[

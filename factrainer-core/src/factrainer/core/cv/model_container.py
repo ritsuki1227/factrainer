@@ -3,7 +3,7 @@ from factrainer.base.dataset import IndexableDataset, Prediction
 from factrainer.base.raw_model import RawModel
 from sklearn.model_selection._split import _BaseKFold
 
-from ..trait import BaseModelContainer
+from ..model_container import BaseModelContainer
 from .config import CvMlModelConfig
 from .dataset import IndexedDatasets, SplittedDatasets, SplittedDatasetsIndices
 from .raw_model import CvRawModels
