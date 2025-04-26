@@ -1,24 +1,24 @@
-from typing import Any, Self
+from enum import Enum, auto
+from typing import Any, cast
 
 import numpy as np
 import numpy.typing as npt
 from factrainer.base.config import (
     BaseLearner,
-    BaseMlModelConfig,
     BasePredictConfig,
     BasePredictor,
     BaseTrainConfig,
 )
-from factrainer.base.dataset import IndexableDataset, Prediction
+from factrainer.base.dataset import BaseDataset, IndexableDataset, Prediction
 from factrainer.base.raw_model import RawModel
 from joblib import Parallel, delayed
 
 from .dataset import IndexedDatasets
-from .raw_model import CvRawModels
+from .raw_model import RawModels
 
 
 class CvLearner[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
-    BaseLearner[IndexedDatasets[T], CvRawModels[U], V]
+    BaseLearner[IndexedDatasets[T], RawModels[U], V]
 ):
     def __init__(self, learner: BaseLearner[T, U, V]) -> None:
         self._learner = learner
@@ -29,7 +29,7 @@ class CvLearner[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
         val_dataset: IndexedDatasets[T] | None,
         config: V,
         n_jobs: int | None = None,
-    ) -> CvRawModels[U]:
+    ) -> RawModels[U]:
         if val_dataset is not None:
             models = Parallel(n_jobs=n_jobs)(
                 delayed(self._learner.train)(train.data, val.data, config)
@@ -40,11 +40,16 @@ class CvLearner[T: IndexableDataset, U: RawModel, V: BaseTrainConfig](
                 delayed(self._learner.train)(train.data, None, config)
                 for train in train_dataset.datasets
             )
-        return CvRawModels(models=models)
+        return RawModels(models=models)
 
 
-class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
-    BasePredictor[IndexedDatasets[T], CvRawModels[U], W]
+class PredMode(Enum):
+    OOF_PRED = auto()
+    AVG_ENSEMBLE = auto()
+
+
+class OutOfFoldPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
+    BasePredictor[IndexedDatasets[T], RawModels[U], W]
 ):
     def __init__(self, predictor: BasePredictor[T, U, W]) -> None:
         self._predictor = predictor
@@ -52,9 +57,9 @@ class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
     def predict(
         self,
         dataset: IndexedDatasets[T],
-        raw_model: CvRawModels[U],
+        raw_model: RawModels[U],
         config: W | None,
-        n_jobs: int | None = None,
+        n_jobs: int | None,
     ) -> Prediction:
         y_preds = Parallel(n_jobs=n_jobs)(
             delayed(self._predictor.predict)(_dataset.data, _model, config)
@@ -71,20 +76,21 @@ class CvPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
         )
 
 
-class CvMlModelConfig[
-    T: IndexableDataset,
-    U: RawModel,
-    V: BaseTrainConfig,
-    W: BasePredictConfig,
-](BaseMlModelConfig[IndexedDatasets[T], CvRawModels[U], V, W]):
-    learner: CvLearner[T, U, V]
-    predictor: CvPredictor[T, U, W]
+class AverageEnsemblePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](
+    BasePredictor[T, RawModels[U], W]
+):
+    def __init__(self, predictor: BasePredictor[T, U, W]) -> None:
+        self._predictor = predictor
 
-    @classmethod
-    def from_config(cls, config: BaseMlModelConfig[T, U, V, W]) -> Self:
-        return cls(
-            learner=CvLearner(config.learner),
-            predictor=CvPredictor(config.predictor),
-            train_config=config.train_config,
-            pred_config=config.pred_config,
+    def predict(
+        self,
+        dataset: T,
+        raw_model: RawModels[U],
+        config: W | None,
+        n_jobs: int | None,
+    ) -> Prediction:
+        y_preds = Parallel(n_jobs=n_jobs)(
+            delayed(self._predictor.predict)(dataset, _model, config)
+            for _model in raw_model.models
         )
+        return cast(Prediction, np.array(y_preds).mean(axis=0))

@@ -8,6 +8,7 @@ import pandas as pd
 import pytest
 from factrainer.core import (
     CvModelContainer,
+    PredMode,
     SingleModelContainer,
     SplittedDatasetsIndices,
 )
@@ -111,6 +112,36 @@ def test_cv_train_val_test_split(
     model.train(dataset)
     y_pred = model.predict(dataset)
     metric = r2_score(target, y_pred)
+
+    assert (metric > 0.8) and (metric < 0.85)
+
+
+@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
+def test_cv_average_ensembling(
+    california_housing_data: tuple[
+        npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
+    ],
+) -> None:
+    features, target = california_housing_data
+    train_X, test_X, train_y, test_y = train_test_split(
+        features,
+        target,
+        test_size=0.2,
+        random_state=1,
+    )
+    train_dataset = LgbDataset(dataset=lgb.Dataset(train_X, train_y))
+    test_dataset = LgbDataset(dataset=lgb.Dataset(test_X, test_y))
+    config = LgbModelConfig.create(
+        train_config=LgbTrainConfig(
+            params={"objective": "regression"},
+            callbacks=[lgb.early_stopping(100, verbose=False)],
+        ),
+    )
+    k_fold = KFold(n_splits=5, shuffle=True, random_state=1)
+    model = CvModelContainer(config, k_fold)
+    model.train(train_dataset, n_jobs=4)
+    y_pred = model.predict(test_dataset, n_jobs=4, mode=PredMode.AVG_ENSEMBLE)
+    metric = r2_score(test_y, y_pred)
 
     assert (metric > 0.8) and (metric < 0.85)
 

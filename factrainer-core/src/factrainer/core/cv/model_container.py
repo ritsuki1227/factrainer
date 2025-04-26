@@ -4,9 +4,9 @@ from factrainer.base.raw_model import RawModel
 from sklearn.model_selection._split import _BaseKFold
 
 from ..model_container import BaseModelContainer
-from .config import CvMlModelConfig
+from .config import AverageEnsemblePredictor, CvLearner, OutOfFoldPredictor, PredMode
 from .dataset import IndexedDatasets, SplittedDatasets, SplittedDatasetsIndices
-from .raw_model import CvRawModels
+from .raw_model import RawModels
 
 
 class CvModelContainer[
@@ -14,30 +14,42 @@ class CvModelContainer[
     U: RawModel,
     V: BaseTrainConfig,
     W: BasePredictConfig,
-](BaseModelContainer[T, CvRawModels[U], V, W]):
+](BaseModelContainer[T, RawModels[U], V, W]):
     def __init__(
         self,
         model_config: BaseMlModelConfig[T, U, V, W],
         k_fold: _BaseKFold | SplittedDatasetsIndices,
     ) -> None:
-        self._model_config = CvMlModelConfig.from_config(model_config)
+        self._model_config = model_config
         self._k_fold = k_fold
 
     def train(self, train_dataset: T, n_jobs: int | None = None) -> None:
         datasets = SplittedDatasets.create(train_dataset, self._k_fold)
         self._cv_indices = datasets.indices
-        self._model = self._model_config.learner.train(
+        self._model = CvLearner(self._model_config.learner).train(
             datasets.train, datasets.val, self._model_config.train_config, n_jobs
         )
 
-    def predict(self, pred_dataset: T, n_jobs: int | None = None) -> Prediction:
-        datasets = IndexedDatasets.create(pred_dataset, self.cv_indices.test)
-        return self._model_config.predictor.predict(
-            datasets, self.raw_model, self._model_config.pred_config, n_jobs
-        )
+    def predict(
+        self,
+        pred_dataset: T,
+        n_jobs: int | None = None,
+        mode: PredMode = PredMode.OOF_PRED,
+    ) -> Prediction:
+        if mode == PredMode.AVG_ENSEMBLE:
+            return AverageEnsemblePredictor(self._model_config.predictor).predict(
+                pred_dataset, self.raw_model, self._model_config.pred_config, n_jobs
+            )
+        elif mode == PredMode.OOF_PRED:
+            datasets = IndexedDatasets[T].create(pred_dataset, self.cv_indices.test)
+            return OutOfFoldPredictor(self._model_config.predictor).predict(
+                datasets, self.raw_model, self._model_config.pred_config, n_jobs
+            )
+        else:
+            raise ValueError
 
     @property
-    def raw_model(self) -> CvRawModels[U]:
+    def raw_model(self) -> RawModels[U]:
         return self._model
 
     @property
