@@ -1,6 +1,5 @@
 from collections.abc import Generator
 
-import numpy as np
 from factrainer.base.dataset import IndexableDataset, RowIndex, RowsAndColumns
 from sklearn.model_selection._split import _BaseKFold
 
@@ -21,7 +20,7 @@ class LgbDataset(IndexableDataset):
 
     def __getitem__(self, index: RowsAndColumns) -> "LgbDataset":
         match index:
-            case int() | np.integer():
+            case int():
                 return LgbDataset(
                     dataset=LgbDatasetSlicer(self.dataset.reference).slice(
                         self.dataset, [index]

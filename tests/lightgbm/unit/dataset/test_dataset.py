@@ -26,12 +26,6 @@ class TestLgbDatasetGetitem:
         actual = sut[[2, 0]]
         assert_array_equal(cast(npt.NDArray[Any], actual.dataset.data), expected)
 
-    def test_numpy_row(self) -> None:
-        sut = LgbDataset(dataset=lgb.Dataset(data=np.array([[1, 2, 3], [4, 5, 6]])))
-        expected = np.array([[1, 2, 3]])
-        actual = sut[np.int8(0)]
-        assert_array_equal(cast(npt.NDArray[Any], actual.dataset.data), expected)
-
     def test_pandas(self) -> None:
         sut = LgbDataset(
             dataset=lgb.Dataset(
