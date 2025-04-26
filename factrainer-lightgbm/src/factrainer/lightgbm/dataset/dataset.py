@@ -12,7 +12,7 @@ from .slicer import LgbDatasetSlicer
 class LgbDataset(IndexableDataset):
     dataset: lgb.Dataset
 
-    def get_index(
+    def k_fold_split(
         self, k_fold: _BaseKFold
     ) -> Generator[tuple[RowIndex, RowIndex], None, None]:
         for train_index, val_index in k_fold.split(self.dataset.data):  # type: ignore

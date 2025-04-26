@@ -25,7 +25,7 @@ class IndexableDataset(BaseDataset):
         raise NotImplementedError
 
     @abstractmethod
-    def get_index(
+    def k_fold_split(
         self, k_fold: _BaseKFold
     ) -> Generator[tuple[RowIndex, RowIndex], None, None]:
         raise NotImplementedError

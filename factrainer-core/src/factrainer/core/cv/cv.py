@@ -19,7 +19,7 @@ class CvModelContainer[
     def __init__(
         self,
         model_config: BaseMlModelConfig[T, U, V, W],
-        k_fold: _BaseKFold,
+        k_fold: _BaseKFold | SplittedDatasetsIndices,
         n_jobs_train: int | None = None,
         n_jobs_predict: int | None = None,
     ) -> None:

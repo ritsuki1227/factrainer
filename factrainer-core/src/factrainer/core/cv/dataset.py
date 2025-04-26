@@ -80,20 +80,32 @@ class SplittedDatasets[T: IndexableDataset](BaseDataset):
         )
 
     @classmethod
-    def create(
-        cls, dataset: T, k_fold: _BaseKFold, share_holdouts: bool = True
-    ) -> Self:
+    def create(cls, dataset: T, k_fold: _BaseKFold | SplittedDatasetsIndices) -> Self:
         datasets: list[SplittedDataset[T]] = []
-        for train_index, val_index in dataset.get_index(k_fold):
-            if share_holdouts:
-                test_index = val_index
-            else:
-                raise NotImplementedError
-            datasets.append(
-                SplittedDataset(
-                    train=IndexedDataset(index=train_index, data=dataset[train_index]),
-                    val=IndexedDataset(index=val_index, data=dataset[val_index]),
-                    test=IndexedDataset(index=test_index, data=dataset[test_index]),
+        if isinstance(k_fold, SplittedDatasetsIndices):
+            if k_fold.val is None:
+                raise ValueError
+            for train_index, val_index, test_index in zip(
+                k_fold.train, k_fold.val, k_fold.test
+            ):
+                datasets.append(
+                    SplittedDataset(
+                        train=IndexedDataset(
+                            index=train_index, data=dataset[train_index]
+                        ),
+                        val=IndexedDataset(index=val_index, data=dataset[val_index]),
+                        test=IndexedDataset(index=test_index, data=dataset[test_index]),
+                    )
                 )
-            )
+        else:
+            for train_index, test_index in dataset.k_fold_split(k_fold):
+                datasets.append(
+                    SplittedDataset(
+                        train=IndexedDataset(
+                            index=train_index, data=dataset[train_index]
+                        ),
+                        val=IndexedDataset(index=test_index, data=dataset[test_index]),
+                        test=IndexedDataset(index=test_index, data=dataset[test_index]),
+                    )
+                )
         return cls(datasets=datasets)
