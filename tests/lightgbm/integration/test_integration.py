@@ -16,11 +16,11 @@ from factrainer.core import (
 )
 from factrainer.lightgbm import (
     LgbDataset,
+    LgbModel,
     LgbModelConfig,
     LgbPredictConfig,
     LgbTrainConfig,
 )
-from factrainer.lightgbm.raw_model import LgbModel
 from numpy import typing as npt
 from sklearn.metrics import accuracy_score, r2_score
 from sklearn.model_selection import KFold, train_test_split
