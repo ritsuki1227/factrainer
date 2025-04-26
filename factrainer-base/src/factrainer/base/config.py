@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Self
+from typing import Any, Self
 
 from pydantic import BaseModel, ConfigDict
 
@@ -17,13 +17,27 @@ class BasePredictConfig(BaseModel):
 
 class BaseLearner[T: BaseDataset, U: RawModel, V: BaseTrainConfig](ABC):
     @abstractmethod
-    def train(self, train_dataset: T, val_dataset: T | None, config: V) -> U:
+    def train(
+        self,
+        train_dataset: T,
+        val_dataset: T | None,
+        config: V,
+        *args: Any,
+        **kwargs: Any,
+    ) -> U:
         raise NotImplementedError
 
 
 class BasePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](ABC):
     @abstractmethod
-    def predict(self, dataset: T, raw_model: U, config: W | None) -> Prediction:
+    def predict(
+        self,
+        dataset: T,
+        raw_model: U,
+        config: W | None,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Prediction:
         raise NotImplementedError
 
 

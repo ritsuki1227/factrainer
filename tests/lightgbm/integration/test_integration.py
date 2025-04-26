@@ -55,9 +55,9 @@ def test_cv_model_parallel(
         ),
     )
     k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
-    model = CvModelContainer(config, k_fold, n_jobs_train=4, n_jobs_predict=4)
-    model.train(dataset)
-    y_pred = model.predict(dataset)
+    model = CvModelContainer(config, k_fold)
+    model.train(dataset, n_jobs=4)
+    y_pred = model.predict(dataset, n_jobs=4)
     metric = r2_score(target, y_pred)
 
     assert (metric > 0.8) and (metric < 0.85)
@@ -74,9 +74,9 @@ def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
         ),
     )
     k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
-    model = CvModelContainer(config, k_fold, n_jobs_train=4, n_jobs_predict=4)
-    model.train(dataset)
-    y_pred = model.predict(dataset)
+    model = CvModelContainer(config, k_fold)
+    model.train(dataset, n_jobs=4)
+    y_pred = model.predict(dataset, n_jobs=4)
     metric = accuracy_score(target, y_pred > 0.5)
 
     assert (metric > 0.8) and (metric < 0.85)

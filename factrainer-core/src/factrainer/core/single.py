@@ -6,10 +6,7 @@ from factrainer.base.config import (
 from factrainer.base.dataset import BaseDataset, Prediction
 from factrainer.base.raw_model import RawModel
 
-from .trait import (
-    PredictorTrait,
-    ValidatableTrainerTrait,
-)
+from .trait import BaseModelContainer
 
 
 class SingleModelContainer[
@@ -17,21 +14,21 @@ class SingleModelContainer[
     U: RawModel,
     V: BaseTrainConfig,
     W: BasePredictConfig,
-](ValidatableTrainerTrait[T, V], PredictorTrait[T, U, W]):
+](BaseModelContainer[T, U, V, W]):
     def __init__(
         self,
         model_config: BaseMlModelConfig[T, U, V, W],
     ) -> None:
-        self.model_config = model_config
+        self._model_config = model_config
 
     def train(self, train_dataset: T, val_dataset: T | None = None) -> None:
-        self._model = self.model_config.learner.train(
-            train_dataset, val_dataset, self.model_config.train_config
+        self._model = self._model_config.learner.train(
+            train_dataset, val_dataset, self._model_config.train_config
         )
 
-    def predict(self, dataset: T) -> Prediction:
-        return self.model_config.predictor.predict(
-            dataset, self.raw_model, self.model_config.pred_config
+    def predict(self, pred_dataset: T) -> Prediction:
+        return self._model_config.predictor.predict(
+            pred_dataset, self.raw_model, self._model_config.pred_config
         )
 
     @property
@@ -40,16 +37,16 @@ class SingleModelContainer[
 
     @property
     def train_config(self) -> V:
-        return self.model_config.train_config
+        return self._model_config.train_config
 
     @train_config.setter
     def train_config(self, config: V) -> None:
-        self.model_config.train_config = config
+        self._model_config.train_config = config
 
     @property
     def pred_config(self) -> W | None:
-        return self.model_config.pred_config
+        return self._model_config.pred_config
 
     @pred_config.setter
     def pred_config(self, config: W | None) -> None:
-        self.model_config.pred_config = config
+        self._model_config.pred_config = config
