@@ -1,5 +1,6 @@
 from collections.abc import Generator
 
+import numpy as np
 from factrainer.base.dataset import IndexableDataset, RowIndex, RowsAndColumns
 from sklearn.model_selection._split import _BaseKFold
 
@@ -12,7 +13,7 @@ from .slicer import LgbDatasetSlicer
 class LgbDataset(IndexableDataset):
     dataset: lgb.Dataset
 
-    def get_index(
+    def k_fold_split(
         self, k_fold: _BaseKFold
     ) -> Generator[tuple[RowIndex, RowIndex], None, None]:
         for train_index, val_index in k_fold.split(self.dataset.data):  # type: ignore
@@ -20,7 +21,7 @@ class LgbDataset(IndexableDataset):
 
     def __getitem__(self, index: RowsAndColumns) -> "LgbDataset":
         match index:
-            case int():
+            case int() | np.integer():
                 return LgbDataset(
                     dataset=LgbDatasetSlicer(self.dataset.reference).slice(
                         self.dataset, [index]

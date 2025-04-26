@@ -9,9 +9,9 @@ from sklearn.model_selection._split import _BaseKFold
 
 # type Prediction = npt.NDArray[Any] | scipy.sparse.spmatrix | list[scipy.sparse.spmatrix]
 type Prediction = npt.NDArray[np.number[Any]]
-type RowIndex = list[int]
+type RowIndex = list[int] | list[np.integer]
 type RowIndices = Sequence[RowIndex]
-type Rows = int | slice | RowIndex
+type Rows = int | np.integer | slice | RowIndex
 type RowsAndColumns = Rows | tuple[Rows, ...]
 
 
@@ -25,7 +25,7 @@ class IndexableDataset(BaseDataset):
         raise NotImplementedError
 
     @abstractmethod
-    def get_index(
+    def k_fold_split(
         self, k_fold: _BaseKFold
     ) -> Generator[tuple[RowIndex, RowIndex], None, None]:
         raise NotImplementedError

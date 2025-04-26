@@ -82,7 +82,6 @@ def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     assert (metric > 0.8) and (metric < 0.85)
 
 
-@pytest.mark.skip
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_train_val_test_split(
     california_housing_data: tuple[
