@@ -36,14 +36,14 @@ class CvModelContainer[
         n_jobs: int | None = None,
         mode: PredMode = PredMode.OOF_PRED,
     ) -> Prediction:
-        if mode == PredMode.AVG_ENSEMBLE:
-            return AverageEnsemblePredictor(self._model_config.predictor).predict(
-                pred_dataset, self.raw_model, self._model_config.pred_config, n_jobs
-            )
-        elif mode == PredMode.OOF_PRED:
+        if mode == PredMode.OOF_PRED:
             datasets = IndexedDatasets[T].create(pred_dataset, self.cv_indices.test)
             return OutOfFoldPredictor(self._model_config.predictor).predict(
                 datasets, self.raw_model, self._model_config.pred_config, n_jobs
+            )
+        elif mode == PredMode.AVG_ENSEMBLE:
+            return AverageEnsemblePredictor(self._model_config.predictor).predict(
+                pred_dataset, self.raw_model, self._model_config.pred_config, n_jobs
             )
         else:
             raise ValueError

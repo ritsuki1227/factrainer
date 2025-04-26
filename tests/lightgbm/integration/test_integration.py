@@ -73,6 +73,56 @@ def test_cv_model_parallel(
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
+def test_cv_pred_config(
+    california_housing_data: tuple[
+        npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
+    ],
+) -> None:
+    features, target = california_housing_data
+    dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
+    config = LgbModelConfig.create(
+        train_config=LgbTrainConfig(
+            params={"objective": "regression"},
+            callbacks=[lgb.early_stopping(100, verbose=False)],
+        ),
+        pred_config=LgbPredictConfig(num_iteration=2),
+    )
+    k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
+    model = CvModelContainer(config, k_fold)
+    model.train(dataset)
+    y_pred = model.predict(dataset)
+    metric = r2_score(target, y_pred)
+
+    assert (metric > 0.2) and (metric < 0.25)
+
+
+@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
+def test_cv_set_pred_config_after_trainig(
+    california_housing_data: tuple[
+        npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
+    ],
+) -> None:
+    features, target = california_housing_data
+    dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
+    config = LgbModelConfig.create(
+        train_config=LgbTrainConfig(
+            params={"objective": "regression"},
+            callbacks=[lgb.early_stopping(100, verbose=False)],
+        ),
+        pred_config=LgbPredictConfig(num_iteration=2),
+    )
+    k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
+    model = CvModelContainer(config, k_fold)
+    model.train(dataset)
+    metric_underfit = r2_score(target, model.predict(dataset))
+    model.pred_config = LgbPredictConfig(num_iteration=None)
+    metric = r2_score(target, model.predict(dataset))
+
+    assert (metric_underfit > 0.2) and (metric_underfit < 0.25)
+    assert (metric > 0.8) and (metric < 0.85)
+
+
+@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     features, target = titanic_data
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
