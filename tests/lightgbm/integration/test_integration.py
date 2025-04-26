@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+import tempfile
 from typing import Any
 
+import joblib
 import lightgbm as lgb
 import numpy as np
 import pandas as pd
@@ -12,7 +14,13 @@ from factrainer.core import (
     SingleModelContainer,
     SplittedDatasetsIndices,
 )
-from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
+from factrainer.lightgbm import (
+    LgbDataset,
+    LgbModelConfig,
+    LgbPredictConfig,
+    LgbTrainConfig,
+)
+from factrainer.lightgbm.raw_model import LgbModel
 from numpy import typing as npt
 from sklearn.metrics import accuracy_score, r2_score
 from sklearn.model_selection import KFold, train_test_split
@@ -142,6 +150,34 @@ def test_cv_average_ensembling(
     model.train(train_dataset, n_jobs=4)
     y_pred = model.predict(test_dataset, n_jobs=4, mode=PredMode.AVG_ENSEMBLE)
     metric = r2_score(test_y, y_pred)
+
+    assert (metric > 0.8) and (metric < 0.85)
+
+
+@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
+def test_cv_model_picklable(
+    california_housing_data: tuple[
+        npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
+    ],
+) -> None:
+    features, target = california_housing_data
+    dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
+    config = LgbModelConfig.create(
+        train_config=LgbTrainConfig(
+            params={"objective": "regression"},
+            callbacks=[lgb.early_stopping(100, verbose=False)],
+        ),
+    )
+    k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
+    model = CvModelContainer(config, k_fold)
+    model.train(dataset, n_jobs=4)
+    with tempfile.NamedTemporaryFile() as fp:
+        joblib.dump(model, fp.name)
+        loaded_model: CvModelContainer[
+            LgbDataset, LgbModel, LgbTrainConfig, LgbPredictConfig
+        ] = joblib.load(fp.name)
+    y_pred = loaded_model.predict(dataset, n_jobs=4)
+    metric = r2_score(target, y_pred)
 
     assert (metric > 0.8) and (metric < 0.85)
 
