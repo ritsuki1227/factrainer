@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from typing import Any, Callable, Self
 
@@ -57,15 +56,12 @@ class LgbLearner(BaseLearner[LgbDataset, LgbModel, LgbTrainConfig]):
         )
 
 
-
-
 class LgbPredictor(BasePredictor[LgbDataset, LgbModel, LgbPredictConfig]):
     def predict(
         self,
         dataset: LgbDataset,
         raw_model: LgbModel,
         config: LgbPredictConfig | None,
-        
     ) -> Prediction:
         if config is None:
             y_pred = raw_model.model.predict(dataset.dataset.data)
