@@ -1,8 +1,11 @@
-import warnings
+from .config import SklearnModelConfig, SklearnPredictConfig, SklearnTrainConfig
+from .dataset import SklearnDataset
+from .raw_model import SklearnModel
 
-warnings.warn(
-    "The 'factrainer.sklearn' module is currently a placeholder and not yet implemented. "
-    "Functionality will be added in a future release.",
-    UserWarning,
-    stacklevel=2,
-)
+__all__ = [
+    "SklearnPredictConfig",
+    "SklearnTrainConfig",
+    "SklearnModelConfig",
+    "SklearnModel",
+    "SklearnDataset",
+]
