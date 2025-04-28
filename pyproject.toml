@@ -100,7 +100,7 @@ mypy_path = [
     "stubs",
 ]
 strict = true
-plugins = ["numpy.typing.mypy_plugin", "pydantic.mypy"]
+plugins = ["pydantic.mypy"]
 namespace_packages = true
 explicit_package_bases = true
 
