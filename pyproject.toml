@@ -58,6 +58,7 @@ dev = [
     "pytest-cov>=6.1.1",
     "pytest-rerunfailures>=15.0",
     "pandas-stubs>=2.2.3.250308",
+    "pandas>=2.2.3",
 ]
 
 [tool.uv.workspace]
