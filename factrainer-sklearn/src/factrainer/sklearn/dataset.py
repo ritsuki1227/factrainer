@@ -1,6 +1,7 @@
 from collections.abc import Generator
 from typing import Any
 
+import numpy as np
 from factrainer.base.dataset import IndexableDataset, RowIndex, RowsAndColumns
 from numpy import typing as npt
 
@@ -20,7 +21,10 @@ class SklearnDataset(IndexableDataset):
     def __getitem__(self, index: RowsAndColumns) -> "SklearnDataset":
         match index:
             case int():
-                return SklearnDataset(X=self.X[index], y=self.y[index])
+                return SklearnDataset(
+                    X=np.expand_dims(self.X[index], axis=0),
+                    y=np.array([self.y[index]]) if self.y.ndim == 1 else self.y[index],
+                )
             case list():
                 return SklearnDataset(X=self.X[index], y=self.y[index])
             case slice():
