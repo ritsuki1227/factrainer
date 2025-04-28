@@ -1,4 +1,4 @@
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import numpy as np
 from factrainer.sklearn.config import (
@@ -24,15 +24,16 @@ class TestSklearnLearner:
 
 
 class TestSklearnPredictor:
-    def test_predict_with_default_config(self) -> None:
-        estimator = MagicMock(spec=LinearRegression)
+    @patch("sklearn.linear_model.LinearRegression.predict")
+    def test_predict_with_default_config_regression(self, predict: MagicMock) -> None:
+        estimator = LinearRegression()
         X, y = np.array([[1, 2], [3, 4.5]]), np.array([0, 1])
         dataset = SklearnDataset(X=X, y=y)
         model = SklearnModel(estimator=estimator)
         config = SklearnPredictConfig()
-        expected = estimator.return_value.predict.return_value
+        expected = predict.return_value
 
         actual = SklearnPredictor().predict(dataset, model, config)
 
         assert actual == expected
-        estimator.predict.assert_called_once_with(X)
+        predict.assert_called_once_with(X)
