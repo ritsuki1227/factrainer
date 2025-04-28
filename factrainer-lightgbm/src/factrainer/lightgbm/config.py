@@ -61,12 +61,9 @@ class LgbPredictor(BasePredictor[LgbDataset, LgbModel, LgbPredictConfig]):
         self,
         dataset: LgbDataset,
         raw_model: LgbModel,
-        config: LgbPredictConfig | None,
+        config: LgbPredictConfig,
     ) -> Prediction:
-        if config is None:
-            y_pred = raw_model.model.predict(dataset.dataset.data)
-        else:
-            y_pred = raw_model.model.predict(data=dataset.dataset.data, **dict(config))
+        y_pred = raw_model.model.predict(data=dataset.dataset.data, **dict(config))
         if isinstance(y_pred, list):
             raise NotImplementedError
         elif isinstance(y_pred, scipy.sparse.spmatrix):
@@ -80,7 +77,7 @@ class LgbModelConfig(
     learner: LgbLearner
     predictor: LgbPredictor
     train_config: LgbTrainConfig
-    pred_config: LgbPredictConfig | None = None
+    pred_config: LgbPredictConfig
 
     @classmethod
     def create(
@@ -90,5 +87,5 @@ class LgbModelConfig(
             learner=LgbLearner(),
             predictor=LgbPredictor(),
             train_config=train_config,
-            pred_config=pred_config,
+            pred_config=pred_config if pred_config is not None else LgbPredictConfig(),
         )

@@ -34,7 +34,7 @@ class BasePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig](ABC):
         self,
         dataset: T,
         raw_model: U,
-        config: W | None,
+        config: W,
         *args: Any,
         **kwargs: Any,
     ) -> Prediction:
@@ -50,7 +50,7 @@ class BaseMlModelConfig[
     learner: BaseLearner[T, U, V]
     predictor: BasePredictor[T, U, W]
     train_config: V
-    pred_config: W | None = None
+    pred_config: W
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
 

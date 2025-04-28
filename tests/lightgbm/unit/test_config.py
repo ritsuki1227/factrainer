@@ -19,15 +19,19 @@ from numpy import typing as npt
 @patch("factrainer.lightgbm.config.LgbPredictor", spec=LgbPredictor)
 @patch("factrainer.lightgbm.config.LgbLearner", spec=LgbLearner)
 class TestCreateLgbModelConfig:
+    @patch("factrainer.lightgbm.config.LgbPredictConfig", spec=LgbPredictConfig)
     def test_create_lgb_model_config_with_default(
-        self, learner: MagicMock, predictor: MagicMock
+        self,z
+        pred_config: MagicMock,
+        learner: MagicMock,
+        predictor: MagicMock,
     ) -> None:
         train_config = MagicMock(spec=LgbTrainConfig)
         expected = LgbModelConfig(
             learner=learner.return_value,
             predictor=predictor.return_value,
             train_config=train_config,
-            pred_config=None,
+            pred_config=pred_config.return_value,
         )
         actual = LgbModelConfig.create(train_config)
         assert actual == expected
@@ -143,7 +147,7 @@ class TestLgbLearner:
 
 
 class TestLgbPredictor:
-    def test_predict_without_config(self) -> None:
+    def test_predict_with_default_config(self) -> None:
         data = MagicMock(spec=_LGBM_TrainDataType)
         dataset = LgbDataset(dataset=lgb.Dataset(data))
         raw_model = MagicMock(spec=lgb.Booster)
@@ -151,10 +155,19 @@ class TestLgbPredictor:
         model = LgbModel(model=raw_model)
         sut = LgbPredictor()
 
-        actual = sut.predict(dataset, model, None)
+        actual = sut.predict(dataset, model, LgbPredictConfig())
 
         assert actual == raw_model.predict.return_value
-        raw_model.predict.assert_called_once_with(data)
+        raw_model.predict.assert_called_once_with(
+            data=data,
+            start_iteration=0,
+            num_iteration=None,
+            raw_score=False,
+            pred_leaf=False,
+            pred_contrib=False,
+            data_has_header=False,
+            validate_features=False,
+        )
 
     def test_predict_with_config(self) -> None:
         data = MagicMock(spec=_LGBM_TrainDataType)

@@ -48,5 +48,5 @@ class SingleModelContainer[
         return self._model_config.pred_config
 
     @pred_config.setter
-    def pred_config(self, config: W | None) -> None:
+    def pred_config(self, config: W) -> None:
         self._model_config.pred_config = config

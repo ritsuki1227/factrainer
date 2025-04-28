@@ -42,5 +42,5 @@ class BaseModelContainer[
 
     @pred_config.setter
     @abstractmethod
-    def pred_config(self, config: W | None) -> None:
+    def pred_config(self, config: W) -> None:
         raise NotImplementedError

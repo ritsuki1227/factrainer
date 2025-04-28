@@ -86,7 +86,7 @@ class SklearnModelConfig(
     learner: SklearnLearner
     predictor: SklearnPredictor
     train_config: SklearnTrainConfig
-    predict_config: SklearnPredictConfig | None
+    pred_config: SklearnPredictConfig
 
     @classmethod
     def create(
@@ -98,5 +98,7 @@ class SklearnModelConfig(
             learner=SklearnLearner(),
             predictor=SklearnPredictor(),
             train_config=train_config,
-            predict_config=pred_config,
+            pred_config=pred_config
+            if pred_config is not None
+            else SklearnPredictConfig(),
         )

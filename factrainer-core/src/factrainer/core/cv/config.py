@@ -58,7 +58,7 @@ class OutOfFoldPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig]
         self,
         dataset: IndexedDatasets[T],
         raw_model: RawModels[U],
-        config: W | None,
+        config: W,
         n_jobs: int | None,
     ) -> Prediction:
         y_preds = Parallel(n_jobs=n_jobs)(
@@ -86,7 +86,7 @@ class AverageEnsemblePredictor[T: BaseDataset, U: RawModel, W: BasePredictConfig
         self,
         dataset: T,
         raw_model: RawModels[U],
-        config: W | None,
+        config: W,
         n_jobs: int | None,
     ) -> Prediction:
         y_preds = Parallel(n_jobs=n_jobs)(
