@@ -18,7 +18,6 @@ from sklearn.metrics import r2_score
 from sklearn.model_selection import KFold
 
 
-@pytest.mark.skip
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_model(
     california_housing_data: tuple[
@@ -29,7 +28,7 @@ def test_cv_model(
     dataset = SklearnDataset(X=features, y=target)
     config = SklearnModelConfig.create(
         train_config=SklearnTrainConfig(
-            estimator=RandomForestRegressor(random_state=100)
+            estimator=RandomForestRegressor(random_state=100, n_jobs=-1)
         ),
     )
     k_fold = KFold(n_splits=4, shuffle=True, random_state=1)

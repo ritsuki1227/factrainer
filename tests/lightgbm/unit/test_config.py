@@ -21,7 +21,7 @@ from numpy import typing as npt
 class TestCreateLgbModelConfig:
     @patch("factrainer.lightgbm.config.LgbPredictConfig", spec=LgbPredictConfig)
     def test_create_lgb_model_config_with_default(
-        self,z
+        self,
         pred_config: MagicMock,
         learner: MagicMock,
         predictor: MagicMock,

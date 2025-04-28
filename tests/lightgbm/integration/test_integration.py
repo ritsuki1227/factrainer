@@ -46,6 +46,12 @@ def test_cv_model(
     y_pred = model.predict(dataset)
     metric = r2_score(target, y_pred)
 
+    from sklearn.datasets import fetch_california_housing
+    from sklearn.model_selection import KFold
+
+    housing = fetch_california_housing()
+    k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
+
     assert (metric > 0.8) and (metric < 0.85)
 
 
