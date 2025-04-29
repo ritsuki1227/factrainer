@@ -36,17 +36,18 @@ class CvModelContainer[
         n_jobs: int | None = None,
         mode: PredMode = PredMode.OOF_PRED,
     ) -> Prediction:
-        if mode == PredMode.OOF_PRED:
-            datasets = IndexedDatasets[T].create(pred_dataset, self.cv_indices.test)
-            return OutOfFoldPredictor(self._model_config.predictor).predict(
-                datasets, self.raw_model, self._model_config.pred_config, n_jobs
-            )
-        elif mode == PredMode.AVG_ENSEMBLE:
-            return AverageEnsemblePredictor(self._model_config.predictor).predict(
-                pred_dataset, self.raw_model, self._model_config.pred_config, n_jobs
-            )
-        else:
-            raise ValueError
+        match mode:
+            case PredMode.OOF_PRED:
+                datasets = IndexedDatasets[T].create(pred_dataset, self.cv_indices.test)
+                return OutOfFoldPredictor(self._model_config.predictor).predict(
+                    datasets, self.raw_model, self._model_config.pred_config, n_jobs
+                )
+            case PredMode.AVG_ENSEMBLE:
+                return AverageEnsemblePredictor(self._model_config.predictor).predict(
+                    pred_dataset, self.raw_model, self._model_config.pred_config, n_jobs
+                )
+            case _:
+                raise ValueError(f"Invalid prediction mode: {mode}")
 
     @property
     def raw_model(self) -> RawModels[U]:
