@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Generator
 from typing import Any
 
@@ -7,10 +9,13 @@ from numpy import typing as npt
 
 from sklearn.model_selection._split import _BaseKFold
 
+type MatrixLike = npt.NDArray[Any]
+type VectorLike = npt.NDArray[Any]
+
 
 class SklearnDataset(IndexableDataset):
-    X: npt.NDArray[Any]
-    y: npt.NDArray[Any] | None = None
+    X: MatrixLike
+    y: VectorLike | None = None
 
     def k_fold_split(
         self, k_fold: _BaseKFold

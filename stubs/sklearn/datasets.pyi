@@ -1,4 +1,6 @@
-from typing import Optional, Union
+from typing import Any, Literal, Optional, Union, overload
+
+from numpy import typing as npt
 
 class Bunch: ...
 
@@ -25,3 +27,21 @@ def fetch_openml(
     n_retries: int = 3,
     delay: float = 1.0,
 ) -> Bunch: ...
+@overload
+def load_iris(
+    *,
+    return_X_y: Literal[False],
+    as_frame: bool = False,
+) -> Bunch: ...
+@overload
+def load_iris(
+    *,
+    return_X_y: Literal[True],
+    as_frame: bool = False,
+) -> tuple[npt.NDArray[Any], npt.NDArray[Any]]: ...
+@overload
+def load_iris(
+    *,
+    return_X_y: bool = False,
+    as_frame: bool = False,
+) -> Bunch | tuple[npt.NDArray[Any], npt.NDArray[Any]]: ...
