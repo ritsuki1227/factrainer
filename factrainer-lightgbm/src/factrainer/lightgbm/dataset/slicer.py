@@ -33,7 +33,7 @@ class LgbDataSlicer(BaseDatasetSlicer[LgbDataType]):
             case np.ndarray():
                 return data[index]
             case pd_DataFrame():
-                return data.iloc[index]
+                return data.take(index)
             case dt_DataTable():
                 raise NotImplementedError
             case scipy.sparse.spmatrix():
@@ -54,9 +54,9 @@ class LgbLabelSlicer(BaseDatasetSlicer[LgbLabelType]):
             case np.ndarray():
                 return data[index]
             case pd_DataFrame():
-                return data.iloc[index]
+                return data.take(index)
             case pd_Series():
-                return data.iloc[np.array(index)]
+                return data.take(index)
             case dt_DataTable():
                 raise NotImplementedError
             case scipy.sparse.spmatrix():

@@ -81,7 +81,7 @@ class SklearnDataset(IndexableDataset):
             return value
         if cls._is_pd_dataframe(value):
             return value
-        raise ValueError
+        raise ValueError("X must be a numpy array or a pandas DataFrame")
 
     @field_validator("y", mode="after")
     @classmethod
@@ -92,7 +92,7 @@ class SklearnDataset(IndexableDataset):
             return value
         if cls._is_pd_series(value):
             return value
-        raise ValueError
+        raise ValueError("y must be a numpy array or a pandas Series")
 
     @classmethod
     def _is_pd_dataframe(cls, obj: Any) -> TypeIs[PdDataFrameLike]:
