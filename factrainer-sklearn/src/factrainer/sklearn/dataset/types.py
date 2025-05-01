@@ -12,14 +12,14 @@ if TYPE_CHECKING:
 @runtime_checkable
 class PdDataFrameProtocol(Protocol):
     def take(
-        self, indices: list[int], axis: Axis = 0, **kwargs: Any
+        self, indices: list[int], axis: Axis = ..., **kwargs: Any
     ) -> "PdDataFrameProtocol": ...
 
 
 @runtime_checkable
 class PdSeriesProtocol(Protocol):
     def take(
-        self, indices: list[int], axis: Axis = 0, **kwargs: Any
+        self, indices: list[int], axis: Axis = ..., **kwargs: Any
     ) -> "PdSeriesProtocol": ...
 
 

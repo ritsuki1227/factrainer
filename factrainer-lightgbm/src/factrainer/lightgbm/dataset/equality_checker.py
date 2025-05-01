@@ -24,7 +24,7 @@ from lightgbm.compat import (  # type: ignore
     pd_Series,
 )
 
-from .type import LgbDataType
+from .types import LgbDataType
 
 
 class LgbDataEqualityChecker(BaseDatasetEqualityChecker[LgbDataType]):

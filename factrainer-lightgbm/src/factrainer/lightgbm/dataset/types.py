@@ -1,6 +1,8 @@
+from __future__ import annotations
+
 from collections.abc import Sequence
 from pathlib import Path
-from typing import Any, TypeVar
+from typing import TYPE_CHECKING, Any, Protocol, TypeVar
 
 import scipy
 from numpy import typing as npt
@@ -10,9 +12,31 @@ from lightgbm.compat import (  # type: ignore
     pa_Array,
     pa_ChunkedArray,
     pa_Table,
-    pd_DataFrame,
-    pd_Series,
 )
+
+if TYPE_CHECKING:
+    import pandas as pd
+    from pandas._typing import Axis
+
+
+class PdDataFrameProtocol(Protocol):
+    def take(
+        self, indices: list[int], axis: Axis = ..., **kwargs: Any
+    ) -> "PdDataFrameProtocol": ...
+
+
+class PdSeriesProtocol[T](Protocol):
+    def take(
+        self, indices: list[int], axis: Axis = ..., **kwargs: Any
+    ) -> "PdSeriesProtocol[T]": ...
+
+
+if TYPE_CHECKING:
+    type pd_DataFrame = pd.DataFrame
+    type pd_Series[T] = pd.Series[T]
+else:
+    type pd_DataFrame = PdDataFrameProtocol
+    type pd_Series = PdSeriesProtocol
 
 type LgbParams = dict[str, Any] | None
 LgbDataType = TypeVar(

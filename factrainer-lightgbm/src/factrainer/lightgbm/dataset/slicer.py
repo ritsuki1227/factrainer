@@ -13,7 +13,7 @@ from lightgbm.compat import (  # type: ignore
     pd_Series,
 )
 
-from .type import (
+from .types import (
     LgbDataType,
     LgbGroupType,
     LgbInitScoreType,
