@@ -7,7 +7,7 @@ from factrainer.sklearn.config import (
     SklearnPredictor,
     SklearnTrainConfig,
 )
-from factrainer.sklearn.dataset import SklearnDataset
+from factrainer.sklearn.dataset.dataset import SklearnDataset
 from factrainer.sklearn.raw_model import SklearnModel
 from sklearn.linear_model import LinearRegression
 

@@ -4,7 +4,7 @@ from factrainer.core.cv.dataset import (
     SplittedDataset,
     SplittedDatasets,
 )
-from factrainer.sklearn.dataset import SklearnDataset
+from factrainer.sklearn.dataset.dataset import SklearnDataset
 from numpy.testing import assert_array_equal
 from sklearn.model_selection import KFold
 

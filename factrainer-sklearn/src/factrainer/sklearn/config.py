@@ -12,7 +12,7 @@ from factrainer.base.config import (
 from factrainer.base.dataset import Prediction
 from pydantic import ConfigDict
 
-from .dataset import SklearnDataset
+from .dataset.dataset import SklearnDataset
 from .raw_model import Predictable, ProbPredictable, SklearnModel
 
 

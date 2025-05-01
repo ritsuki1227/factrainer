@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
-from factrainer.sklearn.dataset import SklearnDataset
+from factrainer.sklearn.dataset.dataset import SklearnDataset
 from numpy.testing import assert_array_equal
 
 
