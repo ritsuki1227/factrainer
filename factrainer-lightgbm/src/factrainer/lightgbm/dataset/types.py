@@ -11,11 +11,11 @@ from lightgbm.compat import (  # type: ignore
     dt_DataTable,
     pa_Array,
     pa_ChunkedArray,
-    pa_Table,
 )
 
 if TYPE_CHECKING:
     import pandas as pd
+    import pyarrow as pa
     from pandas._typing import Axis
 
 
@@ -31,14 +31,20 @@ class PdSeriesProtocol[T](Protocol):
     ) -> "PdSeriesProtocol[T]": ...
 
 
+class PaTableProtocol(Protocol): ...
+
+
 if TYPE_CHECKING:
     type pd_DataFrame = pd.DataFrame
     type pd_Series[T] = pd.Series[T]
+    type pa_Table = pa.Table
 else:
     type pd_DataFrame = PdDataFrameProtocol
     type pd_Series = PdSeriesProtocol
+    type pa_Table = PaTableProtocol
 
 type LgbParams = dict[str, Any] | None
+
 LgbDataType = TypeVar(
     "LgbDataType",
     str,
@@ -60,8 +66,8 @@ LgbLabelType = TypeVar(
     npt.NDArray[Any],
     "pd_Series[Any]",
     pd_DataFrame,
-    pa_Array,
-    pa_ChunkedArray,
+    pa_Array[Any],
+    pa_ChunkedArray[Any],
 )
 
 LgbWeightType = TypeVar(
@@ -70,8 +76,8 @@ LgbWeightType = TypeVar(
     list[int],
     npt.NDArray[Any],
     "pd_Series[Any]",
-    pa_Array,
-    pa_ChunkedArray,
+    pa_Array[Any],
+    pa_ChunkedArray[Any],
 )
 
 LgbInitScoreType = TypeVar(
@@ -82,8 +88,8 @@ LgbInitScoreType = TypeVar(
     "pd_Series[Any]",
     pd_DataFrame,
     pa_Table,
-    pa_Array,
-    pa_ChunkedArray,
+    pa_Array[Any],
+    pa_ChunkedArray[Any],
 )
 
 LgbGroupType = TypeVar(
@@ -92,8 +98,8 @@ LgbGroupType = TypeVar(
     list[int],
     npt.NDArray[Any],
     "pd_Series[Any]",
-    pa_Array,
-    pa_ChunkedArray,
+    pa_Array[Any],
+    pa_ChunkedArray[Any],
 )
 
 LgbPositionType = TypeVar(

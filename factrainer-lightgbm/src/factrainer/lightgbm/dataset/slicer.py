@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from collections.abc import Sequence
 from pathlib import Path
 
@@ -6,7 +8,7 @@ import scipy
 from factrainer.base.dataset import BaseDatasetSlicer, RowIndex
 
 import lightgbm as lgb
-from lightgbm.compat import (  # type: ignore
+from lightgbm.compat import (  # type: ignore  # type: ignore
     dt_DataTable,
     pa_Table,
     pd_DataFrame,
