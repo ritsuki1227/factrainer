@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Protocol, TypeVar
+from typing import TYPE_CHECKING, Any, Protocol, TypeVar, runtime_checkable
 
 import scipy
 from numpy import typing as npt
@@ -19,18 +19,21 @@ if TYPE_CHECKING:
     from pandas._typing import Axis
 
 
+@runtime_checkable
 class PdDataFrameProtocol(Protocol):
     def take(
         self, indices: list[int], axis: Axis = ..., **kwargs: Any
     ) -> "PdDataFrameProtocol": ...
 
 
+@runtime_checkable
 class PdSeriesProtocol[T](Protocol):
     def take(
         self, indices: list[int], axis: Axis = ..., **kwargs: Any
     ) -> "PdSeriesProtocol[T]": ...
 
 
+@runtime_checkable
 class PaTableProtocol(Protocol): ...
 
 
