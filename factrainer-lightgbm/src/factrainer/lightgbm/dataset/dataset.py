@@ -5,7 +5,6 @@ from sklearn.model_selection._split import _BaseKFold
 
 import lightgbm as lgb
 
-from .equality_checker import LgbDatasetEqualityChecker
 from .slicer import LgbDatasetSlicer
 
 
@@ -38,8 +37,3 @@ class LgbDataset(IndexableDataset):
                 raise NotImplementedError
             case _:
                 raise NotImplementedError
-
-    def __eq__(self, value: object) -> bool:
-        if not isinstance(value, LgbDataset):
-            return False
-        return LgbDatasetEqualityChecker().check(self.dataset, value.dataset)

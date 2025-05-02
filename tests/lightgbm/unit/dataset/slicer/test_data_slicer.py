@@ -1,3 +1,5 @@
+from typing import cast
+
 import numpy as np
 import pandas as pd
 from factrainer.lightgbm.dataset.slicer import LgbDataSlicer
@@ -18,4 +20,4 @@ def test_pandas_df() -> None:
     expected = pd.DataFrame([[5, 6], [1, 2]], index=[2, 0])
     sut = LgbDataSlicer()
     actual = sut.slice(data, [2, 0])
-    assert_frame_equal(actual, expected)
+    assert_frame_equal(cast(pd.DataFrame, actual), expected)

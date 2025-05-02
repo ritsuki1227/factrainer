@@ -1,16 +1,16 @@
 from __future__ import annotations
 
+from abc import ABC, abstractmethod
 from collections.abc import Sequence
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Protocol, TypeVar, runtime_checkable
 
 import scipy
 from numpy import typing as npt
+from typing_extensions import TypeIs
 
-from lightgbm.compat import (  # type: ignore
+from lightgbm.compat import (
     dt_DataTable,
-    pa_Array,
-    pa_ChunkedArray,
 )
 
 if TYPE_CHECKING:
@@ -37,14 +37,26 @@ class PdSeriesProtocol[T](Protocol):
 class PaTableProtocol(Protocol): ...
 
 
+@runtime_checkable
+class PaArrayProtocol(Protocol): ...
+
+
+@runtime_checkable
+class PaChunkedArrayProtocol(Protocol): ...
+
+
 if TYPE_CHECKING:
     type pd_DataFrame = pd.DataFrame
     type pd_Series[T] = pd.Series[T]
     type pa_Table = pa.Table
+    type pa_Array = pa.Array[Any]
+    type pa_ChunkedArray = pa.ChunkedArray[Any]
 else:
     type pd_DataFrame = PdDataFrameProtocol
-    type pd_Series = PdSeriesProtocol
+    type pd_Series[T] = PdSeriesProtocol[T]
     type pa_Table = PaTableProtocol
+    type pa_Array = PaArrayProtocol
+    type pa_ChunkedArray = PaChunkedArrayProtocol
 
 type LgbParams = dict[str, Any] | None
 
@@ -69,8 +81,8 @@ LgbLabelType = TypeVar(
     npt.NDArray[Any],
     "pd_Series[Any]",
     pd_DataFrame,
-    pa_Array[Any],
-    pa_ChunkedArray[Any],
+    pa_Array,
+    pa_ChunkedArray,
 )
 
 LgbWeightType = TypeVar(
@@ -79,8 +91,8 @@ LgbWeightType = TypeVar(
     list[int],
     npt.NDArray[Any],
     "pd_Series[Any]",
-    pa_Array[Any],
-    pa_ChunkedArray[Any],
+    pa_Array,
+    pa_ChunkedArray,
 )
 
 LgbInitScoreType = TypeVar(
@@ -91,8 +103,8 @@ LgbInitScoreType = TypeVar(
     "pd_Series[Any]",
     pd_DataFrame,
     pa_Table,
-    pa_Array[Any],
-    pa_ChunkedArray[Any],
+    pa_Array,
+    pa_ChunkedArray,
 )
 
 LgbGroupType = TypeVar(
@@ -101,8 +113,8 @@ LgbGroupType = TypeVar(
     list[int],
     npt.NDArray[Any],
     "pd_Series[Any]",
-    pa_Array[Any],
-    pa_ChunkedArray[Any],
+    pa_Array,
+    pa_ChunkedArray,
 )
 
 LgbPositionType = TypeVar(
@@ -110,3 +122,59 @@ LgbPositionType = TypeVar(
     npt.NDArray[Any],
     "pd_Series[Any]",
 )
+
+
+class IsImportableInstance[T](ABC):
+    @abstractmethod
+    def is_instance(self, obj: Any) -> TypeIs[T]:
+        raise NotImplementedError
+
+
+class IsPdDataFrame(IsImportableInstance[pd_DataFrame]):
+    def is_instance(self, obj: Any) -> TypeIs[pd_DataFrame]:
+        try:
+            import pandas as pd
+
+            return isinstance(obj, pd.DataFrame)
+        except ImportError:
+            return False
+
+
+class IsPdSeries(IsImportableInstance[pd_Series[Any]]):
+    def is_instance(self, obj: Any) -> TypeIs[pd_Series[Any]]:
+        try:
+            import pandas as pd
+
+            return isinstance(obj, pd.Series)
+        except ImportError:
+            return False
+
+
+class IsPaTable(IsImportableInstance[pa_Table]):
+    def is_instance(self, obj: Any) -> TypeIs[pa_Table]:
+        try:
+            import pyarrow as pa
+
+            return isinstance(obj, pa.Table)
+        except ImportError:
+            return False
+
+
+class IsPaArray(IsImportableInstance[pa_Array]):
+    def is_instance(self, obj: Any) -> TypeIs[pa_Array]:
+        try:
+            import pyarrow as pa
+
+            return isinstance(obj, pa.Array)
+        except ImportError:
+            return False
+
+
+class IsPaChunkedArray(IsImportableInstance[pa_ChunkedArray]):
+    def is_instance(self, obj: Any) -> TypeIs[pa_ChunkedArray]:
+        try:
+            import pyarrow as pa
+
+            return isinstance(obj, pa.ChunkedArray)
+        except ImportError:
+            return False
