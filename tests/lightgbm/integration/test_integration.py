@@ -22,6 +22,7 @@ from factrainer.lightgbm import (
     LgbTrainConfig,
 )
 from numpy import typing as npt
+from numpy.testing import assert_allclose
 from sklearn.metrics import accuracy_score, r2_score
 from sklearn.model_selection import KFold, train_test_split
 
@@ -46,7 +47,7 @@ def test_cv_model(
     y_pred = model.predict(dataset)
     metric = r2_score(target, y_pred)
 
-    assert (metric > 0.8) and (metric < 0.85)
+    assert_allclose(metric, 0.84, atol=2.5e-02)
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
@@ -69,7 +70,7 @@ def test_cv_model_parallel(
     y_pred = model.predict(dataset, n_jobs=4)
     metric = r2_score(target, y_pred)
 
-    assert (metric > 0.8) and (metric < 0.85)
+    assert_allclose(metric, 0.84, atol=2.5e-02)
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
@@ -93,7 +94,7 @@ def test_cv_pred_config(
     y_pred = model.predict(dataset)
     metric = r2_score(target, y_pred)
 
-    assert (metric > 0.2) and (metric < 0.25)
+    assert_allclose(metric, 0.22, atol=2.5e-02)
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
@@ -118,8 +119,8 @@ def test_cv_set_pred_config_after_trainig(
     model.pred_config = LgbPredictConfig(num_iteration=None)
     metric = r2_score(target, model.predict(dataset))
 
-    assert (metric_underfit > 0.2) and (metric_underfit < 0.25)
-    assert (metric > 0.8) and (metric < 0.85)
+    assert_allclose(metric_underfit, 0.22, atol=2.5e-02)
+    assert_allclose(metric, 0.84, atol=2.5e-02)
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
@@ -138,7 +139,7 @@ def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     y_pred = model.predict(dataset, n_jobs=4)
     metric = accuracy_score(target, y_pred > 0.5)
 
-    assert (metric > 0.8) and (metric < 0.85)
+    assert_allclose(metric, 0.84, atol=2.5e-02)
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
@@ -171,7 +172,7 @@ def test_cv_train_val_test_split(
     y_pred = model.predict(dataset)
     metric = r2_score(target, y_pred)
 
-    assert (metric > 0.8) and (metric < 0.85)
+    assert_allclose(metric, 0.84, atol=2.5e-02)
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
@@ -201,7 +202,7 @@ def test_cv_average_ensembling(
     y_pred = model.predict(test_dataset, n_jobs=4, mode=PredMode.AVG_ENSEMBLE)
     metric = r2_score(test_y, y_pred)
 
-    assert (metric > 0.8) and (metric < 0.85)
+    assert_allclose(metric, 0.84, atol=2.5e-02)
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
@@ -229,7 +230,7 @@ def test_cv_model_picklable(
     y_pred = loaded_model.predict(dataset, n_jobs=4)
     metric = r2_score(target, y_pred)
 
-    assert (metric > 0.8) and (metric < 0.85)
+    assert_allclose(metric, 0.84, atol=2.5e-02)
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
@@ -259,4 +260,4 @@ def test_single_model(
     y_pred = model.predict(test_dataset)
     metric = r2_score(test_y, y_pred)
 
-    assert (metric > 0.8) and (metric < 0.85)
+    assert_allclose(metric, 0.83, atol=2.5e-02)
