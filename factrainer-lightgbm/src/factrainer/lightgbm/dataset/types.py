@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
 
+from factrainer.base.dataset import IsImportableInstance
 from typing_extensions import TypeIs
 
 if TYPE_CHECKING:
@@ -49,12 +49,6 @@ else:
     type pa_Table = PaTableProtocol
     type pa_Array = PaArrayProtocol
     type pa_ChunkedArray = PaChunkedArrayProtocol
-
-
-class IsImportableInstance[T](ABC):
-    @abstractmethod
-    def is_instance(self, obj: Any) -> TypeIs[T]:
-        raise NotImplementedError
 
 
 class IsPdDataFrame(IsImportableInstance[pd_DataFrame]):

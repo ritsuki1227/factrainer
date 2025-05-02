@@ -6,11 +6,15 @@ from typing import Any
 import numpy as np
 from factrainer.base.dataset import IndexableDataset, RowIndex, RowsAndColumns
 from pydantic import field_validator
-from typing_extensions import TypeIs
 
 from sklearn.model_selection._split import _BaseKFold
 
-from .types import MatrixLike, PdDataFrameLike, PdSeriesLike, VectorLike
+from .types import (
+    IsPdDataFrame,
+    IsPdSeries,
+    MatrixLike,
+    VectorLike,
+)
 
 
 class SklearnDataset(IndexableDataset):
@@ -35,13 +39,13 @@ class SklearnDataset(IndexableDataset):
                         if self.y.ndim == 1
                         else self.y[index]
                     )
-                elif self._is_pd_series(self.y):
+                elif IsPdSeries().is_instance(self.y):
                     y = self.y.take([index])
                 else:
                     raise ValueError
                 if isinstance(self.X, np.ndarray):
                     X = np.expand_dims(self.X[index], axis=0)
-                elif self._is_pd_dataframe(self.X):
+                elif IsPdDataFrame().is_instance(self.X):
                     X = self.X.take([index])
                 else:
                     raise ValueError
@@ -54,13 +58,13 @@ class SklearnDataset(IndexableDataset):
                     y = None
                 elif isinstance(self.y, np.ndarray):
                     y = self.y[index]
-                elif self._is_pd_series(self.y):
+                elif IsPdSeries().is_instance(self.y):
                     y = self.y.take(index)
                 else:
                     ValueError
                 if isinstance(self.X, np.ndarray):
                     X = self.X[index]
-                elif self._is_pd_dataframe(self.X):
+                elif IsPdDataFrame().is_instance(self.X):
                     X = self.X.take(index)
                 else:
                     ValueError
@@ -79,7 +83,7 @@ class SklearnDataset(IndexableDataset):
     def validate_X(cls, value: Any) -> MatrixLike:
         if isinstance(value, np.ndarray):
             return value
-        if cls._is_pd_dataframe(value):
+        if IsPdDataFrame().is_instance(value):
             return value
         raise ValueError("X must be a numpy array or a pandas DataFrame")
 
@@ -90,24 +94,6 @@ class SklearnDataset(IndexableDataset):
             return None
         if isinstance(value, np.ndarray):
             return value
-        if cls._is_pd_series(value):
+        if IsPdSeries().is_instance(value):
             return value
         raise ValueError("y must be a numpy array or a pandas Series")
-
-    @classmethod
-    def _is_pd_dataframe(cls, obj: Any) -> TypeIs[PdDataFrameLike]:
-        try:
-            import pandas as pd
-
-            return isinstance(obj, pd.DataFrame)
-        except ImportError:
-            return False
-
-    @classmethod
-    def _is_pd_series(cls, obj: Any) -> TypeIs[PdSeriesLike]:
-        try:
-            import pandas as pd
-
-            return isinstance(obj, pd.Series)
-        except ImportError:
-            return False
