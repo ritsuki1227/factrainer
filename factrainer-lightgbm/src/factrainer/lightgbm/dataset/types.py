@@ -1,17 +1,9 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from collections.abc import Sequence
-from pathlib import Path
-from typing import TYPE_CHECKING, Any, Protocol, TypeVar, runtime_checkable
+from typing import TYPE_CHECKING, Any, Protocol, runtime_checkable
 
-import scipy
-from numpy import typing as npt
 from typing_extensions import TypeIs
-
-from lightgbm.compat import (
-    dt_DataTable,
-)
 
 if TYPE_CHECKING:
     import pandas as pd
@@ -57,71 +49,6 @@ else:
     type pa_Table = PaTableProtocol
     type pa_Array = PaArrayProtocol
     type pa_ChunkedArray = PaChunkedArrayProtocol
-
-type LgbParams = dict[str, Any] | None
-
-LgbDataType = TypeVar(
-    "LgbDataType",
-    str,
-    Path,
-    npt.NDArray[Any],
-    pd_DataFrame,
-    dt_DataTable,
-    scipy.sparse.spmatrix,
-    Sequence[Any],
-    list[Sequence[Any]],
-    list[npt.NDArray[Any]],
-    pa_Table,
-)
-
-LgbLabelType = TypeVar(
-    "LgbLabelType",
-    list[float],
-    list[int],
-    npt.NDArray[Any],
-    "pd_Series[Any]",
-    pd_DataFrame,
-    pa_Array,
-    pa_ChunkedArray,
-)
-
-LgbWeightType = TypeVar(
-    "LgbWeightType",
-    list[float],
-    list[int],
-    npt.NDArray[Any],
-    "pd_Series[Any]",
-    pa_Array,
-    pa_ChunkedArray,
-)
-
-LgbInitScoreType = TypeVar(
-    "LgbInitScoreType",
-    list[float],
-    list[list[float]],
-    npt.NDArray[Any],
-    "pd_Series[Any]",
-    pd_DataFrame,
-    pa_Table,
-    pa_Array,
-    pa_ChunkedArray,
-)
-
-LgbGroupType = TypeVar(
-    "LgbGroupType",
-    list[float],
-    list[int],
-    npt.NDArray[Any],
-    "pd_Series[Any]",
-    pa_Array,
-    pa_ChunkedArray,
-)
-
-LgbPositionType = TypeVar(
-    "LgbPositionType",
-    npt.NDArray[Any],
-    "pd_Series[Any]",
-)
 
 
 class IsImportableInstance[T](ABC):
