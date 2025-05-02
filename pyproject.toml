@@ -61,6 +61,7 @@ dev = [
     "pandas>=2.2.3",
     "pyarrow>=20.0.0",
     "pyarrow-stubs>=19.2",
+    "datatable>=1.1.0",
 ]
 
 [tool.uv.workspace]

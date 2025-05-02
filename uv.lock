@@ -370,6 +370,16 @@ wheels = [
 ]
 
 [[package]]
+name = "datatable"
+version = "1.1.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/5e/1e/1a73489d0d9de1a1303fa89e154bc3f73e083441704a1e7d0954f685455f/datatable-1.1.0.tar.gz", hash = "sha256:8a9f6953ef6b02ede3d7c490f17d5c18c9b1bf2d58dd5451a8cac40ed887d775", size = 1315157, upload_time = "2023-12-01T22:03:31.159Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/13/74/4cde1cbb92bc01053abab6ff4f36f80109f783e5217a10f4fe1811eb1b4a/datatable-1.1.0-cp312-cp312-macosx_10_9_universal2.whl", hash = "sha256:5eacc7ac02fdfb4f0d54a62c8254779acdc335e1ed0cd1e2fdfa639dc1c6e90c", size = 8301929, upload_time = "2023-12-01T21:56:42.025Z" },
+    { url = "https://files.pythonhosted.org/packages/90/73/56a4592c195940697c1f7eaf7f888bdc00e80a5187063fff7f24da0356bc/datatable-1.1.0-cp312-cp312-manylinux_2_35_x86_64.whl", hash = "sha256:f7ad015e74499e5510e713b9594e69d36f7bb1f775a13c1473af5735a68a7f6f", size = 82030173, upload_time = "2023-12-01T21:58:38.589Z" },
+]
+
+[[package]]
 name = "debugpy"
 version = "1.8.13"
 source = { registry = "https://pypi.org/simple" }
@@ -443,6 +453,7 @@ xgboost = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "datatable" },
     { name = "graphviz" },
     { name = "joblib-stubs" },
     { name = "jupyterlab" },
@@ -475,6 +486,7 @@ provides-extras = ["sklearn", "lightgbm", "xgboost", "catboost", "all"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "datatable", specifier = ">=1.1.0" },
     { name = "graphviz", specifier = ">=0.20.3" },
     { name = "joblib-stubs", specifier = ">=1.4.2.5.20240918" },
     { name = "jupyterlab", specifier = ">=4.4.0" },
