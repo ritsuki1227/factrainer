@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import lightgbm as lgb
 import numpy as np
 from factrainer.core.cv.dataset import (

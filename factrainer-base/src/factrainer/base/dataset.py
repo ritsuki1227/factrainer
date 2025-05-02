@@ -6,6 +6,7 @@ import numpy as np
 import numpy.typing as npt
 from pydantic import BaseModel, ConfigDict
 from sklearn.model_selection._split import _BaseKFold
+from typing_extensions import TypeIs
 
 # type Prediction = npt.NDArray[Any] | scipy.sparse.spmatrix | list[scipy.sparse.spmatrix]
 type Prediction = npt.NDArray[np.number[Any]]
@@ -31,13 +32,13 @@ class IndexableDataset(BaseDataset):
         raise NotImplementedError
 
 
-class BaseDatasetEqualityChecker[T](ABC):
-    @abstractmethod
-    def check(self, left: T, right: T) -> bool:
-        raise NotImplementedError
-
-
 class BaseDatasetSlicer[T](ABC):
     @abstractmethod
     def slice(self, data: T, index: RowIndex) -> T:
+        raise NotImplementedError
+
+
+class IsImportableInstance[T](ABC):
+    @abstractmethod
+    def is_instance(self, obj: Any) -> TypeIs[T]:
         raise NotImplementedError

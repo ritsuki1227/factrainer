@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import Any, cast
+
 import numpy as np
 import pandas as pd
 from factrainer.lightgbm.dataset.slicer import LgbLabelSlicer
@@ -26,7 +30,7 @@ def test_pandas_series() -> None:
     expected = pd.Series([3, 1], index=[2, 0])
     sut = LgbLabelSlicer()
     actual = sut.slice(data, [2, 0])
-    assert_series_equal(actual, expected)
+    assert_series_equal(cast("pd.Series[Any]", actual), expected)
 
 
 def test_pandas_df() -> None:
@@ -34,4 +38,4 @@ def test_pandas_df() -> None:
     expected = pd.DataFrame([[3], [1]], index=[2, 0])
     sut = LgbLabelSlicer()
     actual = sut.slice(data, [2, 0])
-    assert_frame_equal(actual, expected)
+    assert_frame_equal(cast(pd.DataFrame, actual), expected)
