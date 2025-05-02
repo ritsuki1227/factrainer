@@ -26,46 +26,6 @@ from .types import (
     IsPdSeries,
 )
 
-# class LgbDataSlicer(BaseDatasetSlicer[LgbDataType]):
-#     def slice(self, data: LgbDataType, index: RowIndex) -> LgbDataType:
-#         if isinstance(data, str):
-#             raise NotImplementedError
-#         elif isinstance(data, Path):
-#             raise NotImplementedError
-#         elif isinstance(data, np.ndarray):
-#             return data[index]
-#         elif _is_pd_dataframe(data):
-#             return data.take(index)
-#         elif isinstance(data, dt_DataTable):
-#             raise NotImplementedError
-#         elif isinstance(data, scipy.sparse.spmatrix):
-#             raise NotImplementedError
-#         elif isinstance(data, Sequence):
-#             raise NotImplementedError
-#         elif _is_pa_table(data):
-#             raise NotImplementedError
-#         else:
-#             raise NotImplementedError
-# match data:
-#     case str():
-#         raise NotImplementedError
-#     case Path():
-#         raise NotImplementedError
-#     case np.ndarray():
-#         return data[index]
-#     case pd_DataFrame():
-#         return data.take(index)
-#     case dt_DataTable():
-#         raise NotImplementedError
-#     case scipy.sparse.spmatrix():
-#         raise NotImplementedError
-#     case Sequence():
-#         raise NotImplementedError
-#     case pa_Table():
-#         raise NotImplementedError
-#     case _:
-#         raise NotImplementedError
-
 
 class LgbDataSlicer(BaseDatasetSlicer[_LGBM_TrainDataType]):
     def slice(self, data: _LGBM_TrainDataType, index: RowIndex) -> _LGBM_TrainDataType:
@@ -87,28 +47,6 @@ class LgbDataSlicer(BaseDatasetSlicer[_LGBM_TrainDataType]):
             raise NotImplementedError
         else:
             raise NotImplementedError
-
-
-# class LgbLabelSlicer(BaseDatasetSlicer[LgbLabelType]):
-#     def slice(self, data: LgbLabelType, index: RowIndex) -> LgbLabelType:
-#         if isinstance(data, list):
-#             raise NotImplementedError
-#         elif isinstance(data, np.ndarray):
-#             return data[index]
-#         elif _is_pd_dataframe(data):
-#             return data.take(index)
-#         elif _is_pd_series(data):
-#             return data.take(index)
-#         elif isinstance(data, dt_DataTable):
-#             raise NotImplementedError
-#         elif isinstance(data, scipy.sparse.spmatrix):
-#             raise NotImplementedError
-#         elif isinstance(data, Sequence):
-#             raise NotImplementedError
-#         elif _is_pa_table(data):
-#             raise NotImplementedError
-#         else:
-#             raise NotImplementedError
 
 
 class LgbLabelSlicer(BaseDatasetSlicer[_LGBM_LabelType]):
