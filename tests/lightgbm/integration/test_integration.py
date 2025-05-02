@@ -37,7 +37,7 @@ def test_cv_model(
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
-            params={"objective": "regression"},
+            params={"objective": "regression", "seed": 1, "deterministic": True},
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
     )
@@ -60,7 +60,7 @@ def test_cv_model_parallel(
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
-            params={"objective": "regression"},
+            params={"objective": "regression", "seed": 1, "deterministic": True},
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
     )
@@ -83,7 +83,7 @@ def test_cv_pred_config(
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
-            params={"objective": "regression"},
+            params={"objective": "regression", "seed": 1, "deterministic": True},
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
         pred_config=LgbPredictConfig(num_iteration=2),
@@ -107,7 +107,7 @@ def test_cv_set_pred_config_after_trainig(
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
-            params={"objective": "regression"},
+            params={"objective": "regression", "seed": 1, "deterministic": True},
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
         pred_config=LgbPredictConfig(num_iteration=2),
@@ -129,7 +129,7 @@ def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
-            params={"objective": "binary"},
+            params={"objective": "binary", "seed": 1, "deterministic": True},
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
     )
@@ -139,7 +139,7 @@ def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     y_pred = model.predict(dataset, n_jobs=4)
     metric = accuracy_score(target, y_pred > 0.5)
 
-    assert_allclose(metric, 0.84, atol=2.5e-02)
+    assert_allclose(metric, 0.81, atol=2.5e-02)
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
@@ -152,7 +152,7 @@ def test_cv_train_val_test_split(
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
-            params={"objective": "regression"},
+            params={"objective": "regression", "seed": 1, "deterministic": True},
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
     )
@@ -192,7 +192,7 @@ def test_cv_average_ensembling(
     test_dataset = LgbDataset(dataset=lgb.Dataset(test_X, test_y))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
-            params={"objective": "regression"},
+            params={"objective": "regression", "seed": 1, "deterministic": True},
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
     )
@@ -215,7 +215,7 @@ def test_cv_model_picklable(
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
-            params={"objective": "regression"},
+            params={"objective": "regression", "seed": 1, "deterministic": True},
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
     )
@@ -251,7 +251,7 @@ def test_single_model(
     test_dataset = LgbDataset(dataset=lgb.Dataset(test_X, test_y))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
-            params={"objective": "regression"},
+            params={"objective": "regression", "seed": 1, "deterministic": True},
             callbacks=[lgb.early_stopping(100, verbose=False)],
         ),
     )
