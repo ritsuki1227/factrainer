@@ -1,4 +1,9 @@
-from .config import SklearnModelConfig, SklearnPredictConfig, SklearnTrainConfig
+from .config import (
+    PredictMethod,
+    SklearnModelConfig,
+    SklearnPredictConfig,
+    SklearnTrainConfig,
+)
 from .dataset.dataset import SklearnDataset
 from .raw_model import SklearnModel
 
@@ -8,4 +13,5 @@ __all__ = [
     "SklearnModelConfig",
     "SklearnModel",
     "SklearnDataset",
+    "PredictMethod",
 ]

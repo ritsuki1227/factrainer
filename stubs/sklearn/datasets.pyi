@@ -45,3 +45,21 @@ def load_iris(
     return_X_y: bool = False,
     as_frame: bool = False,
 ) -> Bunch | tuple[npt.NDArray[Any], npt.NDArray[Any]]: ...
+@overload
+def load_breast_cancer(
+    *,
+    return_X_y: Literal[False],
+    as_frame: bool = False,
+) -> Bunch: ...
+@overload
+def load_breast_cancer(
+    *,
+    return_X_y: Literal[True],
+    as_frame: bool = False,
+) -> tuple[npt.NDArray[Any], npt.NDArray[Any]]: ...
+@overload
+def load_breast_cancer(
+    *,
+    return_X_y: bool = False,
+    as_frame: bool = False,
+) -> Bunch | tuple[npt.NDArray[Any], npt.NDArray[Any]]: ...

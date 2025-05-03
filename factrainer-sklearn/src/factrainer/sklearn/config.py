@@ -61,9 +61,19 @@ class SklearnPredictor(
     ) -> Prediction:
         match config.predict_method:
             case PredictMethod.PREDICT_PROBA:
-                raise NotImplementedError
+                if not hasattr(raw_model.estimator, "predict_proba"):
+                    raise ValueError("The model does not support predict_proba method.")
+                return raw_model.estimator.predict_proba(
+                    dataset.X,
+                    **(config.model_extra if config.model_extra is not None else {}),
+                )
             case PredictMethod.PREDICT:
-                raise NotImplementedError
+                if not hasattr(raw_model.estimator, "predict"):
+                    raise ValueError("The model does not support predict method.")
+                return raw_model.estimator.predict(
+                    dataset.X,
+                    **(config.model_extra if config.model_extra is not None else {}),
+                )
             case PredictMethod.AUTO:
                 if hasattr(raw_model.estimator, "predict_proba"):
                     return raw_model.estimator.predict_proba(
