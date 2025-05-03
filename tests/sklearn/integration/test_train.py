@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 import pytest
@@ -10,9 +10,11 @@ from factrainer.sklearn import (
     SklearnModelConfig,
     SklearnTrainConfig,
 )
+from factrainer.sklearn.raw_model import Predictable
 from numpy import typing as npt
 from numpy.testing import assert_allclose
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.exceptions import NotFittedError
 from sklearn.metrics import r2_score
 from sklearn.model_selection import KFold, train_test_split
 
@@ -37,6 +39,8 @@ def test_cv_model_regression(
     metric = r2_score(target, y_pred)
 
     assert_allclose(metric, 0.8, atol=2.5e-02)
+    with pytest.raises(NotFittedError):
+        cast(Predictable, config.train_config.estimator).predict(np.array([]))
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
