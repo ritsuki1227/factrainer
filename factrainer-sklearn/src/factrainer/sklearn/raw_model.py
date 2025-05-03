@@ -4,6 +4,8 @@ from factrainer.base.dataset import Prediction
 from factrainer.base.raw_model import RawModel
 from numpy import typing as npt
 
+from .dataset.types import MatrixLike, VectorLike
+
 
 @runtime_checkable
 class BaseEstimatorProtocol(Protocol):
@@ -14,7 +16,7 @@ class BaseEstimatorProtocol(Protocol):
 @runtime_checkable
 class Predictable(BaseEstimatorProtocol, Protocol):
     def fit(
-        self, X: npt.ArrayLike, y: npt.ArrayLike, *args: Any, **kwargs: Any
+        self, X: MatrixLike, y: VectorLike | None, *args: Any, **kwargs: Any
     ) -> Self: ...
 
     def predict(self, X: npt.ArrayLike, *args: Any, **kwargs: Any) -> Prediction: ...
@@ -23,7 +25,7 @@ class Predictable(BaseEstimatorProtocol, Protocol):
 @runtime_checkable
 class ProbPredictable(BaseEstimatorProtocol, Protocol):
     def fit(
-        self, X: npt.ArrayLike, y: npt.ArrayLike, *args: Any, **kwargs: Any
+        self, X: MatrixLike, y: VectorLike | None, *args: Any, **kwargs: Any
     ) -> Self: ...
 
     def predict_proba(

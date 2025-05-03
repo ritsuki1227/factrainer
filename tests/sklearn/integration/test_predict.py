@@ -133,7 +133,7 @@ def test_cv_average_ensembling(
     )
     k_fold = KFold(n_splits=5, shuffle=True, random_state=1)
     model = CvModelContainer(config, k_fold)
-    model.train(train_dataset, n_jobs=4)
+    model.train(train_dataset)
     y_pred = model.predict(test_dataset, n_jobs=4, mode=PredMode.AVG_ENSEMBLE)
     metric = r2_score(test_y, y_pred)
 

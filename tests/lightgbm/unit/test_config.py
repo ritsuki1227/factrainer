@@ -18,7 +18,7 @@ from numpy import typing as npt
 
 @patch("factrainer.lightgbm.config.LgbPredictor", spec=LgbPredictor)
 @patch("factrainer.lightgbm.config.LgbLearner", spec=LgbLearner)
-class TestCreateLgbModelConfig:
+class TestLgbModelConfig:
     @patch("factrainer.lightgbm.config.LgbPredictConfig", spec=LgbPredictConfig)
     def test_create_lgb_model_config_with_default(
         self,
