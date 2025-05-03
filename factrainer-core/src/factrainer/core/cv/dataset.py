@@ -84,19 +84,35 @@ class SplittedDatasets[T: IndexableDataset](BaseDataset):
         datasets: list[SplittedDataset[T]] = []
         if isinstance(k_fold, SplittedDatasetsIndices):
             if k_fold.val is None:
-                raise ValueError
-            for train_index, val_index, test_index in zip(
-                k_fold.train, k_fold.val, k_fold.test
-            ):
-                datasets.append(
-                    SplittedDataset(
-                        train=IndexedDataset(
-                            index=train_index, data=dataset[train_index]
-                        ),
-                        val=IndexedDataset(index=val_index, data=dataset[val_index]),
-                        test=IndexedDataset(index=test_index, data=dataset[test_index]),
+                for train_index, test_index in zip(k_fold.train, k_fold.test):
+                    datasets.append(
+                        SplittedDataset(
+                            train=IndexedDataset(
+                                index=train_index, data=dataset[train_index]
+                            ),
+                            val=None,
+                            test=IndexedDataset(
+                                index=test_index, data=dataset[test_index]
+                            ),
+                        )
                     )
-                )
+            else:
+                for train_index, val_index, test_index in zip(
+                    k_fold.train, k_fold.val, k_fold.test
+                ):
+                    datasets.append(
+                        SplittedDataset(
+                            train=IndexedDataset(
+                                index=train_index, data=dataset[train_index]
+                            ),
+                            val=IndexedDataset(
+                                index=val_index, data=dataset[val_index]
+                            ),
+                            test=IndexedDataset(
+                                index=test_index, data=dataset[test_index]
+                            ),
+                        )
+                    )
         else:
             for train_index, test_index in dataset.k_fold_split(k_fold):
                 datasets.append(
