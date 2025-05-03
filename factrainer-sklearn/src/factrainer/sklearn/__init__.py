@@ -1,7 +1,7 @@
 from .config import (
-    PredictMethod,
     SklearnModelConfig,
     SklearnPredictConfig,
+    SklearnPredictMethod,
     SklearnTrainConfig,
 )
 from .dataset.dataset import SklearnDataset
@@ -13,5 +13,5 @@ __all__ = [
     "SklearnModelConfig",
     "SklearnModel",
     "SklearnDataset",
-    "PredictMethod",
+    "SklearnPredictMethod",
 ]
