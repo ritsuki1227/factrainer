@@ -4,9 +4,12 @@ from typing import cast
 
 import numpy as np
 import pandas as pd
+import polars as pl
 from factrainer.sklearn.dataset.dataset import SklearnDataset
 from numpy.testing import assert_array_equal
 from pandas.testing import assert_frame_equal, assert_series_equal
+from polars.testing import assert_frame_equal as pl_assert_frame_equal
+from polars.testing import assert_series_equal as pl_assert_series_equal
 
 
 class TestSklearnDatasetGetitem:
@@ -50,3 +53,23 @@ class TestSklearnDatasetGetitem:
         if not isinstance(actual.y, pd.Series):
             raise TypeError
         assert_series_equal(actual.y, expected_y)
+
+    def test_polars(self) -> None:
+        X = pl.DataFrame(
+            {
+                "a": [1, 2, 3],
+                "b": [4, 5, 6],
+            }
+        )
+        y = pl.Series([10, 20, 30])
+        sut = SklearnDataset(X=X, y=y)
+        expected_X = pl.DataFrame(
+            {
+                "a": [3, 1],
+                "b": [6, 4],
+            }
+        )
+        expected_y = pl.Series([30, 10])
+        actual = sut[[2, 0]]
+        pl_assert_frame_equal(cast(pl.DataFrame, actual.X), expected_X)
+        pl_assert_series_equal(cast(pl.Series, actual.y), expected_y)

@@ -4,6 +4,7 @@ from collections.abc import Generator
 from typing import Any
 
 import numpy as np
+import polars as pl
 from factrainer.base.dataset import IndexableDataset, RowIndex, RowsAndColumns
 from pydantic import field_validator
 
@@ -12,6 +13,8 @@ from sklearn.model_selection._split import _BaseKFold
 from .types import (
     IsPdDataFrame,
     IsPdSeries,
+    IsPlDataFrame,
+    IsPlSeries,
     MatrixLike,
     VectorLike,
 )
@@ -39,6 +42,8 @@ class SklearnDataset(IndexableDataset):
                     return np.expand_dims(X[index], axis=0)
                 elif IsPdDataFrame().is_instance(X):
                     return X.take([index])
+                elif IsPlDataFrame().is_instance(X):
+                    raise NotImplementedError
                 else:
                     raise ValueError
             case list():
@@ -46,6 +51,21 @@ class SklearnDataset(IndexableDataset):
                     return X[index]
                 elif IsPdDataFrame().is_instance(X):
                     return X.take(index)
+                elif IsPlDataFrame().is_instance(X):
+                    return (
+                        pl.DataFrame({"__polars_row_index__": index})
+                        .with_row_index(name="__factrainer_row_index__")
+                        .join(
+                            X.with_row_index(name="__polars_row_index__"),
+                            on="__polars_row_index__",
+                        )
+                        .sort("__factrainer_row_index__")
+                        .select(
+                            pl.exclude(
+                                ["__factrainer_row_index__", "__polars_row_index__"]
+                            )
+                        )
+                    )
                 else:
                     raise ValueError
             case slice():
@@ -66,6 +86,8 @@ class SklearnDataset(IndexableDataset):
                     return np.expand_dims(y[index], axis=0) if y.ndim == 1 else y[index]
                 elif IsPdSeries().is_instance(y):
                     return y.take([index])
+                elif IsPlSeries().is_instance(y):
+                    raise NotImplementedError
                 else:
                     raise ValueError
             case list():
@@ -73,6 +95,22 @@ class SklearnDataset(IndexableDataset):
                     return y[index]
                 elif IsPdSeries().is_instance(y):
                     return y.take(index)
+                elif IsPlSeries().is_instance(y):
+                    return (
+                        pl.DataFrame({"__polars_row_index__": index})
+                        .with_row_index(name="__factrainer_row_index__")
+                        .join(
+                            pl.DataFrame(y).with_row_index(name="__polars_row_index__"),
+                            on="__polars_row_index__",
+                        )
+                        .sort("__factrainer_row_index__")
+                        .select(
+                            pl.exclude(
+                                ["__factrainer_row_index__", "__polars_row_index__"]
+                            )
+                        )
+                        .to_series()
+                    )
                 else:
                     raise ValueError
             case slice():
@@ -89,7 +127,11 @@ class SklearnDataset(IndexableDataset):
             return value
         if IsPdDataFrame().is_instance(value):
             return value
-        raise ValueError("X must be a numpy array or a pandas DataFrame")
+        if IsPlDataFrame().is_instance(value):
+            return value
+        raise ValueError(
+            "X must be a numpy array, pandas DataFrame, or polars DataFrame"
+        )
 
     @field_validator("y", mode="after")
     @classmethod
@@ -100,4 +142,6 @@ class SklearnDataset(IndexableDataset):
             return value
         if IsPdSeries().is_instance(value):
             return value
-        raise ValueError("y must be a numpy array or a pandas Series")
+        if IsPlSeries().is_instance(value):
+            return value
+        raise ValueError("y must be a numpy array, pandas Series, or polars Series")
