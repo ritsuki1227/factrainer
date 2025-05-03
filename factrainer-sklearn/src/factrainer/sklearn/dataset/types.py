@@ -9,21 +9,14 @@ from typing_extensions import TypeIs
 if TYPE_CHECKING:
     import pandas as pd
     import polars as pl
-    from pandas._typing import Axis
 
 
 @runtime_checkable
-class PdDataFrameProtocol(Protocol):
-    def take(
-        self, indices: list[int], axis: Axis = ..., **kwargs: Any
-    ) -> "PdDataFrameProtocol": ...
+class PdDataFrameProtocol(Protocol): ...
 
 
 @runtime_checkable
-class PdSeriesProtocol[T](Protocol):
-    def take(
-        self, indices: list[int], axis: Axis = ..., **kwargs: Any
-    ) -> "PdSeriesProtocol[T]": ...
+class PdSeriesProtocol[T](Protocol): ...
 
 
 @runtime_checkable
