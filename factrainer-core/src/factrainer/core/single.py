@@ -44,7 +44,7 @@ class SingleModelContainer[
         self._model_config.train_config = config
 
     @property
-    def pred_config(self) -> W | None:
+    def pred_config(self) -> W:
         return self._model_config.pred_config
 
     @pred_config.setter

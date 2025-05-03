@@ -20,14 +20,17 @@ class CvModelContainer[
         model_config: BaseMlModelConfig[T, U, V, W],
         k_fold: _BaseKFold | SplittedDatasetsIndices,
     ) -> None:
-        self._model_config = model_config
+        self._learner = model_config.learner
+        self._predictor = model_config.predictor
+        self._train_config = model_config.train_config
+        self._pred_config = model_config.pred_config
         self._k_fold = k_fold
 
     def train(self, train_dataset: T, n_jobs: int | None = None) -> None:
         datasets = SplittedDatasets.create(train_dataset, self._k_fold)
         self._cv_indices = datasets.indices
-        self._model = CvLearner(self._model_config.learner).train(
-            datasets.train, datasets.val, self._model_config.train_config, n_jobs
+        self._model = CvLearner(self._learner).train(
+            datasets.train, datasets.val, self.train_config, n_jobs
         )
 
     def predict(
@@ -39,12 +42,12 @@ class CvModelContainer[
         match mode:
             case PredMode.OOF_PRED:
                 datasets = IndexedDatasets[T].create(pred_dataset, self.cv_indices.test)
-                return OutOfFoldPredictor(self._model_config.predictor).predict(
-                    datasets, self.raw_model, self._model_config.pred_config, n_jobs
+                return OutOfFoldPredictor(self._predictor).predict(
+                    datasets, self.raw_model, self.pred_config, n_jobs
                 )
             case PredMode.AVG_ENSEMBLE:
-                return AverageEnsemblePredictor(self._model_config.predictor).predict(
-                    pred_dataset, self.raw_model, self._model_config.pred_config, n_jobs
+                return AverageEnsemblePredictor(self._predictor).predict(
+                    pred_dataset, self.raw_model, self.pred_config, n_jobs
                 )
             case _:
                 raise ValueError(f"Invalid prediction mode: {mode}")
@@ -55,19 +58,19 @@ class CvModelContainer[
 
     @property
     def train_config(self) -> V:
-        return self._model_config.train_config
+        return self._train_config
 
     @train_config.setter
     def train_config(self, config: V) -> None:
-        self._model_config.train_config = config
+        self._train_config = config
 
     @property
-    def pred_config(self) -> W | None:
-        return self._model_config.pred_config
+    def pred_config(self) -> W:
+        return self._pred_config
 
     @pred_config.setter
     def pred_config(self, config: W) -> None:
-        self._model_config.pred_config = config
+        self._pred_config = config
 
     @property
     def cv_indices(self) -> SplittedDatasetsIndices:

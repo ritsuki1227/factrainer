@@ -182,6 +182,7 @@ class TestModelConfig:
         sut.train_config = new_train_config
 
         assert sut.train_config == new_train_config
+        assert model_config.train_config != new_train_config
 
     def test_set_pred_config(self) -> None:
         pred_config = MagicMock(spec=BasePredictConfig).return_value
@@ -195,3 +196,4 @@ class TestModelConfig:
         sut.pred_config = new_pred_config
 
         assert sut.pred_config == new_pred_config
+        assert model_config.pred_config != new_pred_config
