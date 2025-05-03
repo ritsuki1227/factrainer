@@ -4,6 +4,7 @@ import lightgbm as lgb
 import numpy as np
 from factrainer.core.cv.dataset import (
     IndexedDataset,
+    IndexedDatasets,
     SplittedDataset,
     SplittedDatasets,
     SplittedDatasetsIndices,
@@ -166,4 +167,33 @@ class TestSplittedDatasets:
             assert_array_equal(
                 actual_dataset.test.data.dataset.data,
                 expected_dataset.test.data.dataset.data,
+            )
+
+
+class TestIndexedDatasets:
+    def test_create(self) -> None:
+        dataset = LgbDataset(dataset=lgb.Dataset(np.array([[1, 2], [3, 4], [5, 6]])))
+        indices = [[0, 1], [1, 2], [2, 0]]
+        expected = IndexedDatasets[LgbDataset](
+            datasets=[
+                IndexedDataset(
+                    index=[0, 1],
+                    data=LgbDataset(dataset=lgb.Dataset(np.array([[1, 2], [3, 4]]))),
+                ),
+                IndexedDataset(
+                    index=[1, 2],
+                    data=LgbDataset(dataset=lgb.Dataset(np.array([[3, 4], [5, 6]]))),
+                ),
+                IndexedDataset(
+                    index=[2, 0],
+                    data=LgbDataset(dataset=lgb.Dataset(np.array([[5, 6], [1, 2]]))),
+                ),
+            ]
+        )
+        actual = IndexedDatasets[LgbDataset].create(dataset, indices)
+        for actual_dataset, expected_dataset in zip(actual.datasets, expected.datasets):
+            assert_array_equal(actual_dataset.index, expected_dataset.index)
+            assert_array_equal(
+                actual_dataset.data.dataset.data,
+                expected_dataset.data.dataset.data,
             )

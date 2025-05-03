@@ -1,6 +1,7 @@
 import numpy as np
 from factrainer.core.cv.dataset import (
     IndexedDataset,
+    IndexedDatasets,
     SplittedDataset,
     SplittedDatasets,
     SplittedDatasetsIndices,
@@ -168,4 +169,45 @@ class TestSplittedDatasets:
             assert_array_equal(
                 actual_dataset.test.data.X,
                 expected_dataset.test.data.X,
+            )
+
+
+class TestIndexedDatasets:
+    def test_create(self) -> None:
+        dataset = SklearnDataset(
+            X=np.array([[1, 2], [3, 4], [5, 6]]), y=np.array([100, 200, 300])
+        )
+        indices = [[0, 1], [1, 2], [2, 0]]
+        expected = IndexedDatasets[SklearnDataset](
+            datasets=[
+                IndexedDataset(
+                    index=[0, 1],
+                    data=SklearnDataset(
+                        X=np.array([[1, 2], [3, 4]]), y=np.array([100, 200])
+                    ),
+                ),
+                IndexedDataset(
+                    index=[1, 2],
+                    data=SklearnDataset(
+                        X=np.array([[3, 4], [5, 6]]), y=np.array([200, 300])
+                    ),
+                ),
+                IndexedDataset(
+                    index=[2, 0],
+                    data=SklearnDataset(
+                        X=np.array([[5, 6], [1, 2]]), y=np.array([300, 100])
+                    ),
+                ),
+            ]
+        )
+        actual = IndexedDatasets.create(dataset, indices)
+        for actual_dataset, expected_dataset in zip(actual.datasets, expected.datasets):
+            assert_array_equal(actual_dataset.index, expected_dataset.index)
+            assert_array_equal(
+                actual_dataset.data.X,
+                expected_dataset.data.X,
+            )
+            assert_array_equal(
+                actual_dataset.data.y,
+                expected_dataset.data.y,
             )
