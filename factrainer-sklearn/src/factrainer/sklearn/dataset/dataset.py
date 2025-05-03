@@ -28,51 +28,55 @@ class SklearnDataset(IndexableDataset):
             yield train_index.tolist(), val_index.tolist()
 
     def __getitem__(self, index: RowsAndColumns) -> "SklearnDataset":
-        X: MatrixLike
+        return SklearnDataset(
+            X=self._getitem_X(self.X, index), y=self._getitem_y(self.y, index)
+        )
+
+    def _getitem_X(self, X: MatrixLike, index: RowsAndColumns) -> MatrixLike:
         match index:
             case int():
-                if self.y is None:
-                    y = None
-                elif isinstance(self.y, np.ndarray):
-                    y = (
-                        np.expand_dims(self.y[index], axis=0)
-                        if self.y.ndim == 1
-                        else self.y[index]
-                    )
-                elif IsPdSeries().is_instance(self.y):
-                    y = self.y.take([index])
+                if isinstance(X, np.ndarray):
+                    return np.expand_dims(X[index], axis=0)
+                elif IsPdDataFrame().is_instance(X):
+                    return X.take([index])
                 else:
                     raise ValueError
-                if isinstance(self.X, np.ndarray):
-                    X = np.expand_dims(self.X[index], axis=0)
-                elif IsPdDataFrame().is_instance(self.X):
-                    X = self.X.take([index])
-                else:
-                    raise ValueError
-                return SklearnDataset(
-                    X=X,
-                    y=y,
-                )
             case list():
-                if self.y is None:
-                    y = None
-                elif isinstance(self.y, np.ndarray):
-                    y = self.y[index]
-                elif IsPdSeries().is_instance(self.y):
-                    y = self.y.take(index)
+                if isinstance(X, np.ndarray):
+                    return X[index]
+                elif IsPdDataFrame().is_instance(X):
+                    return X.take(index)
                 else:
-                    ValueError
-                if isinstance(self.X, np.ndarray):
-                    X = self.X[index]
-                elif IsPdDataFrame().is_instance(self.X):
-                    X = self.X.take(index)
-                else:
-                    ValueError
-                return SklearnDataset(X=X, y=y)
+                    raise ValueError
             case slice():
-                return SklearnDataset(
-                    X=self.X[index], y=self.y[index] if self.y is not None else None
-                )
+                return X[index]
+            case tuple():
+                raise NotImplementedError
+            case _:
+                raise NotImplementedError
+
+    def _getitem_y(
+        self, y: VectorLike | None, index: RowsAndColumns
+    ) -> VectorLike | None:
+        if y is None:
+            return None
+        match index:
+            case int():
+                if isinstance(y, np.ndarray):
+                    return np.expand_dims(y[index], axis=0) if y.ndim == 1 else y[index]
+                elif IsPdSeries().is_instance(y):
+                    return y.take([index])
+                else:
+                    raise ValueError
+            case list():
+                if isinstance(y, np.ndarray):
+                    return y[index]
+                elif IsPdSeries().is_instance(y):
+                    return y.take(index)
+                else:
+                    raise ValueError
+            case slice():
+                return y[index]
             case tuple():
                 raise NotImplementedError
             case _:

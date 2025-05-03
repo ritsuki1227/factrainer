@@ -1,8 +1,12 @@
 from __future__ import annotations
 
+from typing import cast
+
 import numpy as np
+import pandas as pd
 from factrainer.sklearn.dataset.dataset import SklearnDataset
 from numpy.testing import assert_array_equal
+from pandas.testing import assert_frame_equal, assert_series_equal
 
 
 class TestSklearnDatasetGetitem:
@@ -23,3 +27,26 @@ class TestSklearnDatasetGetitem:
         actual = sut[[2, 0]]
         assert_array_equal(actual.X, expected.X)
         assert_array_equal(actual.y, expected.y)
+
+    def test_pandas(self) -> None:
+        X = pd.DataFrame(
+            {
+                "a": [1, 2, 3],
+                "b": [4, 5, 6],
+            }
+        )
+        y = pd.Series([10, 20, 30])
+        sut = SklearnDataset(X=X, y=y)
+        expected_X = pd.DataFrame(
+            {
+                "a": [3, 1],
+                "b": [6, 4],
+            },
+            index=[2, 0],
+        )
+        expected_y = pd.Series([30, 10], index=[2, 0])
+        actual = sut[[2, 0]]
+        assert_frame_equal(cast(pd.DataFrame, actual.X), expected_X)
+        if not isinstance(actual.y, pd.Series):
+            raise TypeError
+        assert_series_equal(actual.y, expected_y)
