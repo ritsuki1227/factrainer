@@ -21,6 +21,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, f1_score, r2_score
 from sklearn.model_selection import KFold, train_test_split
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
 
@@ -96,7 +98,11 @@ def test_cv_set_pred_config_after_trainig(
     features, target = breast_cancer_data
     dataset = SklearnDataset(X=features, y=target)
     config = SklearnModelConfig.create(
-        train_config=SklearnTrainConfig(estimator=LogisticRegression()),
+        train_config=SklearnTrainConfig(
+            estimator=Pipeline(
+                [("scaler", StandardScaler()), ("lr", LogisticRegression())]
+            )
+        ),
     )
     k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
     model = CvModelContainer(config, k_fold)
