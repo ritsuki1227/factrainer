@@ -1,11 +1,13 @@
 from collections.abc import Generator
 
+import numpy as np
 from factrainer.base.dataset import IndexableDataset, RowIndex, RowsAndColumns
 from sklearn.model_selection._split import _BaseKFold
 
 import lightgbm as lgb
 
 from .slicer import LgbDatasetSlicer
+from .types import IsPdDataFrame
 
 
 class LgbDataset(IndexableDataset):
@@ -14,8 +16,12 @@ class LgbDataset(IndexableDataset):
     def k_fold_split(
         self, k_fold: _BaseKFold
     ) -> Generator[tuple[RowIndex, RowIndex], None, None]:
-        for train_index, val_index in k_fold.split(self.dataset.data):  # type: ignore
-            yield train_index.tolist(), val_index.tolist()
+        if isinstance(self.dataset.data, np.ndarray) or IsPdDataFrame().is_instance(
+            self.dataset.data
+        ):
+            for train_index, val_index in k_fold.split(self.dataset.data):
+                yield train_index.tolist(), val_index.tolist()
+        raise NotImplementedError
 
     def __getitem__(self, index: RowsAndColumns) -> "LgbDataset":
         match index:
