@@ -45,10 +45,12 @@ class LgbDataSlicer(BaseDatasetSlicer[_LGBM_TrainDataType]):
             raise NotImplementedError
         elif isinstance(data, Sequence):
             raise NotImplementedError
+        elif isinstance(data, list):
+            raise NotImplementedError
         elif IsPaTable().is_instance(data):
             raise NotImplementedError
         else:
-            raise NotImplementedError
+            raise TypeError
 
 
 class LgbLabelSlicer(BaseDatasetSlicer[_LGBM_LabelType]):
@@ -63,14 +65,12 @@ class LgbLabelSlicer(BaseDatasetSlicer[_LGBM_LabelType]):
             return data.take(index)
         elif isinstance(data, dt_DataTable):
             raise NotImplementedError
-        elif isinstance(data, scipy.sparse.spmatrix):
+        elif IsPaArray().is_instance(data):
             raise NotImplementedError
-        elif isinstance(data, Sequence):
-            raise NotImplementedError
-        elif IsPaTable().is_instance(data):
+        elif IsPaChunkedArray().is_instance(data):
             raise NotImplementedError
         else:
-            raise NotImplementedError
+            raise TypeError
 
 
 class LgbWeightSlicer(BaseDatasetSlicer[_LGBM_WeightType]):
@@ -86,7 +86,7 @@ class LgbWeightSlicer(BaseDatasetSlicer[_LGBM_WeightType]):
         elif IsPaChunkedArray().is_instance(data):
             raise NotImplementedError
         else:
-            raise NotImplementedError
+            raise TypeError
 
 
 class LgbInitScoreSlicer(BaseDatasetSlicer[_LGBM_InitScoreType]):
@@ -106,7 +106,7 @@ class LgbInitScoreSlicer(BaseDatasetSlicer[_LGBM_InitScoreType]):
         elif IsPaChunkedArray().is_instance(data):
             raise NotImplementedError
         else:
-            raise NotImplementedError
+            raise TypeError
 
 
 class LgbGroupSlicer(BaseDatasetSlicer[_LGBM_GroupType]):
@@ -122,12 +122,17 @@ class LgbGroupSlicer(BaseDatasetSlicer[_LGBM_GroupType]):
         elif IsPaChunkedArray().is_instance(data):
             raise NotImplementedError
         else:
-            raise NotImplementedError
+            raise TypeError
 
 
 class LgbPositionSlicer(BaseDatasetSlicer[_LGBM_PositionType]):
     def slice(self, data: _LGBM_PositionType, index: RowIndex) -> _LGBM_PositionType:
-        raise NotImplementedError
+        if isinstance(data, np.ndarray):
+            return data[index]
+        elif IsPdSeries().is_instance(data):
+            return data.take(index)
+        else:
+            raise TypeError
 
 
 class LgbDatasetSlicer(BaseDatasetSlicer[lgb.Dataset]):
