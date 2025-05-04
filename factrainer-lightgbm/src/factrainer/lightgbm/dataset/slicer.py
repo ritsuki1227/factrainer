@@ -91,7 +91,22 @@ class LgbWeightSlicer(BaseDatasetSlicer[_LGBM_WeightType]):
 
 class LgbInitScoreSlicer(BaseDatasetSlicer[_LGBM_InitScoreType]):
     def slice(self, data: _LGBM_InitScoreType, index: RowIndex) -> _LGBM_InitScoreType:
-        raise NotImplementedError
+        if isinstance(data, list):
+            raise NotImplementedError
+        elif isinstance(data, np.ndarray):
+            return data[index]
+        elif IsPdDataFrame().is_instance(data):
+            return data.take(index)
+        elif IsPdSeries().is_instance(data):
+            return data.take(index)
+        elif IsPaTable().is_instance(data):
+            raise NotImplementedError
+        elif IsPaArray().is_instance(data):
+            raise NotImplementedError
+        elif IsPaChunkedArray().is_instance(data):
+            raise NotImplementedError
+        else:
+            raise NotImplementedError
 
 
 class LgbGroupSlicer(BaseDatasetSlicer[_LGBM_GroupType]):
