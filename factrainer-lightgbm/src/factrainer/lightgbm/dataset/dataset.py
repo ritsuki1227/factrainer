@@ -1,7 +1,7 @@
 from collections.abc import Generator
 
 import numpy as np
-from factrainer.base.dataset import IndexableDataset, RowIndex, RowsAndColumns
+from factrainer.base.dataset import IndexableDataset, RowIndex, Rows
 from sklearn.model_selection._split import _BaseKFold
 
 import lightgbm as lgb
@@ -21,9 +21,10 @@ class LgbDataset(IndexableDataset):
         ):
             for train_index, val_index in k_fold.split(self.dataset.data):
                 yield train_index.tolist(), val_index.tolist()
-        raise NotImplementedError
+        else:
+            raise NotImplementedError
 
-    def __getitem__(self, index: RowsAndColumns) -> "LgbDataset":
+    def __getitem__(self, index: Rows) -> "LgbDataset":
         match index:
             case int():
                 return LgbDataset(
@@ -39,7 +40,5 @@ class LgbDataset(IndexableDataset):
                 )
             case slice():
                 raise NotImplementedError
-            case tuple():
-                raise NotImplementedError
             case _:
-                raise NotImplementedError
+                raise TypeError

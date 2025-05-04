@@ -13,7 +13,7 @@ type Prediction = npt.NDArray[np.number[Any]]
 type RowIndex = list[int]
 type RowIndices = Sequence[RowIndex]
 type Rows = int | slice | RowIndex
-type RowsAndColumns = Rows | tuple[Rows, ...]
+# type RowsAndColumns = Rows | tuple[Rows, ...]
 
 
 class BaseDataset(BaseModel):
@@ -22,7 +22,7 @@ class BaseDataset(BaseModel):
 
 class IndexableDataset(BaseDataset):
     @abstractmethod
-    def __getitem__(self, index: RowsAndColumns) -> Self:
+    def __getitem__(self, index: Rows) -> Self:
         raise NotImplementedError
 
     @abstractmethod

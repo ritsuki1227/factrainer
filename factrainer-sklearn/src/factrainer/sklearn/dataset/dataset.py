@@ -5,7 +5,7 @@ from typing import Any
 
 import numpy as np
 import polars as pl
-from factrainer.base.dataset import IndexableDataset, RowIndex, RowsAndColumns
+from factrainer.base.dataset import IndexableDataset, RowIndex, Rows
 from pydantic import field_validator
 
 from sklearn.model_selection._split import _BaseKFold
@@ -30,12 +30,12 @@ class SklearnDataset(IndexableDataset):
         for train_index, val_index in k_fold.split(self.X):
             yield train_index.tolist(), val_index.tolist()
 
-    def __getitem__(self, index: RowsAndColumns) -> "SklearnDataset":
+    def __getitem__(self, index: Rows) -> "SklearnDataset":
         return SklearnDataset(
             X=self._getitem_X(self.X, index), y=self._getitem_y(self.y, index)
         )
 
-    def _getitem_X(self, X: MatrixLike, index: RowsAndColumns) -> MatrixLike:
+    def _getitem_X(self, X: MatrixLike, index: Rows) -> MatrixLike:
         match index:
             case int():
                 if isinstance(X, np.ndarray):
@@ -75,9 +75,7 @@ class SklearnDataset(IndexableDataset):
             case _:
                 raise NotImplementedError
 
-    def _getitem_y(
-        self, y: VectorLike | None, index: RowsAndColumns
-    ) -> VectorLike | None:
+    def _getitem_y(self, y: VectorLike | None, index: Rows) -> VectorLike | None:
         if y is None:
             return None
         match index:
@@ -115,10 +113,8 @@ class SklearnDataset(IndexableDataset):
                     raise ValueError
             case slice():
                 return y[index]
-            case tuple():
-                raise NotImplementedError
             case _:
-                raise NotImplementedError
+                raise TypeError
 
     @field_validator("X", mode="after")
     @classmethod
