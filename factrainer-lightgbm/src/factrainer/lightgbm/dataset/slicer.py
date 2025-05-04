@@ -21,6 +21,8 @@ from lightgbm.compat import (
 )
 
 from .types import (
+    IsPaArray,
+    IsPaChunkedArray,
     IsPaTable,
     IsPdDataFrame,
     IsPdSeries,
@@ -73,7 +75,18 @@ class LgbLabelSlicer(BaseDatasetSlicer[_LGBM_LabelType]):
 
 class LgbWeightSlicer(BaseDatasetSlicer[_LGBM_WeightType]):
     def slice(self, data: _LGBM_WeightType, index: RowIndex) -> _LGBM_WeightType:
-        raise NotImplementedError
+        if isinstance(data, list):
+            return [data[i] for i in index]
+        elif isinstance(data, np.ndarray):
+            return data[index]
+        elif IsPdSeries().is_instance(data):
+            return data.take(index)
+        elif IsPaArray().is_instance(data):
+            raise NotImplementedError
+        elif IsPaChunkedArray().is_instance(data):
+            raise NotImplementedError
+        else:
+            raise NotImplementedError
 
 
 class LgbInitScoreSlicer(BaseDatasetSlicer[_LGBM_InitScoreType]):
