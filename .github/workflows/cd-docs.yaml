@@ -13,9 +13,9 @@ on:
     types:
       - completed
 
-  # Trigger on release publication
-  release:
-    types: [published]
+  # Custom event from release workflow (triggered after PyPI release)
+  repository_dispatch:
+    types: [deploy-docs]
 
   # Allow manual triggering
   workflow_dispatch:
@@ -26,16 +26,18 @@ permissions:
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
-    # For main branch, only run if the CI workflow was successful
+    # Run for successful CI on main, repository_dispatch events, or manual triggers
     if: |
       (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
-      github.event_name == 'release' ||
+      github.event_name == 'repository_dispatch' ||
       github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Required for mike to work properly with version history
+          # Checkout the tag for repository_dispatch events
+          ref: ${{ github.event_name == 'repository_dispatch' && format('refs/tags/v{0}', github.event.client_payload.version) || '' }}
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
@@ -60,10 +62,11 @@ jobs:
           uv run mike deploy --push --update-aliases latest
 
       - name: Deploy documentation (release)
-        if: github.event_name == 'release'
+        if: github.event_name == 'repository_dispatch' && github.event.client_payload.version != ''
         run: |
-          # Extract version from tag (e.g., v1.2.3 -> 1.2.3)
-          VERSION=${GITHUB_REF#refs/tags/v}
+          # Get version from payload
+          VERSION="${{ github.event.client_payload.version }}"
+
           # Extract major.minor version (e.g., 1.2.3 -> 1.2)
           MAJOR_MINOR=$(echo $VERSION | cut -d. -f1,2)
 

@@ -172,12 +172,28 @@ jobs:
           name: dist-files
           path: dist/
 
+      - name: Download version info
+        uses: actions/download-artifact@v4
+        with:
+          name: version-info
+
+      - name: Set version
+        id: set_version
+        run: echo "version=$(cat version.txt)" >> $GITHUB_OUTPUT
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           packages-dir: dist/
           verbose: true
           print-hash: true
+
+      - name: Trigger Documentation Deployment
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          token: ${{ github.token }}
+          event-type: deploy-docs
+          client-payload: '{"version": "${{ steps.set_version.outputs.version }}"}'
 
   create-pr:
     needs: publish-pypi
