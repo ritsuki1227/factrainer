@@ -13,7 +13,6 @@ type Prediction = npt.NDArray[np.number[Any]]
 type RowIndex = list[int]
 type RowIndices = Sequence[RowIndex]
 type Rows = int | slice | RowIndex
-# type RowsAndColumns = Rows | tuple[Rows, ...]
 
 
 class BaseDataset(BaseModel):
