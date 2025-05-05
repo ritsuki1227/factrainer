@@ -9,6 +9,8 @@
 
 **Factrainer** (Framework Agnostic Cross-validation Trainer) is a machine learning tool that provides a flexible cross-validation training framework. It addresses the limitations of existing cross-validation utilities in popular ML libraries by offering a unified, parallelized approach that retains models and yields out-of-fold (OOF) predictions.
 
+**Documentation**: For detailed documentation, please visit [https://ritsuki1227.github.io/factrainer/](https://ritsuki1227.github.io/factrainer/)
+
 ## Why Use Factrainer?
 
 Various ML frameworks (e.g., Scikit-learn, LightGBM) offer cross-validation functions. However, each has different features and interfaces. The table below highlights some widely used cross-validation APIs and which capabilities they support:

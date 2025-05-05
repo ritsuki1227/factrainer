@@ -35,10 +35,10 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/ritsuki1227/factrainer"
-Documentation = "https://github.com/ritsuki1227/factrainer#readme"
-Repository = "https://github.com/ritsuki1227/factrainer"
-"Bug Tracker" = "https://github.com/ritsuki1227/factrainer/issues"
+Homepage = "https://github.com/ritsuki1227/factrainer/"
+Documentation = "https://ritsuki1227.github.io/factrainer/stable/"
+Repository = "https://github.com/ritsuki1227/factrainer/"
+"Bug Tracker" = "https://github.com/ritsuki1227/factrainer/issues/"
 
 
 [build-system]
