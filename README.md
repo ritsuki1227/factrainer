@@ -15,13 +15,13 @@
 
 Various ML frameworks (e.g., Scikit-learn, LightGBM) offer cross-validation functions. However, each has different features and interfaces. The table below highlights some widely used cross-validation APIs and which capabilities they support:
 
-| Framework    | API                 | OOF prediction | return trained models | parallel training |
-| ------------ | ------------------- | :------------: | :-------------------: | :---------------: |
-| LightGBM     | `lgb.cv`            |       🚫       |          ✅️          |        🚫         |
-| Scikit-learn | `GridSearchCV`      |       🚫       |          🚫           |        ✅️        |
-| Scikit-learn | `cross_val_score`   |       🚫       |          🚫           |        ✅️        |
-| Scikit-learn | `cross_val_predict` |      ✅️       |          🚫           |        ✅️        |
-| Scikit-learn | `cross_validate`    |       🚫       |          ✅️          |        ✅️        |
+| Framework    | API                                                                                                                     | OOF prediction | return trained models | parallel training |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------- | :------------: | :-------------------: | :---------------: |
+| LightGBM     | [`lgb.cv`](https://lightgbm.readthedocs.io/en/stable/pythonapi/lightgbm.cv.html)                                        |       🚫       |          ✅️          |        🚫         |
+| Scikit-learn | [`GridSearchCV`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html)           |       🚫       |          🚫           |        ✅️        |
+| Scikit-learn | [`cross_val_score`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html)     |       🚫       |          🚫           |        ✅️        |
+| Scikit-learn | [`cross_val_predict`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html) |      ✅️       |          🚫           |        ✅️        |
+| Scikit-learn | [`cross_validate`](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html)       |       🚫       |          ✅️          |        ✅️        |
 
 No built-in API combines OOF predictions, trained-model access, and parallelized training—Factrainer does.
 
@@ -40,7 +40,13 @@ To install with LightGBM and Scikit-learn support:
 pip install "factrainer[lightgbm,sklearn]"
 ```
 
-At present, LightGBM and Scikit-learn are the primary supported backends. Support for additional frameworks will be added as the project evolves.
+To install with all supported backends (LightGBM, Scikit-learn, XGBoost, and CatBoost):
+
+```sh
+pip install "factrainer[all]"
+```
+
+At present, LightGBM and Scikit-learn are the primary supported backends. Support for additional frameworks will be implemented as the project evolves.
 
 ## Get started
 

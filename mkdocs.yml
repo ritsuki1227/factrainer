@@ -5,7 +5,15 @@ repo_name: ritsuki1227/factrainer
 theme:
   name: material
   features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.expand
     - content.code.copy
+    - search.suggest
+    - search.highlight
+    - search.share
   palette:
     - scheme: default
       toggle:
