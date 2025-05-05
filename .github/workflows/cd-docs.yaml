@@ -85,11 +85,11 @@ jobs:
 
           # Set as default only if this is the highest major.minor version
           if [[ "$MAJOR_MINOR" == "$HIGHEST_MAJOR_MINOR" ]]; then
-            echo "Setting $MAJOR_MINOR as the default/stable version"
-            # Set the version as the default (for root URL redirect)
-            uv run mike set-default --push $MAJOR_MINOR
-            # Create/update the stable alias to point to this version
+            echo "Setting $MAJOR_MINOR as the stable version and making stable the default"
+            # First createupdate the stable alias to point to this version
             uv run mike alias --push $MAJOR_MINOR stable
+            # Then set stable as the default (for root URL redirect)
+            uv run mike set-default --push stable
           else
             echo "Not setting as default because $HIGHEST_MAJOR_MINOR is the highest version (current is $MAJOR_MINOR)"
           fi
