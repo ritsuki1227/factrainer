@@ -3,6 +3,7 @@
         "ms-python.python",
         "ms-python.mypy-type-checker",
         "charliermarsh.ruff",
-        "ms-toolsai.jupyter"
+        "ms-toolsai.jupyter",
+        "redhat.vscode-yaml"
     ]
 }

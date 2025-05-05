@@ -1,0 +1,94 @@
+name: CD (Docs)
+
+# Limit concurrent deployments to ensure sequential processing
+concurrency:
+  group: "pages"
+  cancel-in-progress: false # Queue deployments instead of canceling in-progress ones
+
+on:
+  # Trigger when CI workflow completes on main branch
+  workflow_run:
+    workflows: ["CI"]
+    branches: [main]
+    types:
+      - completed
+
+  # Trigger on release publication
+  release:
+    types: [published]
+
+  # Allow manual triggering
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    # For main branch, only run if the CI workflow was successful
+    if: |
+      (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success') ||
+      github.event_name == 'release' ||
+      github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Required for mike to work properly with version history
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            **/pyproject.toml
+            **/uv.lock
+
+      - name: Install documentation dependencies
+        run: uv sync --group docs
+
+      - name: Set up Git user
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Deploy documentation (main branch)
+        if: github.event_name == 'workflow_run' || github.event_name == 'workflow_dispatch'
+        run: |
+          # Deploy the latest development version
+          uv run mike deploy --push --update-aliases latest
+
+      - name: Deploy documentation (release)
+        if: github.event_name == 'release'
+        run: |
+          # Extract version from tag (e.g., v1.2.3 -> 1.2.3)
+          VERSION=${GITHUB_REF#refs/tags/v}
+          # Extract major.minor version (e.g., 1.2.3 -> 1.2)
+          MAJOR_MINOR=$(echo $VERSION | cut -d. -f1,2)
+
+          # Deploy version with update-aliases to handle patch updates
+          uv run mike deploy --push --update-aliases $MAJOR_MINOR
+
+          # Get the highest major.minor version from all releases
+          HIGHEST_MAJOR_MINOR=$(gh release list --json tagName --exclude-drafts --exclude-pre-releases | \
+                               jq -r '.[].tagName' | \
+                               sed 's/^v//' | \
+                               awk -F. '{print $1"."$2}' | \
+                               sort -V | \
+                               tail -n1)
+
+          echo "Current version: $MAJOR_MINOR, Highest version: $HIGHEST_MAJOR_MINOR"
+
+          # Set as default only if this is the highest major.minor version
+          if [[ "$MAJOR_MINOR" == "$HIGHEST_MAJOR_MINOR" ]]; then
+            echo "Setting $MAJOR_MINOR as the default/stable version"
+            # Set the version as the default (for root URL redirect)
+            uv run mike set-default --push $MAJOR_MINOR
+            # Create/update the stable alias to point to this version
+            uv run mike alias --push $MAJOR_MINOR stable
+          else
+            echo "Not setting as default because $HIGHEST_MAJOR_MINOR is the highest version (current is $MAJOR_MINOR)"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

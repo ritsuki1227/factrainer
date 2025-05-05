@@ -1,11 +1,4 @@
-# Factrainer
-
-![CI](https://github.com/ritsuki1227/factrainer/actions/workflows/ci.yaml/badge.svg)
-[![codecov](https://codecov.io/gh/ritsuki1227/factrainer/branch/main/graph/badge.svg)](https://codecov.io/gh/ritsuki1227/factrainer)
-[![PyPI](https://img.shields.io/pypi/v/factrainer.svg)](https://pypi.python.org/project/factrainer)
-[![image](https://img.shields.io/pypi/pyversions/factrainer.svg)](https://pypi.python.org/pypi/factrainer)
-![License](https://img.shields.io/github/license/ritsuki1227/factrainer.svg)
-![Stars](https://img.shields.io/github/stars/ritsuki1227/factrainer.svg?style=social)
+# Welcome to Factrainer
 
 **Factrainer** (Framework Agnostic Cross-validation Trainer) is a machine learning tool that provides a flexible cross-validation training framework. It addresses the limitations of existing cross-validation utilities in popular ML libraries by offering a unified, parallelized approach that retains models and yields out-of-fold (OOF) predictions.
 

@@ -46,7 +46,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install the project
-        run: uv sync --all-extras --locked --group dev
+        run: uv sync --all-extras --locked --all-groups
 
       - name: Run tests
         run: |
@@ -86,7 +86,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install the project
-        run: uv sync --extra ${{ matrix.package }} --locked --group dev
+        run: uv sync --extra ${{ matrix.package }} --locked --all-groups
 
       - name: Run tests
         run: uv run pytest -v tests/${{ matrix.package }}

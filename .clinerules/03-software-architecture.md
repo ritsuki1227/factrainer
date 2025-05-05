@@ -26,7 +26,7 @@ Factrainer is organized as a **namespace package** (per PEP 420) composed of sev
 - To install the entire project with all optional components and development tools, use:
 
 ```sh
-uv sync --all-extras --dev
+uv sync --all-extras --all-groups
 ```
 
 This installs all plugin extras and dev dependencies in one go.
