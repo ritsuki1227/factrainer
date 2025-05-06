@@ -10,31 +10,98 @@ theme:
     - navigation.tracking
     - navigation.tabs
     - navigation.expand
+    - navigation.indexes
+    - navigation.top
     - content.code.copy
+    - content.code.annotate
     - search.suggest
     - search.highlight
     - search.share
   palette:
+    # Light mode
     - scheme: default
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/brightness-7 
         name: Switch to dark mode
 
-    # Palette toggle for dark mode
+    # Dark mode
     - scheme: slate
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+nav:
+  - Home: index.md
+  - Tutorial: tutorial.md
+  - API Reference:
+    - Overview: reference/index.md
+    - Core:
+      - Overview: reference/core/index.md
+      - CvModelContainer: reference/core/cvmodelcontainer.md
+      - SingleModelContainer: reference/core/singlemodelcontainer.md
+      - PredMode: reference/core/predmode.md
+      - SplittedDatasetsIndices: reference/core/splitteddatasetsindices.md
+    - Base:
+      - Overview: reference/base/index.md
+    - LightGBM:
+      - Overview: reference/lightgbm/index.md
+      - LgbDataset: reference/lightgbm/lgbdataset.md
+      - LgbModelConfig: reference/lightgbm/lgbmodelconfig.md
+      - LgbTrainConfig: reference/lightgbm/lgbtrainconfig.md
+      - LgbPredictConfig: reference/lightgbm/lgbpredictconfig.md
+      - LgbModel: reference/lightgbm/lgbmodel.md
+    - scikit-learn:
+      - Overview: reference/sklearn/index.md
+      - SklearnDataset: reference/sklearn/sklearndataset.md
+      - SklearnModelConfig: reference/sklearn/sklearnmodelconfig.md
+      - SklearnTrainConfig: reference/sklearn/sklearntrainconfig.md
+      - SklearnPredictConfig: reference/sklearn/sklearnpredictconfig.md
+      - SklearnPredictMethod: reference/sklearn/sklearnpredictmethod.md
+      - SklearnModel: reference/sklearn/sklearnmodel.md
+    - XGBoost:
+      - Overview: reference/xgboost/index.md
+    - CatBoost:
+      - Overview: reference/catboost/index.md
+  - Examples:
+    - Overview: examples/index.md
+    - Classification: examples/classification.md
+    - Regression: examples/regression.md
+
 plugins:
 - search
-- mkdocstrings
+- mkdocstrings:
+    enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
+    default_handler: python
+    handlers:
+      python:
+        options:
+          show_source: false
+          show_signature: true 
+          show_signature_annotations: true
+          docstring_style: numpy
+          docstring_section_style: list
+          separate_signature: true
+          show_category_heading: true
+          show_if_no_docstring: false
+          show_bases: true
+          show_submodules: false
+          heading_level: 2
+
 extra:
   version:
     provider: mike
     alias: true
     default: stable
-markdown_extensions:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ritsuki1227/factrainer
 
+markdown_extensions:
   # Python Markdown
   - abbr
   - admonition
@@ -66,6 +133,9 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+
+extra_css:
+  - stylesheets/extra.css
 
 extra_javascript:
   - javascripts/mathjax.js

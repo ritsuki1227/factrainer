@@ -15,11 +15,72 @@ class CvModelContainer[
     V: BaseTrainConfig,
     W: BasePredictConfig,
 ](BaseModelContainer[T, RawModels[U], V, W]):
+    """Cross-validation model container for machine learning models.
+
+    This class provides a container for cross-validation models. It takes a model
+    configuration and a cross-validation splitter, and provides methods for training
+    models and making predictions.
+
+    Parameters
+    ----------
+    model_config : BaseMlModelConfig
+        The model configuration, which includes the learner, predictor, training
+        configuration, and prediction configuration.
+    k_fold : _BaseKFold or SplittedDatasetsIndices
+        The cross-validation splitter, which can be either a scikit-learn _BaseKFold
+        object or a SplittedDatasetsIndices object.
+
+    Examples
+    --------
+    >>> import lightgbm as lgb
+    >>> from sklearn.datasets import fetch_california_housing
+    >>> from sklearn.model_selection import KFold
+    >>> from factrainer.core import CvModelContainer
+    >>> from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
+    >>> 
+    >>> # Load data
+    >>> data = fetch_california_housing()
+    >>> dataset = LgbDataset(
+    ...     dataset=lgb.Dataset(
+    ...         data.data, label=data.target
+    ...     )
+    ... )
+    >>> 
+    >>> # Configure model
+    >>> config = LgbModelConfig.create(
+    ...     train_config=LgbTrainConfig(
+    ...         params={"objective": "regression"},
+    ...         callbacks=[lgb.early_stopping(100, verbose=False)],
+    ...     ),
+    ... )
+    >>> 
+    >>> # Set up cross-validation
+    >>> k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
+    >>> 
+    >>> # Create and train model
+    >>> model = CvModelContainer(config, k_fold)
+    >>> model.train(dataset, n_jobs=4)
+    >>> 
+    >>> # Get OOF predictions
+    >>> y_pred = model.predict(dataset, n_jobs=4)
+    """
+
     def __init__(
         self,
         model_config: BaseMlModelConfig[T, U, V, W],
         k_fold: _BaseKFold | SplittedDatasetsIndices,
     ) -> None:
+        """Initialize a new CvModelContainer.
+
+        Parameters
+        ----------
+        model_config : BaseMlModelConfig
+            The model configuration, which includes the learner, predictor, training
+            configuration, and prediction configuration.
+        k_fold : _BaseKFold or SplittedDatasetsIndices
+            The cross-validation splitter, which can be either a scikit-learn _BaseKFold
+            object or a SplittedDatasetsIndices object.
+        """
         self._learner = model_config.learner
         self._predictor = model_config.predictor
         self._train_config = model_config.train_config
@@ -27,6 +88,24 @@ class CvModelContainer[
         self._k_fold = k_fold
 
     def train(self, train_dataset: T, n_jobs: int | None = None) -> None:
+        """Train the model using cross-validation.
+
+        This method trains the model using cross-validation. It splits the training
+        dataset into folds according to the cross-validation splitter, and trains
+        a model for each fold.
+
+        Parameters
+        ----------
+        train_dataset : T
+            The training dataset.
+        n_jobs : int or None, optional
+            The number of jobs to run in parallel. If None, all CPUs are used.
+            Default is None.
+
+        Returns
+        -------
+        None
+        """
         datasets = SplittedDatasets.create(train_dataset, self._k_fold)
         self._cv_indices = datasets.indices
         self._model = CvLearner(self._learner).train(
@@ -39,6 +118,36 @@ class CvModelContainer[
         n_jobs: int | None = None,
         mode: PredMode = PredMode.OOF_PRED,
     ) -> Prediction:
+        """Make predictions using the trained models.
+
+        This method makes predictions using the trained models. It supports two
+        prediction modes:
+        - Out-of-fold (OOF) predictions: Predictions for the training data using
+          models trained on other folds.
+        - Ensemble predictions: Predictions using an ensemble of all trained models.
+
+        Parameters
+        ----------
+        pred_dataset : T
+            The dataset to make predictions for.
+        n_jobs : int or None, optional
+            The number of jobs to run in parallel. If None, all CPUs are used.
+            Default is None.
+        mode : PredMode, optional
+            The prediction mode. Can be either PredMode.OOF_PRED for out-of-fold
+            predictions or PredMode.AVG_ENSEMBLE for ensemble predictions.
+            Default is PredMode.OOF_PRED.
+
+        Returns
+        -------
+        Prediction
+            The predictions as a NumPy array.
+
+        Raises
+        ------
+        ValueError
+            If the prediction mode is invalid.
+        """
         match mode:
             case PredMode.OOF_PRED:
                 datasets = IndexedDatasets[T].create(pred_dataset, self.cv_indices.test)
@@ -54,28 +163,77 @@ class CvModelContainer[
 
     @property
     def raw_model(self) -> RawModels[U]:
+        """Get the raw models from cross-validation.
+
+        Returns
+        -------
+        RawModels[U]
+            The raw models as a RawModels object.
+        """
         return self._model
 
     @property
     def train_config(self) -> V:
+        """Get the training configuration.
+
+        Returns
+        -------
+        V
+            The training configuration.
+        """
         return self._train_config
 
     @train_config.setter
     def train_config(self, config: V) -> None:
+        """Set the training configuration.
+
+        Parameters
+        ----------
+        config : V
+            The new training configuration.
+        """
         self._train_config = config
 
     @property
     def pred_config(self) -> W:
+        """Get the prediction configuration.
+
+        Returns
+        -------
+        W
+            The prediction configuration.
+        """
         return self._pred_config
 
     @pred_config.setter
     def pred_config(self, config: W) -> None:
+        """Set the prediction configuration.
+
+        Parameters
+        ----------
+        config : W
+            The new prediction configuration.
+        """
         self._pred_config = config
 
     @property
     def cv_indices(self) -> SplittedDatasetsIndices:
+        """Get the cross-validation indices.
+
+        Returns
+        -------
+        SplittedDatasetsIndices
+            The cross-validation indices.
+        """
         return self._cv_indices
 
     @property
     def k_fold(self) -> _BaseKFold | SplittedDatasetsIndices:
+        """Get the cross-validation splitter.
+
+        Returns
+        -------
+        _BaseKFold or SplittedDatasetsIndices
+            The cross-validation splitter.
+        """
         return self._k_fold
