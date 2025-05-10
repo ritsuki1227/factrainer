@@ -37,7 +37,7 @@ class CvModelContainer[
     >>> from sklearn.model_selection import KFold
     >>> from factrainer.core import CvModelContainer
     >>> from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
-    >>> 
+    >>>
     >>> # Load data
     >>> data = fetch_california_housing()
     >>> dataset = LgbDataset(
@@ -45,7 +45,7 @@ class CvModelContainer[
     ...         data.data, label=data.target
     ...     )
     ... )
-    >>> 
+    >>>
     >>> # Configure model
     >>> config = LgbModelConfig.create(
     ...     train_config=LgbTrainConfig(
@@ -53,14 +53,14 @@ class CvModelContainer[
     ...         callbacks=[lgb.early_stopping(100, verbose=False)],
     ...     ),
     ... )
-    >>> 
+    >>>
     >>> # Set up cross-validation
     >>> k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
-    >>> 
+    >>>
     >>> # Create and train model
     >>> model = CvModelContainer(config, k_fold)
     >>> model.train(dataset, n_jobs=4)
-    >>> 
+    >>>
     >>> # Get OOF predictions
     >>> y_pred = model.predict(dataset, n_jobs=4)
     """
@@ -70,17 +70,6 @@ class CvModelContainer[
         model_config: BaseMlModelConfig[T, U, V, W],
         k_fold: _BaseKFold | SplittedDatasetsIndices,
     ) -> None:
-        """Initialize a new CvModelContainer.
-
-        Parameters
-        ----------
-        model_config : BaseMlModelConfig
-            The model configuration, which includes the learner, predictor, training
-            configuration, and prediction configuration.
-        k_fold : _BaseKFold or SplittedDatasetsIndices
-            The cross-validation splitter, which can be either a scikit-learn _BaseKFold
-            object or a SplittedDatasetsIndices object.
-        """
         self._learner = model_config.learner
         self._predictor = model_config.predictor
         self._train_config = model_config.train_config
@@ -90,9 +79,9 @@ class CvModelContainer[
     def train(self, train_dataset: T, n_jobs: int | None = None) -> None:
         """Train the model using cross-validation.
 
-        This method trains the model using cross-validation. It splits the training
-        dataset into folds according to the cross-validation splitter, and trains
-        a model for each fold.
+        This method trains the model using cross-validation, according to the
+        specified cross-validation splitter. The trained models can be accessed
+        through the raw_model property.
 
         Parameters
         ----------
@@ -122,9 +111,13 @@ class CvModelContainer[
 
         This method makes predictions using the trained models. It supports two
         prediction modes:
+
         - Out-of-fold (OOF) predictions: Predictions for the training data using
-          models trained on other folds.
-        - Ensemble predictions: Predictions using an ensemble of all trained models.
+        models trained on other folds.
+
+        - Averaging Ensemble predictions: Predictions using averaging ensemble of
+        all trained models.This mode should ONLY be used for unseen data (test
+        data), as using it on training data would lead to data leakage.
 
         Parameters
         ----------
@@ -135,7 +128,7 @@ class CvModelContainer[
             Default is None.
         mode : PredMode, optional
             The prediction mode. Can be either PredMode.OOF_PRED for out-of-fold
-            predictions or PredMode.AVG_ENSEMBLE for ensemble predictions.
+            predictions or PredMode.AVG_ENSEMBLE for averaging ensemble predictions.
             Default is PredMode.OOF_PRED.
 
         Returns
@@ -218,12 +211,15 @@ class CvModelContainer[
 
     @property
     def cv_indices(self) -> SplittedDatasetsIndices:
-        """Get the cross-validation indices.
+        """Get the cross-validation split indices after training.
+
+        This property returns the cross-validation split indices that are stored
+        in the instance after the `train` method is executed.
 
         Returns
         -------
         SplittedDatasetsIndices
-            The cross-validation indices.
+            The cross-validation split indices.
         """
         return self._cv_indices
 
