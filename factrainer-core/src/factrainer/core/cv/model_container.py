@@ -28,7 +28,9 @@ class CvModelContainer[
         configuration, and prediction configuration.
     k_fold : _BaseKFold or SplittedDatasetsIndices
         The cross-validation splitter, which can be either a scikit-learn _BaseKFold
-        object or a SplittedDatasetsIndices object.
+        object or a SplittedDatasetsIndices object. If _BaseKFold is specified,
+        the same indices will be used for both validation and test data. To specify
+        custom indices without such constraints, use SplittedDatasetsIndices.
 
     Examples
     --------
@@ -81,15 +83,15 @@ class CvModelContainer[
 
         This method trains the model using cross-validation, according to the
         specified cross-validation splitter. The trained models can be accessed
-        through the raw_model property.
+        through the `raw_model` property.
 
         Parameters
         ----------
         train_dataset : T
             The training dataset.
         n_jobs : int or None, optional
-            The number of jobs to run in parallel. If None, all CPUs are used.
-            Default is None.
+            The number of jobs to run in parallel. If -1, all CPUs are used.
+            If None, no parallel processing is used. Default is None.
 
         Returns
         -------
@@ -124,8 +126,8 @@ class CvModelContainer[
         pred_dataset : T
             The dataset to make predictions for.
         n_jobs : int or None, optional
-            The number of jobs to run in parallel. If None, all CPUs are used.
-            Default is None.
+            The number of jobs to run in parallel. If -1, all CPUs are used.
+            If None, no parallel processing is used. Default is None.
         mode : PredMode, optional
             The prediction mode. Can be either PredMode.OOF_PRED for out-of-fold
             predictions or PredMode.AVG_ENSEMBLE for averaging ensemble predictions.
