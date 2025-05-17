@@ -32,6 +32,13 @@ jobs:
       github.event_name == 'repository_dispatch' ||
       github.event_name == 'workflow_dispatch'
     steps:
+      - name: Generate App token
+        id: generate-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.FACTRAINER_GITHUB_APP_ID }}
+          private-key: ${{ secrets.FACTRAINER_GITHUB_APP_PRIVATE_KEY }}
+      
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -94,4 +101,4 @@ jobs:
             echo "Not setting as default because $HIGHEST_MAJOR_MINOR is the highest version (current is $MAJOR_MINOR)"
           fi
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
