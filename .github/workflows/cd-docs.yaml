@@ -45,6 +45,7 @@ jobs:
           fetch-depth: 0 # Required for mike to work properly with version history
           # Checkout the tag for repository_dispatch events
           ref: ${{ github.event_name == 'repository_dispatch' && format('refs/tags/v{0}', github.event.client_payload.version) || '' }}
+          token: ${{ steps.generate-token.outputs.token }}
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
@@ -67,6 +68,8 @@ jobs:
         run: |
           # Deploy the latest development version
           uv run mike deploy --push --update-aliases latest
+        env:
+          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
 
       - name: Deploy documentation (release)
         if: github.event_name == 'repository_dispatch' && github.event.client_payload.version != ''
