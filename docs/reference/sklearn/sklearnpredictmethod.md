@@ -1,0 +1,3 @@
+# SklearnPredictMethod
+
+::: factrainer.sklearn.SklearnPredictMethod

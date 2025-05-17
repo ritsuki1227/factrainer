@@ -10,31 +10,105 @@ theme:
     - navigation.tracking
     - navigation.tabs
     - navigation.expand
+    - navigation.indexes
+    - navigation.top
     - content.code.copy
+    - content.code.annotate
     - search.suggest
     - search.highlight
     - search.share
   palette:
+    # Light mode
     - scheme: default
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/brightness-7 
         name: Switch to dark mode
 
-    # Palette toggle for dark mode
+    # Dark mode
     - scheme: slate
+      primary: indigo
+      accent: indigo
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github
+nav:
+  - Home: index.md
+  - Tutorial: tutorial.md
+  - API Reference:
+    - Overview: reference/index.md
+    - Core:
+      - Overview: reference/core/index.md
+      - CvModelContainer: reference/core/cvmodelcontainer.md
+      - PredMode: reference/core/predmode.md
+      - SplittedDatasetsIndices: reference/core/splitteddatasetsindices.md
+      - SingleModelContainer: reference/core/singlemodelcontainer.md
+    - LightGBM:
+      - Overview: reference/lightgbm/index.md
+      - LgbDataset: reference/lightgbm/lgbdataset.md
+      - LgbTrainConfig: reference/lightgbm/lgbtrainconfig.md
+      - LgbPredictConfig: reference/lightgbm/lgbpredictconfig.md
+      - LgbModelConfig: reference/lightgbm/lgbmodelconfig.md
+      - LgbModel: reference/lightgbm/lgbmodel.md
+    - Scikit-learn:
+      - Overview: reference/sklearn/index.md
+      - SklearnDataset: reference/sklearn/sklearndataset.md
+      - SklearnTrainConfig: reference/sklearn/sklearntrainconfig.md
+      - SklearnPredictConfig: reference/sklearn/sklearnpredictconfig.md
+      - SklearnModelConfig: reference/sklearn/sklearnmodelconfig.md
+      - SklearnModel: reference/sklearn/sklearnmodel.md
+      - SklearnPredictMethod: reference/sklearn/sklearnpredictmethod.md
+    - XGBoost: reference/xgboost/index.md
+    - CatBoost: reference/catboost/index.md
+
 plugins:
 - search
-- mkdocstrings
+- mkdocstrings:
+    enabled: !ENV [ENABLE_MKDOCSTRINGS, true]
+    default_handler: python
+    handlers:
+      python:
+        options:
+          annotations_path: "brief"
+          docstring_style: "numpy"
+          docstring_section_style: "table"
+          filters: 
+          - "!^_"
+          - "^__"
+          inherited_members: true
+          members: true
+          merge_init_into_class: true
+          members_order: "source"
+          modernize_annotations: true
+          separate_signature: true
+          show_bases: false  # Hide implemented interfaces
+          show_category_heading: true
+          show_if_no_docstring: false
+          show_root_heading: true
+          show_root_toc_entry: true
+          show_root_full_path: false
+          show_signature: true
+          show_signature_annotations: true
+          show_source: false
+          show_symbol_type_heading: true
+          show_symbol_type_toc: true
+          show_submodules: false
+          signature_crossrefs: true
+          unwrap_annotated: true
+
 extra:
   version:
     provider: mike
     alias: true
     default: stable
-markdown_extensions:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/ritsuki1227/factrainer
 
+markdown_extensions:
   # Python Markdown
   - abbr
   - admonition
