@@ -49,7 +49,7 @@ def test_cv_pred_config(
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
-def test_cv_set_pred_config_after_trainig(
+def test_cv_set_pred_config_after_training(
     california_housing_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
     ],
