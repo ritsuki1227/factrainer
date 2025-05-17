@@ -63,10 +63,6 @@ nav:
       - SklearnPredictMethod: reference/sklearn/sklearnpredictmethod.md
     - XGBoost: reference/xgboost/index.md
     - CatBoost: reference/catboost/index.md
-  - Examples:
-    - Overview: examples/index.md
-    - Classification: examples/classification.md
-    - Regression: examples/regression.md
 
 plugins:
 - search
