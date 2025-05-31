@@ -28,7 +28,7 @@ class SklearnDataset(IndexableDataset):
         self, k_fold: _BaseKFold
     ) -> Generator[tuple[RowIndex, RowIndex], None, None]:
         for train_index, val_index in k_fold.split(self.X):
-            yield train_index.tolist(), val_index.tolist()
+            yield train_index, val_index
 
     def __getitem__(self, index: Rows) -> "SklearnDataset":
         return SklearnDataset(
@@ -47,6 +47,28 @@ class SklearnDataset(IndexableDataset):
                 else:
                     raise ValueError
             case list():
+                if isinstance(X, np.ndarray):
+                    return X[index]
+                elif IsPdDataFrame().is_instance(X):
+                    return X.take(index)
+                elif IsPlDataFrame().is_instance(X):
+                    return (
+                        pl.DataFrame({"__polars_row_index__": index})
+                        .with_row_index(name="__factrainer_row_index__")
+                        .join(
+                            X.with_row_index(name="__polars_row_index__"),
+                            on="__polars_row_index__",
+                        )
+                        .sort("__factrainer_row_index__")
+                        .select(
+                            pl.exclude(
+                                ["__factrainer_row_index__", "__polars_row_index__"]
+                            )
+                        )
+                    )
+                else:
+                    raise ValueError
+            case np.ndarray():
                 if isinstance(X, np.ndarray):
                     return X[index]
                 elif IsPdDataFrame().is_instance(X):
@@ -89,6 +111,29 @@ class SklearnDataset(IndexableDataset):
                 else:
                     raise ValueError
             case list():
+                if isinstance(y, np.ndarray):
+                    return y[index]
+                elif IsPdSeries().is_instance(y):
+                    return y.take(index)
+                elif IsPlSeries().is_instance(y):
+                    return (
+                        pl.DataFrame({"__polars_row_index__": index})
+                        .with_row_index(name="__factrainer_row_index__")
+                        .join(
+                            pl.DataFrame(y).with_row_index(name="__polars_row_index__"),
+                            on="__polars_row_index__",
+                        )
+                        .sort("__factrainer_row_index__")
+                        .select(
+                            pl.exclude(
+                                ["__factrainer_row_index__", "__polars_row_index__"]
+                            )
+                        )
+                        .to_series()
+                    )
+                else:
+                    raise ValueError
+            case np.ndarray():
                 if isinstance(y, np.ndarray):
                     return y[index]
                 elif IsPdSeries().is_instance(y):

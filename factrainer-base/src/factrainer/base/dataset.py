@@ -10,7 +10,7 @@ from typing_extensions import TypeIs
 
 # type Prediction = npt.NDArray[Any] | scipy.sparse.spmatrix | list[scipy.sparse.spmatrix]
 type Prediction = npt.NDArray[np.number[Any]]
-type RowIndex = list[int]
+type RowIndex = list[int] | npt.NDArray[np.integer[Any]]
 type RowIndices = Sequence[RowIndex]
 type Rows = int | slice | RowIndex
 

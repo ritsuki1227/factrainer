@@ -20,7 +20,7 @@ class LgbDataset(IndexableDataset):
             self.dataset.data
         ):
             for train_index, val_index in k_fold.split(self.dataset.data):
-                yield train_index.tolist(), val_index.tolist()
+                yield train_index, val_index
         else:
             raise NotImplementedError
 
@@ -33,6 +33,12 @@ class LgbDataset(IndexableDataset):
                     )
                 )
             case list():
+                return LgbDataset(
+                    dataset=LgbDatasetSlicer(self.dataset.reference).slice(
+                        self.dataset, index
+                    )
+                )
+            case np.ndarray():
                 return LgbDataset(
                     dataset=LgbDatasetSlicer(self.dataset.reference).slice(
                         self.dataset, index
