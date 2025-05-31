@@ -1,6 +1,6 @@
 [project]
 name = "factrainer-lightgbm"
-version = "0.1.23"
+version = "0.1.24"
 description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
