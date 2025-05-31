@@ -8,22 +8,28 @@
       
       
       
+        <link rel="canonical" href="https://ritsuki1227.github.io/factrainer/0.1/reference/lightgbm/lgbmodel/">
       
       
+        <link rel="prev" href="../lgbmodelconfig/">
       
-      <link rel="icon" href="/factrainer/0.1/assets/images/favicon.png">
+      
+        <link rel="next" href="../../sklearn/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.14">
     
     
       
-        <title>Factrainer</title>
+        <title>LgbModel - Factrainer</title>
       
     
     
-      <link rel="stylesheet" href="/factrainer/0.1/assets/stylesheets/main.342714a4.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.342714a4.min.css">
       
         
-        <link rel="stylesheet" href="/factrainer/0.1/assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
       
       
 
@@ -42,9 +48,9 @@
       
     
     
-      <link rel="stylesheet" href="/factrainer/0.1/assets/_mkdocstrings.css">
+      <link rel="stylesheet" href="../../../assets/_mkdocstrings.css">
     
-    <script>__md_scope=new URL("/factrainer/0.1",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -69,6 +75,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#lgbmodel" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -83,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/factrainer/0.1/." title="Factrainer" class="md-header__button md-logo" aria-label="Factrainer" data-md-component="logo">
+    <a href="../../.." title="Factrainer" class="md-header__button md-logo" aria-label="Factrainer" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -103,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              LgbModel
             
           </span>
         </div>
@@ -221,7 +232,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/factrainer/0.1/." class="md-tabs__link">
+      <a href="../../.." class="md-tabs__link">
         
   
   
@@ -240,7 +251,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="/factrainer/0.1/tutorial/" class="md-tabs__link">
+      <a href="../../../tutorial/" class="md-tabs__link">
         
   
   
@@ -257,11 +268,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="/factrainer/0.1/reference/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
           
   
   
@@ -297,7 +310,7 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/factrainer/0.1/." title="Factrainer" class="md-nav__button md-logo" aria-label="Factrainer" data-md-component="logo">
+    <a href="../../.." title="Factrainer" class="md-nav__button md-logo" aria-label="Factrainer" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -327,7 +340,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         
   
   
@@ -349,7 +362,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/tutorial/" class="md-nav__link">
+      <a href="../../../tutorial/" class="md-nav__link">
         
   
   
@@ -368,6 +381,8 @@
       
   
   
+    
+  
   
   
     
@@ -391,20 +406,21 @@
     
     
       
+        
+        
+      
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="/factrainer/0.1/reference/" class="md-nav__link ">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -417,13 +433,13 @@
             </a>
             
               
-              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
           </div>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             API Reference
@@ -470,7 +486,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="/factrainer/0.1/reference/core/" class="md-nav__link ">
+            <a href="../../core/" class="md-nav__link ">
               
   
   
@@ -505,7 +521,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/core/cvmodelcontainer/" class="md-nav__link">
+      <a href="../../core/cvmodelcontainer/" class="md-nav__link">
         
   
   
@@ -528,7 +544,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/core/predmode/" class="md-nav__link">
+      <a href="../../core/predmode/" class="md-nav__link">
         
   
   
@@ -551,7 +567,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/core/splitteddatasetsindices/" class="md-nav__link">
+      <a href="../../core/splitteddatasetsindices/" class="md-nav__link">
         
   
   
@@ -574,7 +590,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/core/singlemodelcontainer/" class="md-nav__link">
+      <a href="../../core/singlemodelcontainer/" class="md-nav__link">
         
   
   
@@ -602,6 +618,8 @@
                 
   
   
+    
+  
   
   
     
@@ -628,17 +646,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="/factrainer/0.1/reference/lightgbm/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -657,7 +673,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             LightGBM
@@ -673,7 +689,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/lightgbm/lgbdataset/" class="md-nav__link">
+      <a href="../lgbdataset/" class="md-nav__link">
         
   
   
@@ -696,7 +712,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/lightgbm/lgbtrainconfig/" class="md-nav__link">
+      <a href="../lgbtrainconfig/" class="md-nav__link">
         
   
   
@@ -719,7 +735,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/lightgbm/lgbpredictconfig/" class="md-nav__link">
+      <a href="../lgbpredictconfig/" class="md-nav__link">
         
   
   
@@ -742,7 +758,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/lightgbm/lgbmodelconfig/" class="md-nav__link">
+      <a href="../lgbmodelconfig/" class="md-nav__link">
         
   
   
@@ -762,10 +778,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/lightgbm/lgbmodel/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    LgbModel
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -776,6 +814,65 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#factrainer.lightgbm.LgbModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;LgbModel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" LgbModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factrainer.lightgbm.LgbModel-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factrainer.lightgbm.LgbModel.model" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;model
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -831,7 +928,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="/factrainer/0.1/reference/sklearn/" class="md-nav__link ">
+            <a href="../../sklearn/" class="md-nav__link ">
               
   
   
@@ -866,7 +963,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/sklearn/sklearndataset/" class="md-nav__link">
+      <a href="../../sklearn/sklearndataset/" class="md-nav__link">
         
   
   
@@ -889,7 +986,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/sklearn/sklearntrainconfig/" class="md-nav__link">
+      <a href="../../sklearn/sklearntrainconfig/" class="md-nav__link">
         
   
   
@@ -912,7 +1009,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/sklearn/sklearnpredictconfig/" class="md-nav__link">
+      <a href="../../sklearn/sklearnpredictconfig/" class="md-nav__link">
         
   
   
@@ -935,7 +1032,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/sklearn/sklearnmodelconfig/" class="md-nav__link">
+      <a href="../../sklearn/sklearnmodelconfig/" class="md-nav__link">
         
   
   
@@ -958,7 +1055,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/sklearn/sklearnmodel/" class="md-nav__link">
+      <a href="../../sklearn/sklearnmodel/" class="md-nav__link">
         
   
   
@@ -981,7 +1078,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/sklearn/sklearnpredictmethod/" class="md-nav__link">
+      <a href="../../sklearn/sklearnpredictmethod/" class="md-nav__link">
         
   
   
@@ -1012,7 +1109,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/xgboost/" class="md-nav__link">
+      <a href="../../xgboost/" class="md-nav__link">
         
   
   
@@ -1035,7 +1132,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/factrainer/0.1/reference/catboost/" class="md-nav__link">
+      <a href="../../catboost/" class="md-nav__link">
         
   
   
@@ -1075,6 +1172,55 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#factrainer.lightgbm.LgbModel" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;LgbModel
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" LgbModel">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factrainer.lightgbm.LgbModel-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factrainer.lightgbm.LgbModel.model" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;model
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -1086,8 +1232,91 @@
             <div class="md-content" data-md-component="content">
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+  
+  
+
+
+<h1 id="lgbmodel">LgbModel<a class="headerlink" href="#lgbmodel" title="Permanent link">&para;</a></h1>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<h2 id="factrainer.lightgbm.LgbModel" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">LgbModel</span>
+
+
+<a href="#factrainer.lightgbm.LgbModel" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+
+  <div class="doc doc-children">
+
+
+
+
+
+<h3 id="factrainer.lightgbm.LgbModel-attributes">Attributes<a href="#factrainer.lightgbm.LgbModel-attributes" class="headerlink" title="Permanent link">&para;</a></h3>
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h4 id="factrainer.lightgbm.LgbModel.model" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">model</span>
+
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
+  </span>
+
+<a href="#factrainer.lightgbm.LgbModel.model" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">model</span><span class="p">:</span> <span class="n"><span title="lightgbm.Booster">Booster</span></span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+    </div>
+
+</div>
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -1146,12 +1375,12 @@
     
     
       
-      <script id="__config" type="application/json">{"base": "/factrainer/0.1", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.expand", "navigation.indexes", "navigation.top", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight", "search.share"], "search": "/factrainer/0.1/assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.expand", "navigation.indexes", "navigation.top", "content.code.copy", "content.code.annotate", "search.suggest", "search.highlight", "search.share"], "search": "../../../assets/javascripts/workers/search.d50fe291.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"alias": true, "default": "stable", "provider": "mike"}}</script>
     
     
-      <script src="/factrainer/0.1/assets/javascripts/bundle.13a4f30d.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.13a4f30d.min.js"></script>
       
-        <script src="/factrainer/0.1/javascripts/mathjax.js"></script>
+        <script src="../../../javascripts/mathjax.js"></script>
       
         <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
       
