@@ -57,11 +57,13 @@ dev = [
     "line-profiler>=4.2.0",
     "pytest-cov>=6.1.1",
     "pytest-rerunfailures>=15.0",
-    "pandas-stubs>=2.2.3.250308",
+    "pandas-stubs>=2.2.3.250527",
     "pandas>=2.2.3",
     "pyarrow>=20.0.0",
     "pyarrow-stubs>=19.2",
     "polars>=1.29.0",
+    "tqdm>=4.67.1",
+    "ipywidgets>=8.1.7",
 ]
 docs = [
     "mike>=2.1.3",
