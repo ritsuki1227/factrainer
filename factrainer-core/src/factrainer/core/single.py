@@ -131,17 +131,28 @@ class SingleModelContainer[
     ) -> X:
         """Evaluate the model's predictions against true values.
 
+        This method evaluates predictions from a single trained model, typically
+        on a held-out test set or validation set.
+
         Parameters
         ----------
-        y_true : Prediction
-            The true values.
+        y_true : Target
+            The true target values as a NumPy array.
         y_pred : Prediction
-            The predicted values.
+            The predicted values as a NumPy array. Must have the same shape as y_true.
+        eval_func : EvalFunc[X]
+            The evaluation function that takes (y_true, y_pred) and returns a metric.
+            Common examples include sklearn.metrics functions like r2_score, mae, etc.
 
         Returns
         -------
-        float
-            The evaluation score.
+        X
+            The evaluation score of type X, as returned by eval_func.
+
+        Raises
+        ------
+        ValueError
+            If y_true or y_pred are not NumPy arrays.
         """
         if not (isinstance(y_true, np.ndarray) and isinstance(y_pred, np.ndarray)):
             raise ValueError(

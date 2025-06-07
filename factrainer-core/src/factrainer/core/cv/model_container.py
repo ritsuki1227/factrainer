@@ -208,22 +208,39 @@ class CvModelContainer[
     ) -> X | Sequence[X]:
         """Evaluate the model's predictions against true values.
 
+        This method evaluates predictions from cross-validation models. The predictions
+        can be either out-of-fold (OOF) predictions or predictions on unseen data
+        (held-out test set).
+
         Parameters
         ----------
         y_true : Target
-            The true values.
+            The true target values as a NumPy array.
         y_pred : Prediction
-            The predicted values.
+            The predicted values as a NumPy array. Must have the same shape as y_true.
+            These can be:
+            - Out-of-fold predictions from predict(mode=PredMode.OOF_PRED)
+            - Predictions on unseen data from predict(mode=PredMode.AVG_ENSEMBLE)
         eval_func : EvalFunc[X]
-            The evaluation function.
-        eval_mode : EvalMode
-            The evaluation mode.
+            The evaluation function that takes (y_true, y_pred) and returns a metric.
+            Common examples include sklearn.metrics functions like r2_score, mae, etc.
+        eval_mode : EvalMode, default=EvalMode.POOLING
+            The evaluation mode:
+            - EvalMode.POOLING: Compute a single metric across all predictions
+              (standard for both OOF evaluation and held-out test set evaluation)
+            - EvalMode.FOLD_WISE: Compute metrics for each fold separately
+              (useful for analyzing per-fold performance in OOF predictions)
 
         Returns
         -------
         X | Sequence[X]
-            The evaluation score. If eval_mode is OOF_PRED, returns X.
-            If eval_mode is FOLD_WISE, returns Sequence[X].
+            If eval_mode is POOLING, returns a single evaluation score of type X.
+            If eval_mode is FOLD_WISE, returns a list of evaluation scores per fold.
+
+        Raises
+        ------
+        ValueError
+            If y_true or y_pred are not NumPy arrays.
         """
         if not (isinstance(y_true, np.ndarray) and isinstance(y_pred, np.ndarray)):
             raise ValueError(

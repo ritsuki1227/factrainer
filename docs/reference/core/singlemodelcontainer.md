@@ -7,6 +7,7 @@
         members: 
         - train 
         - predict 
+        - evaluate
         - raw_model 
         - train_config 
         - pred_config 

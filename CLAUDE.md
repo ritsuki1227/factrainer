@@ -92,4 +92,18 @@ tests/
 - All configuration is in pyproject.toml files (root and per-package)
 - Use `uv` for dependency management
 - Optional dependencies keep installations lean - users install only needed plugins
-- Read-only git commands allowed; no modifications to repository state
+
+## Git Command Policy
+
+### Read-only Git commands (allowed)
+- git status, git log, git diff, git show, git branch (list), git tag (list)
+- git remote -v, git config --list, git describe, git rev-parse
+- git ls-files, git blame
+
+### State-changing Git commands (NOT allowed)
+- git add, git commit, git push, git pull, git fetch, git merge, git rebase
+- git checkout, git branch (create/delete), git tag (create/delete)
+- git reset, git revert, git stash, git cherry-pick
+- git config --global, git rm, git mv, git clean
+- git remote add/remove, git submodule add/update
+- Never modify repository state without explicit user request
