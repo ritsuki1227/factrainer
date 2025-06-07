@@ -6,7 +6,7 @@ from factrainer.base.config import (
 from factrainer.base.dataset import BaseDataset, Prediction
 from factrainer.base.raw_model import RawModel
 
-from .model_container import BaseModelContainer
+from .model_container import BaseModelContainer, EvalFunc
 
 
 class SingleModelContainer[
@@ -112,6 +112,28 @@ class SingleModelContainer[
             The trained model as a RawModel object.
         """
         return self._model
+
+    def evaluate[X](
+        self,
+        y_true: Prediction,
+        y_pred: Prediction,
+        eval_func: EvalFunc[X],
+    ) -> X:
+        """Evaluate the model's predictions against true values.
+
+        Parameters
+        ----------
+        y_true : Prediction
+            The true values.
+        y_pred : Prediction
+            The predicted values.
+
+        Returns
+        -------
+        float
+            The evaluation score.
+        """
+        raise NotImplementedError
 
     @property
     def train_config(self) -> V:

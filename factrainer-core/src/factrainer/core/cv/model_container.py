@@ -1,12 +1,20 @@
+from enum import Enum, auto
+from typing import Sequence
+
 from factrainer.base.config import BaseMlModelConfig, BasePredictConfig, BaseTrainConfig
-from factrainer.base.dataset import IndexableDataset, Prediction
+from factrainer.base.dataset import IndexableDataset, Prediction, Target
 from factrainer.base.raw_model import RawModel
 from sklearn.model_selection._split import _BaseKFold
 
-from ..model_container import BaseModelContainer
+from ..model_container import BaseModelContainer, EvalFunc
 from .config import AverageEnsemblePredictor, CvLearner, OutOfFoldPredictor, PredMode
 from .dataset import IndexedDatasets, SplittedDatasets, SplittedDatasetsIndices
 from .raw_model import RawModels
+
+
+class EvalMode(Enum):
+    OOF_PRED = auto()
+    BY_FOLD = auto()
 
 
 class CvModelContainer[
@@ -166,6 +174,29 @@ class CvModelContainer[
             The raw models as a RawModels object.
         """
         return self._model
+
+    def evaluate[X](
+        self,
+        y_true: Target,
+        y_pred: Prediction,
+        eval_func: EvalFunc[X],
+        eval_mode: EvalMode = EvalMode.OOF_PRED,
+    ) -> X | Sequence[X]:
+        """Evaluate the model's predictions against true values.
+
+        Parameters
+        ----------
+        y_true : Prediction
+            The true values.
+        y_pred : Prediction
+            The predicted values.
+
+        Returns
+        -------
+        float
+            The evaluation score.
+        """
+        raise NotImplementedError
 
     @property
     def train_config(self) -> V:
