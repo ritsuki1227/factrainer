@@ -42,7 +42,7 @@ def test_evaluate_pooling_mode(
 
 
 @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
-def test_evaluate_by_fold_mode(
+def test_evaluate_fold_wise_mode(
     california_housing_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
     ],
@@ -60,7 +60,7 @@ def test_evaluate_by_fold_mode(
     model.train(dataset)
     y_pred = model.predict(dataset)
 
-    metrics = model.evaluate(target, y_pred, r2_score, eval_mode=EvalMode.BY_FOLD)
+    metrics = model.evaluate(target, y_pred, r2_score, eval_mode=EvalMode.FOLD_WISE)
 
     for metric in metrics:
         assert_allclose(metric, 0.84, atol=2.5e-02)

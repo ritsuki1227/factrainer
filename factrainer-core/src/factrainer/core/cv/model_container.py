@@ -7,7 +7,13 @@ from factrainer.base.raw_model import RawModel
 from sklearn.model_selection._split import _BaseKFold
 
 from ..model_container import BaseModelContainer, EvalFunc
-from .config import AverageEnsemblePredictor, CvLearner, EvalMode, OutOfFoldPredictor, PredMode
+from .config import (
+    AverageEnsemblePredictor,
+    CvLearner,
+    EvalMode,
+    OutOfFoldPredictor,
+    PredMode,
+)
 from .dataset import IndexedDatasets, SplittedDatasets, SplittedDatasetsIndices
 from .raw_model import RawModels
 
@@ -185,7 +191,7 @@ class CvModelContainer[
         y_true: Target,
         y_pred: Prediction,
         eval_func: EvalFunc[X],
-        eval_mode: Literal[EvalMode.BY_FOLD],
+        eval_mode: Literal[EvalMode.FOLD_WISE],
     ) -> Sequence[X]: ...
 
     def evaluate[X](
@@ -212,7 +218,7 @@ class CvModelContainer[
         -------
         X | Sequence[X]
             The evaluation score. If eval_mode is OOF_PRED, returns X.
-            If eval_mode is BY_FOLD, returns Sequence[X].
+            If eval_mode is FOLD_WISE, returns Sequence[X].
         """
         if not (isinstance(y_true, np.ndarray) and isinstance(y_pred, np.ndarray)):
             raise ValueError(
@@ -222,7 +228,7 @@ class CvModelContainer[
         match eval_mode:
             case EvalMode.POOLING:
                 return eval_func(y_true, y_pred)
-            case EvalMode.BY_FOLD:
+            case EvalMode.FOLD_WISE:
                 return [
                     eval_func(y_true[index], y_pred[index])
                     for index in self.cv_indices.test

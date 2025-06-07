@@ -235,7 +235,7 @@ class TestEvaluate:
         eval_func = MagicMock()
         eval_func.side_effect = [0.9, 0.95]
 
-        result = sut.evaluate(y_true, y_pred, eval_func, eval_mode=EvalMode.BY_FOLD)
+        result = sut.evaluate(y_true, y_pred, eval_func, eval_mode=EvalMode.FOLD_WISE)
 
         assert eval_func.call_count == 2
 

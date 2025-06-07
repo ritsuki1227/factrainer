@@ -50,7 +50,7 @@ class PredMode(Enum):
 
 class EvalMode(Enum):
     POOLING = auto()
-    BY_FOLD = auto()
+    FOLD_WISE = auto()
 
 
 class OutOfFoldPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
