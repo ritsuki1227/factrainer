@@ -45,8 +45,9 @@ class CvModelContainer[
     --------
     >>> import lightgbm as lgb
     >>> from sklearn.datasets import fetch_california_housing
+    >>> from sklearn.metrics import r2_score
     >>> from sklearn.model_selection import KFold
-    >>> from factrainer.core import CvModelContainer
+    >>> from factrainer.core import CvModelContainer, EvalMode
     >>> from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
     >>>
     >>> # Load data
@@ -60,7 +61,7 @@ class CvModelContainer[
     >>> # Configure model
     >>> config = LgbModelConfig.create(
     ...     train_config=LgbTrainConfig(
-    ...         params={"objective": "regression"},
+    ...         params={"objective": "regression", "verbose": -1},
     ...         callbacks=[lgb.early_stopping(100, verbose=False)],
     ...     ),
     ... )
@@ -74,6 +75,12 @@ class CvModelContainer[
     >>>
     >>> # Get OOF predictions
     >>> y_pred = model.predict(dataset, n_jobs=4)
+    >>>
+    >>> # Evaluate predictions
+    >>> metric = model.evaluate(data.target, y_pred, r2_score)
+    >>>
+    >>> # Or get per-fold metrics
+    >>> metrics = model.evaluate(data.target, y_pred, r2_score, eval_mode=EvalMode.FOLD_WISE)
     """
 
     def __init__(

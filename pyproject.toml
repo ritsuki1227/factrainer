@@ -120,5 +120,6 @@ namespace_packages = true
 explicit_package_bases = true
 
 [tool.pytest.ini_options]
-addopts = ["--import-mode=importlib"]
+addopts = ["--import-mode=importlib", "--doctest-modules"]
 consider_namespace_packages = true
+doctest_optionflags = ["NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]

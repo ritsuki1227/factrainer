@@ -31,6 +31,7 @@ class SingleModelContainer[
     --------
     >>> import lightgbm as lgb
     >>> from sklearn.datasets import fetch_california_housing
+    >>> from sklearn.metrics import r2_score
     >>> from sklearn.model_selection import train_test_split
     >>> from factrainer.core import SingleModelContainer
     >>> from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
@@ -49,7 +50,7 @@ class SingleModelContainer[
     >>> # Configure model
     >>> config = LgbModelConfig.create(
     ...     train_config=LgbTrainConfig(
-    ...         params={"objective": "regression", "seed": 1, "deterministic": True},
+    ...         params={"objective": "regression", "seed": 1, "deterministic": True, "verbose": -1},
     ...         callbacks=[lgb.early_stopping(100, verbose=False)],
     ...     ),
     ... )
@@ -60,6 +61,9 @@ class SingleModelContainer[
     >>>
     >>> # Make predictions
     >>> y_pred = model.predict(test_dataset)
+    >>>
+    >>> # Evaluate predictions
+    >>> metric = model.evaluate(test_y, y_pred, r2_score)
     """
 
     def __init__(
