@@ -3,7 +3,7 @@ from factrainer.base.config import (
     BasePredictConfig,
     BaseTrainConfig,
 )
-from factrainer.base.dataset import BaseDataset, Prediction
+from factrainer.base.dataset import BaseDataset, Prediction, Target
 from factrainer.base.raw_model import RawModel
 
 from .model_container import BaseModelContainer, EvalFunc
@@ -115,7 +115,7 @@ class SingleModelContainer[
 
     def evaluate[X](
         self,
-        y_true: Prediction,
+        y_true: Target,
         y_pred: Prediction,
         eval_func: EvalFunc[X],
     ) -> X:
