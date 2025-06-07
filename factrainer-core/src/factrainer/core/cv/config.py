@@ -48,6 +48,11 @@ class PredMode(Enum):
     AVG_ENSEMBLE = auto()
 
 
+class EvalMode(Enum):
+    POOLING = auto()
+    BY_FOLD = auto()
+
+
 class OutOfFoldPredictor[T: IndexableDataset, U: RawModel, W: BasePredictConfig](
     BasePredictor[IndexedDatasets[T], RawModels[U], W]
 ):

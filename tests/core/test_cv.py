@@ -1,5 +1,7 @@
 from unittest.mock import MagicMock, PropertyMock, patch
 
+import numpy as np
+import pytest
 from factrainer.base.config import (
     BaseLearner,
     BaseMlModelConfig,
@@ -9,9 +11,10 @@ from factrainer.base.config import (
 )
 from factrainer.base.dataset import IndexableDataset
 from factrainer.base.raw_model import RawModel
-from factrainer.core.cv.config import PredMode
+from factrainer.core.cv.config import EvalMode, PredMode
 from factrainer.core.cv.dataset import SplittedDatasetsIndices
 from factrainer.core.cv.model_container import CvModelContainer
+from numpy.testing import assert_array_equal
 from sklearn.model_selection._split import _BaseKFold
 
 
@@ -167,6 +170,107 @@ class TestPredict:
             2,
         )
         assert actual == MockOofPredictor.return_value.predict.return_value
+
+
+@patch.object(
+    CvModelContainer,
+    "cv_indices",
+    new_callable=PropertyMock,
+)
+class TestEvaluate:
+    def test_default_pooling_mode(
+        self,
+        cv_indices: MagicMock,
+    ) -> None:
+        config = MagicMock(spec=BaseMlModelConfig).return_value
+        k_fold = MagicMock(spec=_BaseKFold | SplittedDatasetsIndices).return_value
+        sut = CvModelContainer[
+            IndexableDataset, RawModel, BaseTrainConfig, BasePredictConfig
+        ](config, k_fold)
+
+        y_true = np.array([1, 2, 3, 4])
+        y_pred = np.array([1.1, 2.1, 2.9, 4.2])
+        eval_func = MagicMock()
+        eval_func.return_value = 0.95
+
+        result = sut.evaluate(y_true, y_pred, eval_func)
+
+        eval_func.assert_called_once_with(y_true, y_pred)
+        assert result == 0.95
+
+    def test_pooling_mode(
+        self,
+        cv_indices: MagicMock,
+    ) -> None:
+        config = MagicMock(spec=BaseMlModelConfig).return_value
+        k_fold = MagicMock(spec=_BaseKFold | SplittedDatasetsIndices).return_value
+        sut = CvModelContainer[
+            IndexableDataset, RawModel, BaseTrainConfig, BasePredictConfig
+        ](config, k_fold)
+
+        y_true = np.array([1, 2, 3, 4])
+        y_pred = np.array([1.1, 2.1, 2.9, 4.2])
+        eval_func = MagicMock()
+        eval_func.return_value = 0.95
+
+        result = sut.evaluate(y_true, y_pred, eval_func, eval_mode=EvalMode.POOLING)
+
+        eval_func.assert_called_once_with(y_true, y_pred)
+        assert result == 0.95
+
+    def test_by_fold_mode(
+        self,
+        cv_indices: MagicMock,
+    ) -> None:
+        config = MagicMock(spec=BaseMlModelConfig).return_value
+        k_fold = MagicMock(spec=_BaseKFold | SplittedDatasetsIndices).return_value
+        sut = CvModelContainer[
+            IndexableDataset, RawModel, BaseTrainConfig, BasePredictConfig
+        ](config, k_fold)
+
+        cv_indices.return_value.test = [np.array([0, 1]), np.array([2, 3])]
+
+        y_true = np.array([1, 2, 3, 4])
+        y_pred = np.array([1.1, 2.1, 2.9, 4.2])
+        eval_func = MagicMock()
+        eval_func.side_effect = [0.9, 0.95]
+
+        result = sut.evaluate(y_true, y_pred, eval_func, eval_mode=EvalMode.BY_FOLD)
+
+        assert eval_func.call_count == 2
+
+        call_args1 = eval_func.call_args_list[0]
+        assert_array_equal(call_args1[0][0], np.array([1, 2]))
+        assert_array_equal(call_args1[0][1], np.array([1.1, 2.1]))
+
+        call_args2 = eval_func.call_args_list[1]
+        assert_array_equal(call_args2[0][0], np.array([3, 4]))
+        assert_array_equal(call_args2[0][1], np.array([2.9, 4.2]))
+
+        assert result == [0.9, 0.95]
+
+    def test_invalid_input_types(
+        self,
+        cv_indices: MagicMock,
+    ) -> None:
+        config = MagicMock(spec=BaseMlModelConfig).return_value
+        k_fold = MagicMock(spec=_BaseKFold | SplittedDatasetsIndices).return_value
+        sut = CvModelContainer[
+            IndexableDataset, RawModel, BaseTrainConfig, BasePredictConfig
+        ](config, k_fold)
+
+        y_true_list = [1, 2, 3, 4]
+        y_pred_array = np.array([1.1, 2.1, 2.9, 4.2])
+        eval_func = MagicMock()
+
+        with pytest.raises(ValueError):
+            sut.evaluate(y_true_list, y_pred_array, eval_func)  # type: ignore[call-overload]
+
+        y_true_array = np.array([1, 2, 3, 4])
+        y_pred_list = [1.1, 2.1, 2.9, 4.2]
+
+        with pytest.raises(ValueError):
+            sut.evaluate(y_true_array, y_pred_list, eval_func)  # type: ignore[call-overload]
 
 
 class TestModelConfig:

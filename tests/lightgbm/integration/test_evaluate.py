@@ -5,8 +5,7 @@ from typing import Any
 import lightgbm as lgb
 import numpy as np
 import pytest
-from factrainer.core import CvModelContainer
-from factrainer.core.cv.model_container import EvalMode
+from factrainer.core import CvModelContainer, EvalMode
 from factrainer.lightgbm import (
     LgbDataset,
     LgbModelConfig,

@@ -1,4 +1,3 @@
-from enum import Enum, auto
 from typing import Literal, Sequence, overload
 
 import numpy as np
@@ -8,14 +7,9 @@ from factrainer.base.raw_model import RawModel
 from sklearn.model_selection._split import _BaseKFold
 
 from ..model_container import BaseModelContainer, EvalFunc
-from .config import AverageEnsemblePredictor, CvLearner, OutOfFoldPredictor, PredMode
+from .config import AverageEnsemblePredictor, CvLearner, EvalMode, OutOfFoldPredictor, PredMode
 from .dataset import IndexedDatasets, SplittedDatasets, SplittedDatasetsIndices
 from .raw_model import RawModels
-
-
-class EvalMode(Enum):
-    POOLING = auto()
-    BY_FOLD = auto()
 
 
 class CvModelContainer[
