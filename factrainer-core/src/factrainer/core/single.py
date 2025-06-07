@@ -133,7 +133,7 @@ class SingleModelContainer[
         float
             The evaluation score.
         """
-        raise NotImplementedError
+        return eval_func(y_true, y_pred)
 
     @property
     def train_config(self) -> V:

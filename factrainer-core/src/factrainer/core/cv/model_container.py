@@ -219,7 +219,16 @@ class CvModelContainer[
             The evaluation score. If eval_mode is OOF_PRED, returns X.
             If eval_mode is BY_FOLD, returns Sequence[X].
         """
-        raise NotImplementedError
+        match eval_mode:
+            case EvalMode.OOF_PRED:
+                return eval_func(y_true, y_pred)
+            case EvalMode.BY_FOLD:
+                return [
+                    eval_func(y_true[index], y_pred[index])
+                    for index in self.cv_indices.test
+                ]
+            case _:
+                raise ValueError(f"Invalid evaluation mode: {eval_mode}")
 
     @property
     def train_config(self) -> V:
