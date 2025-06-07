@@ -36,7 +36,7 @@ def test_cv_model_regression(
     model = CvModelContainer(config, k_fold)
     model.train(dataset)
     y_pred = model.predict(dataset)
-    metric = r2_score(target, y_pred)
+    metric = model.evaluate(target, y_pred, r2_score)
 
     assert_allclose(metric, 0.8, atol=2.5e-02)
     with pytest.raises(NotFittedError):
@@ -60,7 +60,7 @@ def test_cv_model_parallel(
     model = CvModelContainer(config, k_fold)
     model.train(dataset, n_jobs=2)
     y_pred = model.predict(dataset)
-    metric = r2_score(target, y_pred)
+    metric = model.evaluate(target, y_pred, r2_score)
 
     assert_allclose(metric, 0.8, atol=2.5e-02)
 
@@ -88,6 +88,6 @@ def test_single_model(
     model = SingleModelContainer(config)
     model.train(train_dataset)
     y_pred = model.predict(test_dataset)
-    metric = r2_score(test_y, y_pred)
+    metric = model.evaluate(test_y, y_pred, r2_score)
 
     assert_allclose(metric, 0.8, atol=2.5e-02)
