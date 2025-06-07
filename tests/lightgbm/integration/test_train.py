@@ -39,7 +39,7 @@ def test_cv_model(
     model = CvModelContainer(config, k_fold)
     model.train(dataset)
     y_pred = model.predict(dataset)
-    metric = r2_score(target, y_pred)
+    metric = model.evaluate(target, y_pred, r2_score)
 
     assert_allclose(metric, 0.84, atol=2.5e-02)
 
