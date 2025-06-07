@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://ritsuki1227.github.io/factrainer/latest/reference/sklearn/sklearnmodelconfig/">
+        <link rel="canonical" href="https://ritsuki1227.github.io/factrainer/latest/reference/core/evalmode/">
       
       
-        <link rel="prev" href="../sklearnpredictconfig/">
+        <link rel="prev" href="../singlemodelcontainer/">
       
       
-        <link rel="next" href="../sklearnmodel/">
+        <link rel="next" href="../predmode/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>SklearnModelConfig - Factrainer</title>
+        <title>EvalMode - Factrainer</title>
       
     
     
@@ -76,7 +76,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#sklearnmodelconfig" class="md-skip">
+        <a href="#evalmode" class="md-skip">
           Skip to content
         </a>
       
@@ -114,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              SklearnModelConfig
+              EvalMode
             
           </span>
         </div>
@@ -452,6 +452,8 @@
                 
   
   
+    
+  
   
   
     
@@ -478,17 +480,15 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../core/" class="md-nav__link ">
+            <a href="../" class="md-nav__link ">
               
   
   
@@ -507,7 +507,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             Core
@@ -523,7 +523,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core/cvmodelcontainer/" class="md-nav__link">
+      <a href="../cvmodelcontainer/" class="md-nav__link">
         
   
   
@@ -546,7 +546,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core/singlemodelcontainer/" class="md-nav__link">
+      <a href="../singlemodelcontainer/" class="md-nav__link">
         
   
   
@@ -566,10 +566,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../../core/evalmode/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    EvalMode
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -580,6 +602,74 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#factrainer.core.EvalMode" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;EvalMode
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label=" EvalMode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factrainer.core.EvalMode-attributes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attributes
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attributes">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#factrainer.core.EvalMode.POOLING" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;POOLING
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#factrainer.core.EvalMode.FOLD_WISE" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;FOLD_WISE
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -592,7 +682,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core/predmode/" class="md-nav__link">
+      <a href="../predmode/" class="md-nav__link">
         
   
   
@@ -615,7 +705,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../core/splitteddatasetsindices/" class="md-nav__link">
+      <a href="../splitteddatasetsindices/" class="md-nav__link">
         
   
   
@@ -834,8 +924,6 @@
                 
   
   
-    
-  
   
   
     
@@ -864,15 +952,17 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../sklearn/" class="md-nav__link ">
               
   
   
@@ -891,7 +981,7 @@
             
           </div>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_4">
             <span class="md-nav__icon md-icon"></span>
             Scikit-learn
@@ -907,7 +997,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sklearndataset/" class="md-nav__link">
+      <a href="../../sklearn/sklearndataset/" class="md-nav__link">
         
   
   
@@ -930,7 +1020,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sklearntrainconfig/" class="md-nav__link">
+      <a href="../../sklearn/sklearntrainconfig/" class="md-nav__link">
         
   
   
@@ -953,7 +1043,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sklearnpredictconfig/" class="md-nav__link">
+      <a href="../../sklearn/sklearnpredictconfig/" class="md-nav__link">
         
   
   
@@ -973,32 +1063,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    SklearnModelConfig
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../sklearn/sklearnmodelconfig/" class="md-nav__link">
         
   
   
@@ -1009,116 +1077,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SklearnModelConfig
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label=" SklearnModelConfig">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig-attributes" class="md-nav__link">
-    <span class="md-ellipsis">
-      Attributes
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Attributes">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.learner" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;learner
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.predictor" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;predictor
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.train_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;train_config
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.pred_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;pred_config
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Functions
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Functions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.create" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;create
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1131,7 +1089,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sklearnmodel/" class="md-nav__link">
+      <a href="../../sklearn/sklearnmodel/" class="md-nav__link">
         
   
   
@@ -1154,7 +1112,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../sklearnpredictmethod/" class="md-nav__link">
+      <a href="../../sklearn/sklearnpredictmethod/" class="md-nav__link">
         
   
   
@@ -1258,17 +1216,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig" class="md-nav__link">
+  <a href="#factrainer.core.EvalMode" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;SklearnModelConfig
+      <code class="doc-symbol doc-symbol-toc doc-symbol-class"></code>&nbsp;EvalMode
     </span>
   </a>
   
-    <nav class="md-nav" aria-label=" SklearnModelConfig">
+    <nav class="md-nav" aria-label=" EvalMode">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig-attributes" class="md-nav__link">
+  <a href="#factrainer.core.EvalMode-attributes" class="md-nav__link">
     <span class="md-ellipsis">
       Attributes
     </span>
@@ -1278,60 +1236,18 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.learner" class="md-nav__link">
+  <a href="#factrainer.core.EvalMode.POOLING" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;learner
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;POOLING
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.predictor" class="md-nav__link">
+  <a href="#factrainer.core.EvalMode.FOLD_WISE" class="md-nav__link">
     <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;predictor
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.train_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;train_config
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.pred_config" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;pred_config
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig-functions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Functions
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="Functions">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#factrainer.sklearn.SklearnModelConfig.create" class="md-nav__link">
-    <span class="md-ellipsis">
-      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;create
+      <code class="doc-symbol doc-symbol-toc doc-symbol-attribute"></code>&nbsp;FOLD_WISE
     </span>
   </a>
   
@@ -1366,18 +1282,18 @@
   
 
 
-<h1 id="sklearnmodelconfig">SklearnModelConfig<a class="headerlink" href="#sklearnmodelconfig" title="Permanent link">&para;</a></h1>
+<h1 id="evalmode">EvalMode<a class="headerlink" href="#evalmode" title="Permanent link">&para;</a></h1>
 
 
 <div class="doc doc-object doc-class">
 
 
 
-<h2 id="factrainer.sklearn.SklearnModelConfig" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">SklearnModelConfig</span>
+<h2 id="factrainer.core.EvalMode" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-class"></code>            <span class="doc doc-object-name doc-class-name">EvalMode</span>
 
 
-<a href="#factrainer.sklearn.SklearnModelConfig" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#factrainer.core.EvalMode" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents first">
@@ -1398,44 +1314,23 @@
 
 
 
-<h3 id="factrainer.sklearn.SklearnModelConfig-attributes">Attributes<a href="#factrainer.sklearn.SklearnModelConfig-attributes" class="headerlink" title="Permanent link">&para;</a></h3>
+<h3 id="factrainer.core.EvalMode-attributes">Attributes<a href="#factrainer.core.EvalMode-attributes" class="headerlink" title="Permanent link">&para;</a></h3>
 
 <div class="doc doc-object doc-attribute">
 
 
 
-<h4 id="factrainer.sklearn.SklearnModelConfig.learner" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">learner</span>
+<h4 id="factrainer.core.EvalMode.POOLING" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">POOLING</span>
 
 
   <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#factrainer.sklearn.SklearnModelConfig.learner" class="headerlink" title="Permanent link">&para;</a></h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">learner</span><span class="p">:</span> <span class="n"><span title="factrainer.sklearn.config.SklearnLearner">SklearnLearner</span></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-</div>
-
-<div class="doc doc-object doc-attribute">
-
-
-
-<h4 id="factrainer.sklearn.SklearnModelConfig.predictor" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">predictor</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-<a href="#factrainer.sklearn.SklearnModelConfig.predictor" class="headerlink" title="Permanent link">&para;</a></h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">predictor</span><span class="p">:</span> <span class="n"><span title="factrainer.sklearn.config.SklearnPredictor">SklearnPredictor</span></span>
+<a href="#factrainer.core.EvalMode.POOLING" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">POOLING</span> <span class="o">=</span> <span class="n"><span title="enum.auto">auto</span></span><span class="p">()</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1448,16 +1343,17 @@
 
 
 
-<h4 id="factrainer.sklearn.SklearnModelConfig.train_config" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">train_config</span>
+<h4 id="factrainer.core.EvalMode.FOLD_WISE" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">FOLD_WISE</span>
 
 
   <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-class-attribute"><code>class-attribute</code></small>
       <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
   </span>
 
-<a href="#factrainer.sklearn.SklearnModelConfig.train_config" class="headerlink" title="Permanent link">&para;</a></h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">train_config</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SklearnTrainConfig (factrainer.sklearn.config.SklearnTrainConfig)" href="../sklearntrainconfig/#factrainer.sklearn.SklearnTrainConfig">SklearnTrainConfig</a></span>
+<a href="#factrainer.core.EvalMode.FOLD_WISE" class="headerlink" title="Permanent link">&para;</a></h4>
+<div class="doc-signature highlight"><pre><span></span><code><span class="n">FOLD_WISE</span> <span class="o">=</span> <span class="n"><span title="enum.auto">auto</span></span><span class="p">()</span>
 </code></pre></div>
 
     <div class="doc doc-contents ">
@@ -1466,54 +1362,7 @@
 
 </div>
 
-<div class="doc doc-object doc-attribute">
 
-
-
-<h4 id="factrainer.sklearn.SklearnModelConfig.pred_config" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-attribute"></code>            <span class="doc doc-object-name doc-attribute-name">pred_config</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-instance-attribute"><code>instance-attribute</code></small>
-  </span>
-
-<a href="#factrainer.sklearn.SklearnModelConfig.pred_config" class="headerlink" title="Permanent link">&para;</a></h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="n">pred_config</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SklearnPredictConfig (factrainer.sklearn.config.SklearnPredictConfig)" href="../sklearnpredictconfig/#factrainer.sklearn.SklearnPredictConfig">SklearnPredictConfig</a></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-    </div>
-
-</div>
-
-<h3 id="factrainer.sklearn.SklearnModelConfig-functions">Functions<a href="#factrainer.sklearn.SklearnModelConfig-functions" class="headerlink" title="Permanent link">&para;</a></h3>
-
-<div class="doc doc-object doc-function">
-
-
-<h4 id="factrainer.sklearn.SklearnModelConfig.create" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">create</span>
-
-
-  <span class="doc doc-labels">
-      <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
-  </span>
-
-<a href="#factrainer.sklearn.SklearnModelConfig.create" class="headerlink" title="Permanent link">&para;</a></h4>
-<div class="doc-signature highlight"><pre><span></span><code><span class="nf">create</span><span class="p">(</span>
-    <span class="n">train_config</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SklearnTrainConfig (factrainer.sklearn.config.SklearnTrainConfig)" href="../sklearntrainconfig/#factrainer.sklearn.SklearnTrainConfig">SklearnTrainConfig</a></span><span class="p">,</span>
-    <span class="n">pred_config</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            SklearnPredictConfig (factrainer.sklearn.config.SklearnPredictConfig)" href="../sklearnpredictconfig/#factrainer.sklearn.SklearnPredictConfig">SklearnPredictConfig</a></span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Self">Self</span></span>
-</code></pre></div>
-
-    <div class="doc doc-contents ">
-
-
-    </div>
-
-</div>
 
 
 

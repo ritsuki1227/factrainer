@@ -14,7 +14,7 @@
         <link rel="prev" href="../">
       
       
-        <link rel="next" href="../predmode/">
+        <link rel="next" href="../singlemodelcontainer/">
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
@@ -471,6 +471,8 @@
       
         
       
+        
+      
     
     
     
@@ -668,6 +670,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#factrainer.core.CvModelContainer.evaluate" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;evaluate
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -682,6 +693,52 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../singlemodelcontainer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SingleModelContainer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../evalmode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EvalMode
+    
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -723,29 +780,6 @@
   
   <span class="md-ellipsis">
     SplittedDatasetsIndices
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../singlemodelcontainer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    SingleModelContainer
     
   </span>
   
@@ -1348,6 +1382,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#factrainer.core.CvModelContainer.evaluate" class="md-nav__link">
+    <span class="md-ellipsis">
+      <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;evaluate
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1460,22 +1503,19 @@ custom indices without such constraints, use SplittedDatasetsIndices.</p>
 <p><span class="doc-section-title">Examples:</span></p>
     <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lgb</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_california_housing</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">KFold</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">CvModelContainer</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">CvModelContainer</span><span class="p">,</span> <span class="n">EvalMode</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LgbDataset</span><span class="p">,</span> <span class="n">LgbModelConfig</span><span class="p">,</span> <span class="n">LgbTrainConfig</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Load data</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">fetch_california_housing</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">LgbDataset</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">dataset</span><span class="o">=</span><span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">target</span>
-<span class="gp">... </span>    <span class="p">)</span>
-<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">LgbDataset</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">))</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Configure model</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">LgbModelConfig</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">train_config</span><span class="o">=</span><span class="n">LgbTrainConfig</span><span class="p">(</span>
-<span class="gp">... </span>        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;objective&quot;</span><span class="p">:</span> <span class="s2">&quot;regression&quot;</span><span class="p">},</span>
+<span class="gp">... </span>        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;objective&quot;</span><span class="p">:</span> <span class="s2">&quot;regression&quot;</span><span class="p">,</span> <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
 <span class="gp">... </span>        <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">lgb</span><span class="o">.</span><span class="n">early_stopping</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)],</span>
 <span class="gp">... </span>    <span class="p">),</span>
 <span class="gp">... </span><span class="p">)</span>
@@ -1489,6 +1529,14 @@ custom indices without such constraints, use SplittedDatasetsIndices.</p>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get OOF predictions</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Evaluate predictions</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">r2_score</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Or get per-fold metrics</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metrics</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">eval_mode</span><span class="o">=</span><span class="n">EvalMode</span><span class="o">.</span><span class="n">FOLD_WISE</span>
+<span class="gp">... </span><span class="p">)</span>
 </code></pre></div>
 
 
@@ -1993,6 +2041,206 @@ Default is PredMode.OOF_PRED.</p>
             <td>
               <div class="doc-md-description">
                 <p>If the prediction mode is invalid.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h4 id="factrainer.core.CvModelContainer.evaluate" class="doc doc-heading">
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <span class="doc doc-object-name doc-function-name">evaluate</span>
+
+
+<a href="#factrainer.core.CvModelContainer.evaluate" class="headerlink" title="Permanent link">&para;</a></h4>
+          <div class="doc-overloads">
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">evaluate</span><span class="p">(</span>
+    <span class="n">y_true</span><span class="p">:</span> <span class="n"><span title="factrainer.base.dataset.Target">Target</span></span><span class="p">,</span>
+    <span class="n">y_pred</span><span class="p">:</span> <span class="n"><span title="factrainer.base.dataset.Prediction">Prediction</span></span><span class="p">,</span>
+    <span class="n">eval_func</span><span class="p">:</span> <span class="n"><span title="factrainer.core.model_container.EvalFunc">EvalFunc</span></span><span class="p">[</span><span class="n"><span title="X">X</span></span><span class="p">],</span>
+    <span class="n">eval_mode</span><span class="p">:</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            POOLING
+
+
+  
+      class-attribute
+      instance-attribute
+   (factrainer.core.cv.config.EvalMode.POOLING)" href="../evalmode/#factrainer.core.EvalMode.POOLING">POOLING</a></span><span class="p">]</span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            POOLING
+
+
+  
+      class-attribute
+      instance-attribute
+   (factrainer.core.cv.config.EvalMode.POOLING)" href="../evalmode/#factrainer.core.EvalMode.POOLING">POOLING</a></span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="X">X</span></span>
+</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><span class="nf">evaluate</span><span class="p">(</span>
+    <span class="n">y_true</span><span class="p">:</span> <span class="n"><span title="factrainer.base.dataset.Target">Target</span></span><span class="p">,</span>
+    <span class="n">y_pred</span><span class="p">:</span> <span class="n"><span title="factrainer.base.dataset.Prediction">Prediction</span></span><span class="p">,</span>
+    <span class="n">eval_func</span><span class="p">:</span> <span class="n"><span title="factrainer.core.model_container.EvalFunc">EvalFunc</span></span><span class="p">[</span><span class="n"><span title="X">X</span></span><span class="p">],</span>
+    <span class="n">eval_mode</span><span class="p">:</span> <span class="n"><span title="typing.Literal">Literal</span></span><span class="p">[</span><span class="n"><a class="autorefs autorefs-internal" title="            FOLD_WISE
+
+
+  
+      class-attribute
+      instance-attribute
+   (factrainer.core.cv.config.EvalMode.FOLD_WISE)" href="../evalmode/#factrainer.core.EvalMode.FOLD_WISE">FOLD_WISE</a></span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="typing.Sequence">Sequence</span></span><span class="p">[</span><span class="n"><span title="X">X</span></span><span class="p">]</span>
+</code></pre></div>          </div>
+<div class="doc-signature highlight"><pre><span></span><code><span class="nf">evaluate</span><span class="p">(</span>
+    <span class="n">y_true</span><span class="p">:</span> <span class="n"><span title="factrainer.base.dataset.Target">Target</span></span><span class="p">,</span>
+    <span class="n">y_pred</span><span class="p">:</span> <span class="n"><span title="factrainer.base.dataset.Prediction">Prediction</span></span><span class="p">,</span>
+    <span class="n">eval_func</span><span class="p">:</span> <span class="n"><span title="factrainer.core.model_container.EvalFunc">EvalFunc</span></span><span class="p">[</span><span class="n"><span title="X">X</span></span><span class="p">],</span>
+    <span class="n">eval_mode</span><span class="p">:</span> <span class="n"><a class="autorefs autorefs-internal" title="            EvalMode (factrainer.core.cv.config.EvalMode)" href="../evalmode/#factrainer.core.EvalMode">EvalMode</a></span> <span class="o">=</span> <span class="n"><a class="autorefs autorefs-internal" title="            POOLING
+
+
+  
+      class-attribute
+      instance-attribute
+   (factrainer.core.cv.config.EvalMode.POOLING)" href="../evalmode/#factrainer.core.EvalMode.POOLING">POOLING</a></span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n"><span title="X">X</span></span> <span class="o">|</span> <span class="n"><span title="typing.Sequence">Sequence</span></span><span class="p">[</span><span class="n"><span title="X">X</span></span><span class="p">]</span>
+</code></pre></div>
+
+    <div class="doc doc-contents ">
+
+        <p>Evaluate the model's predictions against true values.</p>
+<p>This method evaluates predictions from cross-validation models. The predictions
+can be either out-of-fold (OOF) predictions or predictions on unseen data
+(held-out test set).</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>y_true</code>
+            </td>
+            <td>
+                  <code><span title="factrainer.base.dataset.Target">Target</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The true target values as a NumPy array.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>y_pred</code>
+            </td>
+            <td>
+                  <code><span title="factrainer.base.dataset.Prediction">Prediction</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The predicted values as a NumPy array. Must have the same shape as y_true.
+These can be:
+- Out-of-fold predictions from predict(mode=PredMode.OOF_PRED)
+- Predictions on unseen data from predict(mode=PredMode.AVG_ENSEMBLE)</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>eval_func</code>
+            </td>
+            <td>
+                  <code><span title="factrainer.core.model_container.EvalFunc">EvalFunc</span>[<span title="X">X</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The evaluation function that takes (y_true, y_pred) and returns a metric.
+Common examples include sklearn.metrics functions like r2_score, mae, etc.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>eval_mode</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="            EvalMode (factrainer.core.cv.config.EvalMode)" href="../evalmode/#factrainer.core.EvalMode">EvalMode</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The evaluation mode:
+- EvalMode.POOLING: Compute a single metric across all predictions
+  (standard for both OOF evaluation and held-out test set evaluation)
+- EvalMode.FOLD_WISE: Compute metrics for each fold separately
+  (useful for analyzing per-fold performance in OOF predictions)</p>
+              </div>
+            </td>
+            <td>
+                  <code>EvalMode.POOLING</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="X">X</span> | <span title="typing.Sequence">Sequence</span>[<span title="X">X</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If eval_mode is POOLING, returns a single evaluation score of type X.
+If eval_mode is FOLD_WISE, returns a list of evaluation scores per fold.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="ValueError">ValueError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>If y_true or y_pred are not NumPy arrays.</p>
               </div>
             </td>
           </tr>

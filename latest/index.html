@@ -551,6 +551,8 @@
       
         
       
+        
+      
     
     
     
@@ -626,6 +628,52 @@
   
   
     <li class="md-nav__item">
+      <a href="reference/core/singlemodelcontainer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    SingleModelContainer
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference/core/evalmode/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    EvalMode
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="reference/core/predmode/" class="md-nav__link">
         
   
@@ -655,29 +703,6 @@
   
   <span class="md-ellipsis">
     SplittedDatasetsIndices
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="reference/core/singlemodelcontainer/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    SingleModelContainer
     
   </span>
   
@@ -1318,7 +1343,9 @@
 <p>Code example: <strong>California Housing dataset</strong></p>
 <div class="highlight"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lgb</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_california_housing</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">CvModelContainer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">r2_score</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">KFold</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">CvModelContainer</span><span class="p">,</span> <span class="n">EvalMode</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LgbDataset</span><span class="p">,</span> <span class="n">LgbModelConfig</span><span class="p">,</span> <span class="n">LgbTrainConfig</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">fetch_california_housing</span><span class="p">()</span>
@@ -1329,7 +1356,7 @@
 <span class="p">)</span>
 <span class="n">config</span> <span class="o">=</span> <span class="n">LgbModelConfig</span><span class="o">.</span><span class="n">create</span><span class="p">(</span>
     <span class="n">train_config</span><span class="o">=</span><span class="n">LgbTrainConfig</span><span class="p">(</span>
-        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;objective&quot;</span><span class="p">:</span> <span class="s2">&quot;regression&quot;</span><span class="p">},</span>
+        <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;objective&quot;</span><span class="p">:</span> <span class="s2">&quot;regression&quot;</span><span class="p">,</span> <span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">},</span>
         <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">lgb</span><span class="o">.</span><span class="n">early_stopping</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)],</span>
     <span class="p">),</span>
 <span class="p">)</span>
@@ -1337,12 +1364,21 @@
 <span class="n">model</span> <span class="o">=</span> <span class="n">CvModelContainer</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">k_fold</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
-<span class="c1"># trained models</span>
-<span class="n">model</span><span class="o">.</span><span class="n">raw_model</span>
-
-<span class="c1"># OOF prediction</span>
+<span class="c1"># Get OOF predictions</span>
 <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">r2_score</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
+
+<span class="c1"># Evaluate predictions</span>
+<span class="n">metric</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">r2_score</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R2 Score: </span><span class="si">{</span><span class="n">metric</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Or get per-fold metrics</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span>
+    <span class="n">data</span><span class="o">.</span><span class="n">target</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">,</span> <span class="n">r2_score</span><span class="p">,</span> <span class="n">eval_mode</span><span class="o">=</span><span class="n">EvalMode</span><span class="o">.</span><span class="n">FOLD_WISE</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;R2 Scores by fold: </span><span class="si">{</span><span class="p">[</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">m</span><span class="si">:</span><span class="s1">.4f</span><span class="si">}</span><span class="s1">&#39;</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">metrics</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Access trained models</span>
+<span class="n">model</span><span class="o">.</span><span class="n">raw_model</span>
 </code></pre></div>
 <h2 id="project-status">Project Status<a class="headerlink" href="#project-status" title="Permanent link">&para;</a></h2>
 <p>Factrainer is in active development. The goal is to expand support to more frameworks and make the tool even more robust. Contributions, issues, and feedback are welcome to help shape the future of Factrainer.</p>
