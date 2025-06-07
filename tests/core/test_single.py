@@ -1,5 +1,7 @@
 from unittest.mock import MagicMock, PropertyMock, patch
 
+import numpy as np
+import pytest
 from factrainer.base.config import BaseMlModelConfig, BasePredictConfig, BaseTrainConfig
 from factrainer.base.dataset import BaseDataset
 from factrainer.base.raw_model import RawModel
@@ -86,3 +88,40 @@ class TestModelConfig:
 
         assert sut.pred_config == new_pred_config
         assert model_config.pred_config != new_pred_config
+
+
+class TestEvaluate:
+    def test_evaluate(self) -> None:
+        config = MagicMock(spec=BaseMlModelConfig).return_value
+        sut = SingleModelContainer[
+            BaseDataset, RawModel, BaseTrainConfig, BasePredictConfig
+        ](config)
+
+        y_true = np.array([1, 2, 3, 4])
+        y_pred = np.array([1.1, 2.1, 2.9, 4.2])
+        eval_func = MagicMock()
+        eval_func.return_value = 0.95
+
+        result = sut.evaluate(y_true, y_pred, eval_func)
+
+        eval_func.assert_called_once_with(y_true, y_pred)
+        assert result == 0.95
+
+    def test_invalid_input_types(self) -> None:
+        config = MagicMock(spec=BaseMlModelConfig).return_value
+        sut = SingleModelContainer[
+            BaseDataset, RawModel, BaseTrainConfig, BasePredictConfig
+        ](config)
+
+        y_true_list = [1, 2, 3, 4]
+        y_pred_array = np.array([1.1, 2.1, 2.9, 4.2])
+        eval_func = MagicMock()
+
+        with pytest.raises(ValueError):
+            sut.evaluate(y_true_list, y_pred_array, eval_func)  # type: ignore[arg-type]
+
+        y_true_array = np.array([1, 2, 3, 4])
+        y_pred_list = [1.1, 2.1, 2.9, 4.2]
+
+        with pytest.raises(ValueError):
+            sut.evaluate(y_true_array, y_pred_list, eval_func)  # type: ignore[arg-type]
