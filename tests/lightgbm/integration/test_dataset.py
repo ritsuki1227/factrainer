@@ -30,6 +30,6 @@ def test_cv_pandas(titanic_data: tuple[pd.DataFrame, pd.Series[int]]) -> None:
     model = CvModelContainer(config, k_fold)
     model.train(dataset, n_jobs=4)
     y_pred = model.predict(dataset, n_jobs=4)
-    metric = accuracy_score(target, y_pred > 0.5)
+    metric = model.evaluate(target, y_pred > 0.5, accuracy_score)
 
     assert_allclose(metric, 0.81, atol=2.5e-02)

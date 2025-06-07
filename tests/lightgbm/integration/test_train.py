@@ -62,7 +62,7 @@ def test_cv_model_parallel(
     model = CvModelContainer(config, k_fold)
     model.train(dataset, n_jobs=4)
     y_pred = model.predict(dataset, n_jobs=4)
-    metric = r2_score(target, y_pred)
+    metric = model.evaluate(target, y_pred, r2_score)
 
     assert_allclose(metric, 0.84, atol=2.5e-02)
 
@@ -95,7 +95,7 @@ def test_cv_train_val_test_split(
     model = CvModelContainer(config, indices)
     model.train(dataset)
     y_pred = model.predict(dataset)
-    metric = r2_score(target, y_pred)
+    metric = model.evaluate(target, y_pred, r2_score)
 
     assert_allclose(metric, 0.84, atol=2.5e-02)
 
@@ -125,6 +125,6 @@ def test_single_model(
     model = SingleModelContainer(config)
     model.train(train_dataset, val_dataset)
     y_pred = model.predict(test_dataset)
-    metric = r2_score(test_y, y_pred)
+    metric = model.evaluate(test_y, y_pred, r2_score)
 
     assert_allclose(metric, 0.83, atol=2.5e-02)

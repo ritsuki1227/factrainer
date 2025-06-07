@@ -43,7 +43,7 @@ def test_cv_pred_config(
     model = CvModelContainer(config, k_fold)
     model.train(dataset)
     y_pred = model.predict(dataset)
-    metric = r2_score(target, y_pred)
+    metric = model.evaluate(target, y_pred, r2_score)
 
     assert_allclose(metric, 0.22, atol=2.5e-02)
 
@@ -66,9 +66,9 @@ def test_cv_set_pred_config_after_training(
     k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
     model = CvModelContainer(config, k_fold)
     model.train(dataset)
-    metric_underfit = r2_score(target, model.predict(dataset))
+    metric_underfit = model.evaluate(target, model.predict(dataset), r2_score)
     model.pred_config = LgbPredictConfig(num_iteration=None)
-    metric = r2_score(target, model.predict(dataset))
+    metric = model.evaluate(target, model.predict(dataset), r2_score)
 
     assert_allclose(metric_underfit, 0.22, atol=2.5e-02)
     assert_allclose(metric, 0.84, atol=2.5e-02)
@@ -99,7 +99,7 @@ def test_cv_average_ensembling(
     model = CvModelContainer(config, k_fold)
     model.train(train_dataset, n_jobs=4)
     y_pred = model.predict(test_dataset, n_jobs=4, mode=PredMode.AVG_ENSEMBLE)
-    metric = r2_score(test_y, y_pred)
+    metric = model.evaluate(test_y, y_pred, r2_score)
 
     assert_allclose(metric, 0.84, atol=2.5e-02)
 
@@ -127,6 +127,6 @@ def test_cv_model_picklable(
             LgbDataset, LgbModel, LgbTrainConfig, LgbPredictConfig
         ] = joblib.load(fp.name)
     y_pred = loaded_model.predict(dataset, n_jobs=4)
-    metric = r2_score(target, y_pred)
+    metric = loaded_model.evaluate(target, y_pred, r2_score)
 
     assert_allclose(metric, 0.84, atol=2.5e-02)
