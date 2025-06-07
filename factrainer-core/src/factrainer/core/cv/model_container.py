@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from typing import Sequence
+from typing import Literal, Sequence, overload
 
 from factrainer.base.config import BaseMlModelConfig, BasePredictConfig, BaseTrainConfig
 from factrainer.base.dataset import IndexableDataset, Prediction, Target
@@ -175,6 +175,24 @@ class CvModelContainer[
         """
         return self._model
 
+    @overload
+    def evaluate[X](
+        self,
+        y_true: Target,
+        y_pred: Prediction,
+        eval_func: EvalFunc[X],
+        eval_mode: Literal[EvalMode.OOF_PRED] = EvalMode.OOF_PRED,
+    ) -> X: ...
+
+    @overload
+    def evaluate[X](
+        self,
+        y_true: Target,
+        y_pred: Prediction,
+        eval_func: EvalFunc[X],
+        eval_mode: Literal[EvalMode.BY_FOLD],
+    ) -> Sequence[X]: ...
+
     def evaluate[X](
         self,
         y_true: Target,
@@ -186,15 +204,20 @@ class CvModelContainer[
 
         Parameters
         ----------
-        y_true : Prediction
+        y_true : Target
             The true values.
         y_pred : Prediction
             The predicted values.
+        eval_func : EvalFunc[X]
+            The evaluation function.
+        eval_mode : EvalMode
+            The evaluation mode.
 
         Returns
         -------
-        float
-            The evaluation score.
+        X | Sequence[X]
+            The evaluation score. If eval_mode is OOF_PRED, returns X.
+            If eval_mode is BY_FOLD, returns Sequence[X].
         """
         raise NotImplementedError
 
