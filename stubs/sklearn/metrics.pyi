@@ -3,12 +3,10 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Any, Literal
 
-import numpy as np
-import pandas as pd
 from numpy import typing as npt
 
 def r2_score(
-    y_true: Sequence[Any] | npt.NDArray[np.number[Any]] | pd.DataFrame | pd.Series[Any],
+    y_true: npt.ArrayLike,
     y_pred: npt.ArrayLike,
     *,
     sample_weight: Sequence[Any] | None = None,
@@ -16,14 +14,14 @@ def r2_score(
     force_finite: bool = True,
 ) -> float: ...
 def accuracy_score(
-    y_true: Sequence[Any] | npt.NDArray[np.number[Any]] | pd.DataFrame | pd.Series[Any],
+    y_true: npt.ArrayLike,
     y_pred: npt.ArrayLike,
     *,
     normalize: bool = True,
     sample_weight: Sequence[Any] | None = None,
 ) -> float: ...
 def f1_score(
-    y_true: Sequence[Any] | npt.NDArray[np.number[Any]] | pd.DataFrame | pd.Series[Any],
+    y_true: npt.ArrayLike,
     y_pred: npt.ArrayLike,
     labels: npt.ArrayLike | None = None,
     pos_label: str | int = 1,

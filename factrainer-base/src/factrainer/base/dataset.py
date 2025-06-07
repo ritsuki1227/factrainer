@@ -9,8 +9,8 @@ from sklearn.model_selection._split import _BaseKFold
 from typing_extensions import TypeIs
 
 # type Prediction = npt.NDArray[Any] | scipy.sparse.spmatrix | list[scipy.sparse.spmatrix]
-type Prediction = npt.NDArray[np.number[Any]]
-type Target = npt.NDArray[np.number[Any]]
+type Prediction = npt.NDArray[np.number[Any] | np.bool]
+type Target = npt.NDArray[np.number[Any] | np.bool]
 type RowIndex = list[int] | npt.NDArray[np.integer[Any]]
 type RowIndices = Sequence[RowIndex]
 type Rows = int | slice | RowIndex

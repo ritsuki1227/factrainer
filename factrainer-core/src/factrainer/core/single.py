@@ -1,3 +1,4 @@
+import numpy as np
 from factrainer.base.config import (
     BaseMlModelConfig,
     BasePredictConfig,
@@ -133,6 +134,10 @@ class SingleModelContainer[
         float
             The evaluation score.
         """
+        if not (isinstance(y_true, np.ndarray) and isinstance(y_pred, np.ndarray)):
+            raise ValueError(
+                f"Both y_true and y_pred must be numpy arrays, got {type(y_true)} and {type(y_pred)}"
+            )
         return eval_func(y_true, y_pred)
 
     @property

@@ -1,6 +1,7 @@
 from enum import Enum, auto
 from typing import Literal, Sequence, overload
 
+import numpy as np
 from factrainer.base.config import BaseMlModelConfig, BasePredictConfig, BaseTrainConfig
 from factrainer.base.dataset import IndexableDataset, Prediction, Target
 from factrainer.base.raw_model import RawModel
@@ -13,7 +14,7 @@ from .raw_model import RawModels
 
 
 class EvalMode(Enum):
-    OOF_PRED = auto()
+    POOLING = auto()
     BY_FOLD = auto()
 
 
@@ -181,7 +182,7 @@ class CvModelContainer[
         y_true: Target,
         y_pred: Prediction,
         eval_func: EvalFunc[X],
-        eval_mode: Literal[EvalMode.OOF_PRED] = EvalMode.OOF_PRED,
+        eval_mode: Literal[EvalMode.POOLING] = EvalMode.POOLING,
     ) -> X: ...
 
     @overload
@@ -198,7 +199,7 @@ class CvModelContainer[
         y_true: Target,
         y_pred: Prediction,
         eval_func: EvalFunc[X],
-        eval_mode: EvalMode = EvalMode.OOF_PRED,
+        eval_mode: EvalMode = EvalMode.POOLING,
     ) -> X | Sequence[X]:
         """Evaluate the model's predictions against true values.
 
@@ -219,8 +220,13 @@ class CvModelContainer[
             The evaluation score. If eval_mode is OOF_PRED, returns X.
             If eval_mode is BY_FOLD, returns Sequence[X].
         """
+        if not (isinstance(y_true, np.ndarray) and isinstance(y_pred, np.ndarray)):
+            raise ValueError(
+                f"Both y_true and y_pred must be numpy arrays, got {type(y_true)} and {type(y_pred)}"
+            )
+
         match eval_mode:
-            case EvalMode.OOF_PRED:
+            case EvalMode.POOLING:
                 return eval_func(y_true, y_pred)
             case EvalMode.BY_FOLD:
                 return [
