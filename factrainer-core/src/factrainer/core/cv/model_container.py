@@ -52,11 +52,7 @@ class CvModelContainer[
     >>>
     >>> # Load data
     >>> data = fetch_california_housing()
-    >>> dataset = LgbDataset(
-    ...     dataset=lgb.Dataset(
-    ...         data.data, label=data.target
-    ...     )
-    ... )
+    >>> dataset = LgbDataset(dataset=lgb.Dataset(data.data, label=data.target))
     >>>
     >>> # Configure model
     >>> config = LgbModelConfig.create(
@@ -80,7 +76,9 @@ class CvModelContainer[
     >>> metric = model.evaluate(data.target, y_pred, r2_score)
     >>>
     >>> # Or get per-fold metrics
-    >>> metrics = model.evaluate(data.target, y_pred, r2_score, eval_mode=EvalMode.FOLD_WISE)
+    >>> metrics = model.evaluate(
+    ...     data.target, y_pred, r2_score, eval_mode=EvalMode.FOLD_WISE
+    ... )
     """
 
     def __init__(

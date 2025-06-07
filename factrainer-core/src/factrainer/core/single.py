@@ -50,7 +50,12 @@ class SingleModelContainer[
     >>> # Configure model
     >>> config = LgbModelConfig.create(
     ...     train_config=LgbTrainConfig(
-    ...         params={"objective": "regression", "seed": 1, "deterministic": True, "verbose": -1},
+    ...         params={
+    ...             "objective": "regression",
+    ...             "seed": 1,
+    ...             "deterministic": True,
+    ...             "verbose": -1,
+    ...         },
     ...         callbacks=[lgb.early_stopping(100, verbose=False)],
     ...     ),
     ... )

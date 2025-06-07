@@ -123,3 +123,7 @@ explicit_package_bases = true
 addopts = ["--import-mode=importlib", "--doctest-modules"]
 consider_namespace_packages = true
 doctest_optionflags = ["NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]
+
+[tool.ruff.format]
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
