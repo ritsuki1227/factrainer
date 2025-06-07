@@ -126,4 +126,3 @@ doctest_optionflags = ["NORMALIZE_WHITESPACE", "IGNORE_EXCEPTION_DETAIL"]
 
 [tool.ruff.format]
 docstring-code-format = true
-docstring-code-line-length = "dynamic"
