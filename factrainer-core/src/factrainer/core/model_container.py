@@ -1,9 +1,12 @@
 from abc import ABC, abstractmethod
-from typing import Any
+from collections.abc import Callable
+from typing import Any, Sequence
 
 from factrainer.base.config import BasePredictConfig, BaseTrainConfig
-from factrainer.base.dataset import BaseDataset, Prediction
+from factrainer.base.dataset import BaseDataset, Prediction, Target
 from factrainer.base.raw_model import RawModel
+
+type EvalFunc[T] = Callable[[Target, Prediction], T]
 
 
 class BaseModelContainer[
@@ -11,6 +14,7 @@ class BaseModelContainer[
     U: RawModel,
     V: BaseTrainConfig,
     W: BasePredictConfig,
+    # X,
 ](ABC):
     @abstractmethod
     def train(self, train_dataset: T, *args: Any, **kwargs: Any) -> None:
@@ -23,6 +27,17 @@ class BaseModelContainer[
     @property
     @abstractmethod
     def raw_model(self) -> U:
+        raise NotImplementedError
+
+    @abstractmethod
+    def evaluate[X](
+        self,
+        y_true: Target,
+        y_pred: Prediction,
+        eval_func: EvalFunc[X],
+        *args: Any,
+        **kwargs: Any,
+    ) -> X | Sequence[X]:
         raise NotImplementedError
 
     @property

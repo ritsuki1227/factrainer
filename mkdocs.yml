@@ -43,9 +43,10 @@ nav:
     - Core:
       - Overview: reference/core/index.md
       - CvModelContainer: reference/core/cvmodelcontainer.md
+      - SingleModelContainer: reference/core/singlemodelcontainer.md
+      - EvalMode: reference/core/evalmode.md
       - PredMode: reference/core/predmode.md
       - SplittedDatasetsIndices: reference/core/splitteddatasetsindices.md
-      - SingleModelContainer: reference/core/singlemodelcontainer.md
     - LightGBM:
       - Overview: reference/lightgbm/index.md
       - LgbDataset: reference/lightgbm/lgbdataset.md

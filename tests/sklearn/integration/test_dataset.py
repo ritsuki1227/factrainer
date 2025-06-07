@@ -36,7 +36,9 @@ def test_cv_pandas(
     model.train(dataset, n_jobs=4)
     y_pred = model.predict(dataset)
     y_pred = np.argmax(y_pred, axis=1)
-    metric = f1_score(target, y_pred, average="micro")
+    metric = model.evaluate(
+        target, y_pred, lambda y_true, y_pred: f1_score(y_true, y_pred, average="micro")
+    )
 
     assert_allclose(metric, 0.95, atol=2.5e-02)
 
@@ -56,6 +58,8 @@ def test_cv_polars(
     model.train(dataset, n_jobs=4)
     y_pred = model.predict(dataset)
     y_pred = np.argmax(y_pred, axis=1)
-    metric = f1_score(target, y_pred, average="micro")
+    metric = model.evaluate(
+        target, y_pred, lambda y_true, y_pred: f1_score(y_true, y_pred, average="micro")
+    )
 
     assert_allclose(metric, 0.95, atol=2.5e-02)

@@ -1,12 +1,13 @@
+import numpy as np
 from factrainer.base.config import (
     BaseMlModelConfig,
     BasePredictConfig,
     BaseTrainConfig,
 )
-from factrainer.base.dataset import BaseDataset, Prediction
+from factrainer.base.dataset import BaseDataset, Prediction, Target
 from factrainer.base.raw_model import RawModel
 
-from .model_container import BaseModelContainer
+from .model_container import BaseModelContainer, EvalFunc
 
 
 class SingleModelContainer[
@@ -30,6 +31,7 @@ class SingleModelContainer[
     --------
     >>> import lightgbm as lgb
     >>> from sklearn.datasets import fetch_california_housing
+    >>> from sklearn.metrics import r2_score
     >>> from sklearn.model_selection import train_test_split
     >>> from factrainer.core import SingleModelContainer
     >>> from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
@@ -48,7 +50,12 @@ class SingleModelContainer[
     >>> # Configure model
     >>> config = LgbModelConfig.create(
     ...     train_config=LgbTrainConfig(
-    ...         params={"objective": "regression", "seed": 1, "deterministic": True},
+    ...         params={
+    ...             "objective": "regression",
+    ...             "seed": 1,
+    ...             "deterministic": True,
+    ...             "verbose": -1,
+    ...         },
     ...         callbacks=[lgb.early_stopping(100, verbose=False)],
     ...     ),
     ... )
@@ -59,6 +66,9 @@ class SingleModelContainer[
     >>>
     >>> # Make predictions
     >>> y_pred = model.predict(test_dataset)
+    >>>
+    >>> # Evaluate predictions
+    >>> metric = model.evaluate(test_y, y_pred, r2_score)
     """
 
     def __init__(
@@ -112,6 +122,43 @@ class SingleModelContainer[
             The trained model as a RawModel object.
         """
         return self._model
+
+    def evaluate[X](
+        self,
+        y_true: Target,
+        y_pred: Prediction,
+        eval_func: EvalFunc[X],
+    ) -> X:
+        """Evaluate the model's predictions against true values.
+
+        This method evaluates predictions from a single trained model, typically
+        on a held-out test set or validation set.
+
+        Parameters
+        ----------
+        y_true : Target
+            The true target values as a NumPy array.
+        y_pred : Prediction
+            The predicted values as a NumPy array. Must have the same shape as y_true.
+        eval_func : EvalFunc[X]
+            The evaluation function that takes (y_true, y_pred) and returns a metric.
+            Common examples include sklearn.metrics functions like r2_score, mae, etc.
+
+        Returns
+        -------
+        X
+            The evaluation score of type X, as returned by eval_func.
+
+        Raises
+        ------
+        ValueError
+            If y_true or y_pred are not NumPy arrays.
+        """
+        if not (isinstance(y_true, np.ndarray) and isinstance(y_pred, np.ndarray)):
+            raise ValueError(
+                f"Both y_true and y_pred must be numpy arrays, got {type(y_true)} and {type(y_pred)}"
+            )
+        return eval_func(y_true, y_pred)
 
     @property
     def train_config(self) -> V:

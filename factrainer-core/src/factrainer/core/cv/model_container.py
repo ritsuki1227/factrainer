@@ -1,10 +1,19 @@
+from typing import Literal, Sequence, overload
+
+import numpy as np
 from factrainer.base.config import BaseMlModelConfig, BasePredictConfig, BaseTrainConfig
-from factrainer.base.dataset import IndexableDataset, Prediction
+from factrainer.base.dataset import IndexableDataset, Prediction, Target
 from factrainer.base.raw_model import RawModel
 from sklearn.model_selection._split import _BaseKFold
 
-from ..model_container import BaseModelContainer
-from .config import AverageEnsemblePredictor, CvLearner, OutOfFoldPredictor, PredMode
+from ..model_container import BaseModelContainer, EvalFunc
+from .config import (
+    AverageEnsemblePredictor,
+    CvLearner,
+    EvalMode,
+    OutOfFoldPredictor,
+    PredMode,
+)
 from .dataset import IndexedDatasets, SplittedDatasets, SplittedDatasetsIndices
 from .raw_model import RawModels
 
@@ -36,22 +45,19 @@ class CvModelContainer[
     --------
     >>> import lightgbm as lgb
     >>> from sklearn.datasets import fetch_california_housing
+    >>> from sklearn.metrics import r2_score
     >>> from sklearn.model_selection import KFold
-    >>> from factrainer.core import CvModelContainer
+    >>> from factrainer.core import CvModelContainer, EvalMode
     >>> from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
     >>>
     >>> # Load data
     >>> data = fetch_california_housing()
-    >>> dataset = LgbDataset(
-    ...     dataset=lgb.Dataset(
-    ...         data.data, label=data.target
-    ...     )
-    ... )
+    >>> dataset = LgbDataset(dataset=lgb.Dataset(data.data, label=data.target))
     >>>
     >>> # Configure model
     >>> config = LgbModelConfig.create(
     ...     train_config=LgbTrainConfig(
-    ...         params={"objective": "regression"},
+    ...         params={"objective": "regression", "verbose": -1},
     ...         callbacks=[lgb.early_stopping(100, verbose=False)],
     ...     ),
     ... )
@@ -65,6 +71,14 @@ class CvModelContainer[
     >>>
     >>> # Get OOF predictions
     >>> y_pred = model.predict(dataset, n_jobs=4)
+    >>>
+    >>> # Evaluate predictions
+    >>> metric = model.evaluate(data.target, y_pred, r2_score)
+    >>>
+    >>> # Or get per-fold metrics
+    >>> metrics = model.evaluate(
+    ...     data.target, y_pred, r2_score, eval_mode=EvalMode.FOLD_WISE
+    ... )
     """
 
     def __init__(
@@ -166,6 +180,83 @@ class CvModelContainer[
             The raw models as a RawModels object.
         """
         return self._model
+
+    @overload
+    def evaluate[X](
+        self,
+        y_true: Target,
+        y_pred: Prediction,
+        eval_func: EvalFunc[X],
+        eval_mode: Literal[EvalMode.POOLING] = EvalMode.POOLING,
+    ) -> X: ...
+
+    @overload
+    def evaluate[X](
+        self,
+        y_true: Target,
+        y_pred: Prediction,
+        eval_func: EvalFunc[X],
+        eval_mode: Literal[EvalMode.FOLD_WISE],
+    ) -> Sequence[X]: ...
+
+    def evaluate[X](
+        self,
+        y_true: Target,
+        y_pred: Prediction,
+        eval_func: EvalFunc[X],
+        eval_mode: EvalMode = EvalMode.POOLING,
+    ) -> X | Sequence[X]:
+        """Evaluate the model's predictions against true values.
+
+        This method evaluates predictions from cross-validation models. The predictions
+        can be either out-of-fold (OOF) predictions or predictions on unseen data
+        (held-out test set).
+
+        Parameters
+        ----------
+        y_true : Target
+            The true target values as a NumPy array.
+        y_pred : Prediction
+            The predicted values as a NumPy array. Must have the same shape as y_true.
+            These can be:
+            - Out-of-fold predictions from predict(mode=PredMode.OOF_PRED)
+            - Predictions on unseen data from predict(mode=PredMode.AVG_ENSEMBLE)
+        eval_func : EvalFunc[X]
+            The evaluation function that takes (y_true, y_pred) and returns a metric.
+            Common examples include sklearn.metrics functions like r2_score, mae, etc.
+        eval_mode : EvalMode, default=EvalMode.POOLING
+            The evaluation mode:
+            - EvalMode.POOLING: Compute a single metric across all predictions
+              (standard for both OOF evaluation and held-out test set evaluation)
+            - EvalMode.FOLD_WISE: Compute metrics for each fold separately
+              (useful for analyzing per-fold performance in OOF predictions)
+
+        Returns
+        -------
+        X | Sequence[X]
+            If eval_mode is POOLING, returns a single evaluation score of type X.
+            If eval_mode is FOLD_WISE, returns a list of evaluation scores per fold.
+
+        Raises
+        ------
+        ValueError
+            If y_true or y_pred are not NumPy arrays.
+        """
+        if not (isinstance(y_true, np.ndarray) and isinstance(y_pred, np.ndarray)):
+            raise ValueError(
+                f"Both y_true and y_pred must be numpy arrays, got {type(y_true)} and {type(y_pred)}"
+            )
+
+        match eval_mode:
+            case EvalMode.POOLING:
+                return eval_func(y_true, y_pred)
+            case EvalMode.FOLD_WISE:
+                return [
+                    eval_func(y_true[index], y_pred[index])
+                    for index in self.cv_indices.test
+                ]
+            case _:
+                raise ValueError(f"Invalid evaluation mode: {eval_mode}")
 
     @property
     def train_config(self) -> V:

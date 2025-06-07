@@ -46,7 +46,9 @@ Code example: **California Housing dataset**
 ```python
 import lightgbm as lgb
 from sklearn.datasets import fetch_california_housing
-from factrainer.core import CvModelContainer
+from sklearn.metrics import r2_score
+from sklearn.model_selection import KFold
+from factrainer.core import CvModelContainer, EvalMode
 from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
 
 data = fetch_california_housing()
@@ -57,7 +59,7 @@ dataset = LgbDataset(
 )
 config = LgbModelConfig.create(
     train_config=LgbTrainConfig(
-        params={"objective": "regression"},
+        params={"objective": "regression", "verbose": -1},
         callbacks=[lgb.early_stopping(100, verbose=False)],
     ),
 )
@@ -65,12 +67,21 @@ k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
 model = CvModelContainer(config, k_fold)
 model.train(dataset, n_jobs=4)
 
-# trained models
-model.raw_model
-
-# OOF prediction
+# Get OOF predictions
 y_pred = model.predict(dataset, n_jobs=4)
-print(r2_score(data.target, y_pred))
+
+# Evaluate predictions
+metric = model.evaluate(data.target, y_pred, r2_score)
+print(f"R2 Score: {metric:.4f}")
+
+# Or get per-fold metrics
+metrics = model.evaluate(
+    data.target, y_pred, r2_score, eval_mode=EvalMode.FOLD_WISE
+)
+print(f"R2 Scores by fold: {[f'{m:.4f}' for m in metrics]}")
+
+# Access trained models
+model.raw_model
 ```
 
 ## Project Status

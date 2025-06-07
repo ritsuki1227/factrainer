@@ -1,5 +1,6 @@
 .DS_Store
 notebooks/
+.claude/settings.local.json
 
 # pytest-profiling
 prof/
