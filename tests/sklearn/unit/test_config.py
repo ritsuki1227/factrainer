@@ -16,6 +16,42 @@ from factrainer.sklearn.raw_model import SklearnModel
 from sklearn.linear_model import LinearRegression, LogisticRegression
 
 
+class TestSklearnTrainConfig:
+    def test_normal(self) -> None:
+        estimator = LinearRegression()
+        config = SklearnTrainConfig(estimator=estimator)
+
+        assert config.estimator is estimator
+
+    def test_with_additional_kwargs(self) -> None:
+        estimator = LogisticRegression()
+        sample_weight = np.array([1.0, 2.0, 1.5])
+        config = SklearnTrainConfig(estimator=estimator, sample_weight=sample_weight)
+
+        assert config.estimator is estimator
+        assert np.array_equal(config.sample_weight, sample_weight)
+
+
+class TestSklearnPredictConfig:
+    def test_normal(self) -> None:
+        config = SklearnPredictConfig()
+
+        assert config.predict_method == SklearnPredictMethod.AUTO
+
+    def test_predict_method(self) -> None:
+        config = SklearnPredictConfig(predict_method=SklearnPredictMethod.PREDICT)
+
+        assert config.predict_method == SklearnPredictMethod.PREDICT
+
+    def test_with_additional_kwargs(self) -> None:
+        config = SklearnPredictConfig(
+            predict_method=SklearnPredictMethod.PREDICT, batch_size=32
+        )
+
+        assert config.predict_method == SklearnPredictMethod.PREDICT
+        assert config.batch_size == 32
+
+
 @patch("factrainer.sklearn.config.SklearnPredictor", spec=SklearnPredictor)
 @patch("factrainer.sklearn.config.SklearnLearner", spec=SklearnLearner)
 class TestSklearnModelConfig:
