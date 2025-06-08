@@ -1281,6 +1281,63 @@
     <div class="doc doc-contents first">
 
 
+        <p>Configuration for scikit-learn prediction parameters.</p>
+<p>This class encapsulates parameters for prediction with scikit-learn models.
+Additional keyword arguments for the estimator's prediction methods can be
+passed as attributes of this configuration.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>predict_method</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="            SklearnPredictMethod (factrainer.sklearn.config.SklearnPredictMethod)" href="../sklearnpredictmethod/#factrainer.sklearn.SklearnPredictMethod">SklearnPredictMethod</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The prediction method to use:</p>
+<ul>
+<li>AUTO: Automatically selects predict_proba if available, otherwise predict.</li>
+<li>PREDICT: Uses the predict method (returns class labels or regression values).</li>
+<li>PREDICT_PROBA: Uses the predict_proba method (returns probability estimates).</li>
+</ul>
+              </div>
+            </td>
+            <td>
+                  <code>SklearnPredictMethod.AUTO</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>SklearnPredictMethod : Enum of available prediction methods.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">SklearnPredictConfig</span><span class="p">,</span> <span class="n">SklearnPredictMethod</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Default configuration (auto-selects method)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">SklearnPredictConfig</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Force using predict method</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">SklearnPredictConfig</span><span class="p">(</span><span class="n">predict_method</span><span class="o">=</span><span class="n">SklearnPredictMethod</span><span class="o">.</span><span class="n">PREDICT</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Use predict_proba for probability estimates</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">SklearnPredictConfig</span><span class="p">(</span><span class="n">predict_method</span><span class="o">=</span><span class="n">SklearnPredictMethod</span><span class="o">.</span><span class="n">PREDICT_PROBA</span><span class="p">)</span>
+</code></pre></div>
+
 
 
 

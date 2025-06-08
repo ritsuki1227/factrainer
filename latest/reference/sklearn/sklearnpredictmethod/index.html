@@ -1317,6 +1317,73 @@
     <div class="doc doc-contents first">
 
 
+        <p>Prediction method selection for scikit-learn models.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            AUTO
+
+
+  
+      class-attribute
+      instance-attribute
+   (factrainer.sklearn.SklearnPredictMethod.AUTO)" href="#factrainer.sklearn.SklearnPredictMethod.AUTO">AUTO</a></code></td>
+            <td>
+                  <code><span title="enum.auto">auto</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Automatically selects predict_proba if available, otherwise predict.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            PREDICT
+
+
+  
+      class-attribute
+      instance-attribute
+   (factrainer.sklearn.SklearnPredictMethod.PREDICT)" href="#factrainer.sklearn.SklearnPredictMethod.PREDICT">PREDICT</a></code></td>
+            <td>
+                  <code><span title="enum.auto">auto</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Uses the predict method (returns class labels or regression values).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            PREDICT_PROBA
+
+
+  
+      class-attribute
+      instance-attribute
+   (factrainer.sklearn.SklearnPredictMethod.PREDICT_PROBA)" href="#factrainer.sklearn.SklearnPredictMethod.PREDICT_PROBA">PREDICT_PROBA</a></code></td>
+            <td>
+                  <code><span title="enum.auto">auto</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Uses the predict_proba method (returns probability estimates).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
 
 
 

@@ -1299,6 +1299,78 @@
     <div class="doc doc-contents first">
 
 
+        <p>Wrapper for scikit-learn compatible data providing factrainer-compatible interface.</p>
+<p>This class wraps feature matrix and target vector to provide a consistent
+interface for cross-validation and data manipulation within the factrainer
+framework. It supports multiple data formats including numpy arrays, pandas
+DataFrames/Series, and polars DataFrames/Series.
+This dataset is passed to the <code>train</code> and <code>predict</code> methods of
+<code>SingleModelContainer</code> and <code>CvModelContainer</code> when using scikit-learn models.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            X
+
+
+  
+      instance-attribute
+   (factrainer.sklearn.SklearnDataset.X)" href="#factrainer.sklearn.SklearnDataset.X">X</a></code></td>
+            <td>
+                  <code><span title="factrainer.sklearn.dataset.types.MatrixLike">MatrixLike</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Feature matrix. Can be a numpy array, pandas DataFrame, or polars DataFrame.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            y
+
+
+  
+      class-attribute
+      instance-attribute
+   (factrainer.sklearn.SklearnDataset.y)" href="#factrainer.sklearn.SklearnDataset.y">y</a></code></td>
+            <td>
+                  <code><span title="factrainer.sklearn.dataset.types.VectorLike">VectorLike</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Target vector. Can be a numpy array, pandas Series, polars Series, or None.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.sklearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">SklearnDataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create from numpy arrays</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">SklearnDataset</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create without target</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">SklearnDataset</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create from pandas</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">&quot;feature_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">target</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;target&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">SklearnDataset</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">df</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">target</span><span class="p">)</span>
+</code></pre></div>
+
 
 
 
