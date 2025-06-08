@@ -213,7 +213,7 @@ class LgbModelConfig(
 
     See Also
     --------
-    LgbModelConfig.create : Primary method for creating configurations.
+    LgbModelConfig.create : Factory method for creating configurations.
     LgbTrainConfig : Configuration for training parameters.
     LgbPredictConfig : Configuration for prediction parameters.
     SingleModelContainer : For training a single model.
@@ -256,7 +256,7 @@ class LgbModelConfig(
         Returns
         -------
         LgbModelConfig
-            A properly initialized configuration instance ready for use with
+            A configuration instance ready for use with
             SingleModelContainer or CvModelContainer.
         """
         return cls(

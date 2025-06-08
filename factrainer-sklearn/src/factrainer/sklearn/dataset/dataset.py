@@ -21,6 +21,39 @@ from .types import (
 
 
 class SklearnDataset(IndexableDataset):
+    """Wrapper for scikit-learn compatible data providing factrainer-compatible interface.
+
+    This class wraps feature matrix and target vector to provide a consistent
+    interface for cross-validation and data manipulation within the factrainer
+    framework. It supports multiple data formats including numpy arrays, pandas
+    DataFrames/Series, and polars DataFrames/Series.
+    This dataset is passed to the `train` and `predict` methods of
+    `SingleModelContainer` and `CvModelContainer` when using scikit-learn models.
+
+    Attributes
+    ----------
+    X : MatrixLike
+        Feature matrix. Can be a numpy array, pandas DataFrame, or polars DataFrame.
+    y : VectorLike | None
+        Target vector. Can be a numpy array, pandas Series, polars Series, or None.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> from factrainer.sklearn import SklearnDataset
+    >>> # Create from numpy arrays
+    >>> X = np.random.randn(100, 10)
+    >>> y = np.random.randn(100)
+    >>> dataset = SklearnDataset(X=X, y=y)
+    >>> # Create without target
+    >>> dataset = SklearnDataset(X=X)
+    >>> # Create from pandas
+    >>> import pandas as pd
+    >>> df = pd.DataFrame(X, columns=[f"feature_{i}" for i in range(10)])
+    >>> target = pd.Series(y, name="target")
+    >>> dataset = SklearnDataset(X=df, y=target)
+    """
+
     X: MatrixLike
     y: VectorLike | None = None
 

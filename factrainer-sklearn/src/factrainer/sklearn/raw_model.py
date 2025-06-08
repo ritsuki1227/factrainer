@@ -34,4 +34,15 @@ class ProbPredictable(BaseEstimatorProtocol, Protocol):
 
 
 class SklearnModel(RawModel):
+    """Wrapper for trained scikit-learn model.
+
+    This class wraps a trained scikit-learn estimator instance to provide
+    a consistent interface within the factrainer framework.
+
+    Attributes
+    ----------
+    estimator : Predictable | ProbPredictable
+        The trained scikit-learn estimator instance.
+    """
+
     estimator: Predictable | ProbPredictable
