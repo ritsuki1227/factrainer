@@ -14,4 +14,5 @@ class LgbModel(RawModel):
     model : lgb.Booster
         The trained LightGBM Booster instance.
     """
+
     model: lgb.Booster
