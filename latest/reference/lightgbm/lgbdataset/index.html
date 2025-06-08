@@ -1281,6 +1281,59 @@
     <div class="doc doc-contents first">
 
 
+        <p>Wrapper for LightGBM Dataset providing factrainer-compatible interface.</p>
+<p>This class wraps a native <code>lgb.Dataset</code> to provide a consistent interface
+for cross-validation and data manipulation within the factrainer framework.
+This dataset is passed to the <code>train</code> and <code>predict</code> methods of
+<code>SingleModelContainer</code> and <code>CvModelContainer</code> when using LightGBM models.</p>
+
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            dataset
+
+
+  
+      instance-attribute
+   (factrainer.lightgbm.LgbDataset.dataset)" href="#factrainer.lightgbm.LgbDataset.dataset">dataset</a></code></td>
+            <td>
+                  <code><span title="lightgbm.Dataset">Dataset</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The underlying LightGBM Dataset instance containing features, labels,
+and optional metadata like weights, groups, and init scores.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lgb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LgbDataset</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create from numpy arrays</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lgb_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">LgbDataset</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">lgb_data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create with additional metadata</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lgb_data</span> <span class="o">=</span> <span class="n">lgb</span><span class="o">.</span><span class="n">Dataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="n">weights</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">LgbDataset</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">lgb_data</span><span class="p">)</span>
+</code></pre></div>
+
 
 
 
