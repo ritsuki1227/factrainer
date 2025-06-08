@@ -1383,6 +1383,117 @@
     <div class="doc doc-contents first">
 
 
+        <p>Configuration container for LightGBM models in the factrainer framework.</p>
+<p>This class encapsulates all necessary components for training and prediction
+with LightGBM models.</p>
+
+
+<details class="warning" open>
+  <summary>Warnings</summary>
+  <p>Do not instantiate this class directly by calling <code>LgbModelConfig(...)</code>.
+Use the factory method <code>LgbModelConfig.create</code> instead.</p>
+</details>
+
+<p><span class="doc-section-title">Attributes:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            learner
+
+
+  
+      instance-attribute
+   (factrainer.lightgbm.LgbModelConfig.learner)" href="#factrainer.lightgbm.LgbModelConfig.learner">learner</a></code></td>
+            <td>
+                  <code><span title="factrainer.lightgbm.config.LgbLearner">LgbLearner</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Component responsible for training LightGBM models.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            predictor
+
+
+  
+      instance-attribute
+   (factrainer.lightgbm.LgbModelConfig.predictor)" href="#factrainer.lightgbm.LgbModelConfig.predictor">predictor</a></code></td>
+            <td>
+                  <code><span title="factrainer.lightgbm.config.LgbPredictor">LgbPredictor</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Component responsible for making predictions with trained models.</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            train_config
+
+
+  
+      instance-attribute
+   (factrainer.lightgbm.LgbModelConfig.train_config)" href="#factrainer.lightgbm.LgbModelConfig.train_config">train_config</a></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="            LgbTrainConfig (factrainer.lightgbm.config.LgbTrainConfig)" href="../lgbtrainconfig/#factrainer.lightgbm.LgbTrainConfig">LgbTrainConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Configuration for training parameters (params, num_boost_round, etc.).</p>
+              </div>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td><code><a class="autorefs autorefs-internal" title="            pred_config
+
+
+  
+      instance-attribute
+   (factrainer.lightgbm.LgbModelConfig.pred_config)" href="#factrainer.lightgbm.LgbModelConfig.pred_config">pred_config</a></code></td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="            LgbPredictConfig (factrainer.lightgbm.config.LgbPredictConfig)" href="../lgbpredictconfig/#factrainer.lightgbm.LgbPredictConfig">LgbPredictConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Configuration for prediction parameters (iteration range, output type, etc.).</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>LgbModelConfig.create : Primary method for creating configurations.
+LgbTrainConfig : Configuration for training parameters.
+LgbPredictConfig : Configuration for prediction parameters.
+SingleModelContainer : For training a single model.
+CvModelContainer : For cross-validation workflows.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LgbModelConfig</span><span class="p">,</span> <span class="n">LgbTrainConfig</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create configuration with default prediction settings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">train_config</span> <span class="o">=</span> <span class="n">LgbTrainConfig</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;objective&quot;</span><span class="p">:</span> <span class="s2">&quot;regression&quot;</span><span class="p">,</span> <span class="s2">&quot;metric&quot;</span><span class="p">:</span> <span class="s2">&quot;rmse&quot;</span><span class="p">},</span> <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">100</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_config</span> <span class="o">=</span> <span class="n">LgbModelConfig</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">train_config</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create configuration with custom prediction settings</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LgbPredictConfig</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pred_config</span> <span class="o">=</span> <span class="n">LgbPredictConfig</span><span class="p">(</span><span class="n">raw_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model_config</span> <span class="o">=</span> <span class="n">LgbModelConfig</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">train_config</span><span class="p">,</span> <span class="n">pred_config</span><span class="p">)</span>
+</code></pre></div>
+
 
 
 
@@ -1509,6 +1620,81 @@
 </code></pre></div>
 
     <div class="doc doc-contents ">
+
+        <p>Create a new LgbModelConfig instance.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>train_config</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="            LgbTrainConfig (factrainer.lightgbm.config.LgbTrainConfig)" href="../lgbtrainconfig/#factrainer.lightgbm.LgbTrainConfig">LgbTrainConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Configuration for training parameters including LightGBM params,
+number of boosting rounds, callbacks, etc.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>pred_config</code>
+            </td>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="            LgbPredictConfig (factrainer.lightgbm.config.LgbPredictConfig)" href="../lgbpredictconfig/#factrainer.lightgbm.LgbPredictConfig">LgbPredictConfig</a> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Configuration for prediction parameters. If None, uses default
+LgbPredictConfig() which performs standard prediction.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="            LgbModelConfig (factrainer.lightgbm.config.LgbModelConfig)" href="#factrainer.lightgbm.LgbModelConfig">LgbModelConfig</a></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A properly initialized configuration instance ready for use with
+SingleModelContainer or CvModelContainer.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
     </div>

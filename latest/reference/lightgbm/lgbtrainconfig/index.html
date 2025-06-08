@@ -1389,6 +1389,165 @@
     <div class="doc doc-contents first">
 
 
+        <p>Configuration for LightGBM training parameters.</p>
+<p>This class encapsulates all parameters that can be passed to <code>lgb.train()</code>,
+except for validation data-related parameters. Validation data handling is
+managed separately: <code>SingleModelContainer</code> decides whether to use validation
+data in its train method, while <code>CvModelContainer</code> automatically handles it
+during cross-validation.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>params</code>
+            </td>
+            <td>
+                  <code><span title="dict">dict</span>[<span title="str">str</span>, <span title="typing.Any">Any</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Parameters for training.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>num_boost_round</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Number of boosting iterations.</p>
+              </div>
+            </td>
+            <td>
+                  <code>100</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>valid_names</code>
+            </td>
+            <td>
+                  <code><span title="list">list</span>[<span title="str">str</span>] | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Names of <code>valid_sets</code>.</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>feval</code>
+            </td>
+            <td>
+                  <code>callable or list of callable</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Customized evaluation function.
+Each evaluation function should accept two parameters: preds, eval_data,
+and return (eval_name, eval_result, is_higher_better) or list of such tuples.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>init_model</code>
+            </td>
+            <td>
+                  <code>(<span title="str">str</span>, <span title="pathlib.Path">Path</span>, <span title="Booster">Booster</span> or None)</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Filename of LightGBM model or Booster instance used for continue training.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>keep_training_booster</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether the returned Booster will be used to keep training.
+If False, the returned value will be converted into _InnerPredictor before returning.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>callbacks</code>
+            </td>
+            <td>
+                  <code>list of callable</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>List of callback functions that are applied at each iteration.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>lightgbm.train : The underlying LightGBM training function.</p>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nn">lightgbm</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">lgb</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LgbTrainConfig</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">LgbTrainConfig</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">params</span><span class="o">=</span><span class="p">{</span>
+<span class="gp">... </span>        <span class="s2">&quot;objective&quot;</span><span class="p">:</span> <span class="s2">&quot;regression&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;metric&quot;</span><span class="p">:</span> <span class="s2">&quot;rmse&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;boosting_type&quot;</span><span class="p">:</span> <span class="s2">&quot;gbdt&quot;</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;num_leaves&quot;</span><span class="p">:</span> <span class="mi">31</span><span class="p">,</span>
+<span class="gp">... </span>        <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="p">},</span>
+<span class="gp">... </span>    <span class="n">num_boost_round</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">lgb</span><span class="o">.</span><span class="n">early_stopping</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">lgb</span><span class="o">.</span><span class="n">log_evaluation</span><span class="p">(</span><span class="mi">50</span><span class="p">)],</span>
+<span class="gp">... </span><span class="p">)</span>
+</code></pre></div>
+
 
 
 

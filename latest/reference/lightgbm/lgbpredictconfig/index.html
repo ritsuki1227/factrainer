@@ -1389,6 +1389,186 @@
     <div class="doc doc-contents first">
 
 
+        <p>Configuration for LightGBM prediction parameters.</p>
+<p>This class encapsulates all parameters that can be passed to the <code>predict()</code>
+method of a LightGBM Booster, except for the data parameter itself.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>start_iteration</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Start index of the iteration to predict.
+If &lt;= 0, starts from the first iteration.</p>
+              </div>
+            </td>
+            <td>
+                  <code>0</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>num_iteration</code>
+            </td>
+            <td>
+                  <code><span title="int">int</span> | None</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Total number of iterations used in the prediction.
+- If None: if the best iteration exists and start_iteration &lt;= 0,
+  the best iteration is used; otherwise, all iterations from
+  start_iteration are used.
+- If &lt;= 0: all iterations from start_iteration are used (no limits).</p>
+              </div>
+            </td>
+            <td>
+                  <code>None</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>raw_score</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to predict raw scores.
+- If False: returns transformed scores (e.g., probabilities for
+  binary classification).
+- If True: returns raw scores before transformation (e.g., raw
+  log-odds for binary classification).</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>pred_leaf</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to predict leaf indices.
+- If True: returns the index of the leaf that each sample ends up
+  in for each tree. Output shape is [n_samples, n_trees] or
+  [n_samples, n_trees * n_classes] for multiclass.
+- If False: returns predicted values.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>pred_contrib</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to predict feature contributions (SHAP values).
+- If True: returns feature contributions for each prediction,
+  including the base value (intercept) as the last column.
+  Output shape is [n_samples, n_features + 1] or
+  [n_samples, (n_features + 1) * n_classes] for multiclass.
+- If False: returns predicted values.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>data_has_header</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether the data file has a header when data is provided as a
+file path. Only used when prediction data is a string path to
+a text file (CSV, TSV, or LibSVM).</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+          <tr class="doc-section-item">
+            <td>
+                <code>validate_features</code>
+            </td>
+            <td>
+                  <code><span title="bool">bool</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>Whether to validate that features in the prediction data match
+those used during training. Only applies when prediction data
+is a pandas DataFrame.</p>
+              </div>
+            </td>
+            <td>
+                  <code>False</code>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+<details class="see-also" open>
+  <summary>See Also</summary>
+  <p>lightgbm.Booster.predict : The underlying LightGBM prediction method.</p>
+</details>
+
+<details class="note" open>
+  <summary>Notes</summary>
+  <ul>
+<li>Only one of <code>pred_leaf</code> and <code>pred_contrib</code> can be True at a time.</li>
+<li>When using custom objective functions, raw_score=False still returns
+  raw predictions since the transformation function is not known.</li>
+</ul>
+</details>
+
+<p><span class="doc-section-title">Examples:</span></p>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">factrainer.lightgbm</span><span class="w"> </span><span class="kn">import</span> <span class="n">LgbPredictConfig</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Standard prediction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">LgbPredictConfig</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Raw score prediction</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">LgbPredictConfig</span><span class="p">(</span><span class="n">raw_score</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Get SHAP values</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">LgbPredictConfig</span><span class="p">(</span><span class="n">pred_contrib</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Predict leaf indices</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">config</span> <span class="o">=</span> <span class="n">LgbPredictConfig</span><span class="p">(</span><span class="n">pred_leaf</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</code></pre></div>
+
 
 
 
