@@ -21,15 +21,16 @@ class TestSklearnTrainConfig:
         estimator = LinearRegression()
         config = SklearnTrainConfig(estimator=estimator)
 
-        assert config.estimator is estimator
+        assert config.estimator is estimator  # type: ignore[comparison-overlap]
 
     def test_with_additional_kwargs(self) -> None:
         estimator = LogisticRegression()
         sample_weight = np.array([1.0, 2.0, 1.5])
         config = SklearnTrainConfig(estimator=estimator, sample_weight=sample_weight)
 
-        assert config.estimator is estimator
-        assert np.array_equal(config.sample_weight, sample_weight)
+        assert config.estimator is estimator  # type: ignore[comparison-overlap]
+        assert config.model_extra is not None
+        assert np.array_equal(config.model_extra["sample_weight"], sample_weight)
 
 
 class TestSklearnPredictConfig:
@@ -49,7 +50,8 @@ class TestSklearnPredictConfig:
         )
 
         assert config.predict_method == SklearnPredictMethod.PREDICT
-        assert config.batch_size == 32
+        assert config.model_extra is not None
+        assert config.model_extra["batch_size"] == 32
 
 
 @patch("factrainer.sklearn.config.SklearnPredictor", spec=SklearnPredictor)
