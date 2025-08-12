@@ -28,7 +28,7 @@ jobs:
           private-key: ${{ secrets.FACTRAINER_GITHUB_APP_PRIVATE_KEY }}
 
       - name: Checkout target commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           # Checkout the specified commit SHA if provided, otherwise checkout main branch
           ref: ${{ inputs.commit || 'main' }}
