@@ -33,7 +33,7 @@ jobs:
           private-key: ${{ secrets.FACTRAINER_GITHUB_APP_PRIVATE_KEY }}
 
       - name: Checkout release branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
@@ -110,7 +110,7 @@ jobs:
           private-key: ${{ secrets.FACTRAINER_GITHUB_APP_PRIVATE_KEY }}
 
       - name: Checkout release branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
@@ -207,7 +207,7 @@ jobs:
           private-key: ${{ secrets.FACTRAINER_GITHUB_APP_PRIVATE_KEY }}
 
       - name: Checkout release branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 0
