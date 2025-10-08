@@ -5,7 +5,6 @@ from typing import Any
 import numpy as np
 import pandas as pd
 import polars as pl
-import pytest
 from factrainer.core import (
     CvModelContainer,
 )
@@ -21,7 +20,6 @@ from sklearn.metrics import f1_score
 from sklearn.model_selection import KFold
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_pandas(
     iris_data: tuple[npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]],
 ) -> None:
@@ -43,7 +41,6 @@ def test_cv_pandas(
     assert_allclose(metric, 0.95, atol=2.5e-02)
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_polars(
     iris_data: tuple[npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]],
 ) -> None:

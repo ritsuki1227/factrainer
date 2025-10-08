@@ -19,13 +19,12 @@ from sklearn.metrics import r2_score
 from sklearn.model_selection import KFold, train_test_split
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_model_regression(
-    california_housing_data: tuple[
+    simulated_regression_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
     ],
 ) -> None:
-    features, target = california_housing_data
+    features, target = simulated_regression_data
     dataset = SklearnDataset(X=features, y=target)
     config = SklearnModelConfig.create(
         train_config=SklearnTrainConfig(
@@ -38,18 +37,17 @@ def test_cv_model_regression(
     y_pred = model.predict(dataset)
     metric = model.evaluate(target, y_pred, r2_score)
 
-    assert_allclose(metric, 0.8, atol=2.5e-02)
+    assert_allclose(metric, 0.67, atol=2.5e-02)
     with pytest.raises(NotFittedError):
         cast(Predictable, config.train_config.estimator).predict(np.array([]))
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_model_parallel(
-    california_housing_data: tuple[
+    simulated_regression_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
     ],
 ) -> None:
-    features, target = california_housing_data
+    features, target = simulated_regression_data
     dataset = SklearnDataset(X=features, y=target)
     config = SklearnModelConfig.create(
         train_config=SklearnTrainConfig(
@@ -62,16 +60,15 @@ def test_cv_model_parallel(
     y_pred = model.predict(dataset)
     metric = model.evaluate(target, y_pred, r2_score)
 
-    assert_allclose(metric, 0.8, atol=2.5e-02)
+    assert_allclose(metric, 0.67, atol=2.5e-02)
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_single_model(
-    california_housing_data: tuple[
+    simulated_regression_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
     ],
 ) -> None:
-    features, target = california_housing_data
+    features, target = simulated_regression_data
     train_X, test_X, train_y, test_y = train_test_split(
         features,
         target,
@@ -90,4 +87,4 @@ def test_single_model(
     y_pred = model.predict(test_dataset)
     metric = model.evaluate(test_y, y_pred, r2_score)
 
-    assert_allclose(metric, 0.8, atol=2.5e-02)
+    assert_allclose(metric, 0.65, atol=2.5e-02)

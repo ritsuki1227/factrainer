@@ -44,15 +44,15 @@ class CvModelContainer[
     Examples
     --------
     >>> import lightgbm as lgb
-    >>> from sklearn.datasets import fetch_california_housing
+    >>> from sklearn.datasets import make_regression
     >>> from sklearn.metrics import r2_score
     >>> from sklearn.model_selection import KFold
     >>> from factrainer.core import CvModelContainer, EvalMode
     >>> from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
     >>>
     >>> # Load data
-    >>> data = fetch_california_housing()
-    >>> dataset = LgbDataset(dataset=lgb.Dataset(data.data, label=data.target))
+    >>> X, y = make_regression()
+    >>> dataset = LgbDataset(dataset=lgb.Dataset(X, label=y))
     >>>
     >>> # Configure model
     >>> config = LgbModelConfig.create(
@@ -73,12 +73,10 @@ class CvModelContainer[
     >>> y_pred = model.predict(dataset, n_jobs=4)
     >>>
     >>> # Evaluate predictions
-    >>> metric = model.evaluate(data.target, y_pred, r2_score)
+    >>> metric = model.evaluate(y, y_pred, r2_score)
     >>>
     >>> # Or get per-fold metrics
-    >>> metrics = model.evaluate(
-    ...     data.target, y_pred, r2_score, eval_mode=EvalMode.FOLD_WISE
-    ... )
+    >>> metrics = model.evaluate(y, y_pred, r2_score, eval_mode=EvalMode.FOLD_WISE)
     """
 
     def __init__(

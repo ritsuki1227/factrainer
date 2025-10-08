@@ -4,7 +4,6 @@ from typing import Any
 
 import lightgbm as lgb
 import numpy as np
-import pytest
 from factrainer.core import CvModelContainer, EvalMode
 from factrainer.lightgbm import (
     LgbDataset,
@@ -17,13 +16,12 @@ from sklearn.metrics import r2_score
 from sklearn.model_selection import KFold
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_evaluate_pooling_mode(
-    california_housing_data: tuple[
+    simulated_regression_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
     ],
 ) -> None:
-    features, target = california_housing_data
+    features, target = simulated_regression_data
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
@@ -38,16 +36,15 @@ def test_evaluate_pooling_mode(
 
     metric = model.evaluate(target, y_pred, r2_score, eval_mode=EvalMode.POOLING)
 
-    assert_allclose(metric, 0.84, atol=2.5e-02)
+    assert_allclose(metric, 0.87, atol=2.5e-02)
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_evaluate_fold_wise_mode(
-    california_housing_data: tuple[
+    simulated_regression_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
     ],
 ) -> None:
-    features, target = california_housing_data
+    features, target = simulated_regression_data
     dataset = LgbDataset(dataset=lgb.Dataset(features, label=target))
     config = LgbModelConfig.create(
         train_config=LgbTrainConfig(
@@ -63,4 +60,4 @@ def test_evaluate_fold_wise_mode(
     metrics = model.evaluate(target, y_pred, r2_score, eval_mode=EvalMode.FOLD_WISE)
 
     for metric in metrics:
-        assert_allclose(metric, 0.84, atol=2.5e-02)
+        assert_allclose(metric, 0.87, atol=2.5e-02)

@@ -6,15 +6,7 @@ import numpy as np
 import pandas as pd
 import pytest
 from numpy import typing as npt
-from sklearn.datasets import fetch_california_housing, fetch_openml
-
-
-@pytest.fixture(scope="package")
-def california_housing_data() -> tuple[
-    npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
-]:
-    data = fetch_california_housing()
-    return data["data"], data["target"]  # type: ignore
+from sklearn.datasets import fetch_openml, make_regression
 
 
 @pytest.fixture(scope="package")
@@ -25,3 +17,10 @@ def titanic_data() -> tuple[pd.DataFrame, pd.Series[int]]:
     )
     target = titanic["target"].astype("int")  # type: ignore
     return features, target
+
+
+@pytest.fixture(scope="package")
+def simulated_regression_data() -> tuple[
+    npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
+]:
+    return make_regression(n_samples=1000, random_state=1)

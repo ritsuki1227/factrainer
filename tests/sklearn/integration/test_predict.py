@@ -5,7 +5,6 @@ from typing import Any
 
 import joblib
 import numpy as np
-import pytest
 from factrainer.core import CvModelContainer, PredMode
 from factrainer.sklearn import (
     SklearnDataset,
@@ -27,7 +26,6 @@ from sklearn.svm import SVC
 
 
 class TestClassification:
-    @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
     def test_preidct_auto(
         self,
         iris_data: tuple[npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]],
@@ -72,7 +70,6 @@ class TestClassification:
 
         assert_allclose(metric, 0.95, atol=2.5e-02)
 
-    @pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
     def test_preidct_proba(
         self,
         iris_data: tuple[npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]],
@@ -99,7 +96,6 @@ class TestClassification:
         assert_allclose(metric, 0.95, atol=2.5e-02)
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_set_pred_config_after_training(
     breast_cancer_data: tuple[npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]],
 ) -> None:
@@ -125,13 +121,12 @@ def test_cv_set_pred_config_after_training(
     assert y_pred.ndim == 1
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_average_ensembling(
-    california_housing_data: tuple[
+    simulated_regression_data: tuple[
         npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]
     ],
 ) -> None:
-    features, target = california_housing_data
+    features, target = simulated_regression_data
     train_X, test_X, train_y, test_y = train_test_split(
         features,
         target,
@@ -151,10 +146,9 @@ def test_cv_average_ensembling(
     y_pred = model.predict(test_dataset, n_jobs=4, mode=PredMode.AVG_ENSEMBLE)
     metric = model.evaluate(test_y, y_pred, r2_score)
 
-    assert_allclose(metric, 0.8, atol=2.5e-02)
+    assert_allclose(metric, 0.66, atol=2.5e-02)
 
 
-@pytest.mark.flaky(reruns=3, reruns_delay=5, only_rerun=["HTTPError"])
 def test_cv_model_picklable(
     iris_data: tuple[npt.NDArray[np.number[Any]], npt.NDArray[np.number[Any]]],
 ) -> None:

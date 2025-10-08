@@ -63,3 +63,17 @@ def load_breast_cancer(
     return_X_y: bool = False,
     as_frame: bool = False,
 ) -> Bunch | tuple[npt.NDArray[Any], npt.NDArray[Any]]: ...
+def make_regression(
+    n_samples: int = 100,
+    n_features: int = 100,
+    *,
+    n_informative: int = 10,
+    n_targets: int = 1,
+    bias: float = 0.0,
+    effective_rank: int | None = None,
+    tail_strength: float = 0.5,
+    noise: float = 0.0,
+    shuffle: bool = True,
+    coef: bool = False,
+    random_state: int | None = None,
+) -> tuple[npt.NDArray[Any], npt.NDArray[Any]]: ...

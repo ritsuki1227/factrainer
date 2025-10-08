@@ -30,16 +30,16 @@ class SingleModelContainer[
     Examples
     --------
     >>> import lightgbm as lgb
-    >>> from sklearn.datasets import fetch_california_housing
+    >>> from sklearn.datasets import make_regression
     >>> from sklearn.metrics import r2_score
     >>> from sklearn.model_selection import train_test_split
     >>> from factrainer.core import SingleModelContainer
     >>> from factrainer.lightgbm import LgbDataset, LgbModelConfig, LgbTrainConfig
     >>>
     >>> # Load data
-    >>> data = fetch_california_housing()
+    >>> X, y = make_regression()
     >>> train_X, test_X, train_y, test_y = train_test_split(
-    ...     data.data, data.target, test_size=0.2, random_state=1
+    ...     X, y, test_size=0.2, random_state=1
     ... )
     >>>
     >>> # Create datasets
