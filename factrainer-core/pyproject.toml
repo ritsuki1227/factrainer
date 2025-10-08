@@ -11,7 +11,7 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
 ]
-dependencies = ["factrainer-base", "joblib>=1.4.2"]
+dependencies = ["factrainer-base", "joblib>=1.5.2"]
 
 [build-system]
 requires = ["hatchling"]
