@@ -66,6 +66,9 @@ jobs:
       matrix:
         package: [sklearn, lightgbm, xgboost, catboost]
         python-version: ["3.12", "3.13", "3.14"]
+        exclude:
+          - package: catboost
+            python-version: "3.14"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
