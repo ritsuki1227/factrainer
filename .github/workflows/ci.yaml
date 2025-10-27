@@ -49,6 +49,7 @@ jobs:
         run: uv sync --all-extras --locked --all-groups
 
       - name: Run tests
+        shell: bash
         run: |
           ./test.sh
 
