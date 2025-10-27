@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: dist-files
           path: dist/
@@ -117,7 +117,7 @@ jobs:
           token: ${{ steps.generate-token.outputs.token }}
 
       - name: Download version info
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: version-info
 
@@ -140,7 +140,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download version info
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: version-info
 
@@ -149,7 +149,7 @@ jobs:
         run: echo "version=$(cat version.txt)" >> $GITHUB_OUTPUT
 
       - name: Download build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: dist-files
           path: dist/
@@ -167,13 +167,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download build artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: dist-files
           path: dist/
 
       - name: Download version info
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: version-info
 
@@ -214,7 +214,7 @@ jobs:
           token: ${{ steps.generate-token.outputs.token }}
 
       - name: Download version info
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: version-info
 
