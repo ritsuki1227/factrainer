@@ -116,7 +116,8 @@ def test_cv_model_picklable(
     k_fold = KFold(n_splits=4, shuffle=True, random_state=1)
     model = CvModelContainer(config, k_fold)
     model.train(dataset, n_jobs=4)
-    with tempfile.NamedTemporaryFile() as fp:
+    with tempfile.NamedTemporaryFile(delete_on_close=False) as fp:
+        fp.close()
         joblib.dump(model, fp.name)
         loaded_model: CvModelContainer[
             LgbDataset, LgbModel, LgbTrainConfig, LgbPredictConfig
