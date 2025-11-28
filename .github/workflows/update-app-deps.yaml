@@ -1,0 +1,45 @@
+name: Update app deps
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run mode (null=normal, extract=scan only, lookup=check updates, full=log only)'
+        required: false
+        default: 'null'
+        type: choice
+        options:
+          - 'null'
+          - extract
+          - lookup
+          - full
+
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Generate GitHub App Token
+        id: app-token
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ vars.FACTRAINER_GITHUB_APP_ID }}
+          private-key: ${{ secrets.FACTRAINER_GITHUB_APP_PRIVATE_KEY }}
+
+      - name: Run Renovate
+        uses: renovatebot/github-action@v44
+        with:
+          configurationFile: .github/renovate-config.json
+          token: ${{ steps.app-token.outputs.token }}
+        env:
+          LOG_LEVEL: ${{ github.event.inputs.dry_run && github.event.inputs.dry_run != 'null' && 'debug' || 'info' }}
+          # schedule trigger returns null (type), which converts to empty string; 'null' string is needed for Renovate
+          RENOVATE_DRY_RUN: ${{ github.event.inputs.dry_run || 'null' }}

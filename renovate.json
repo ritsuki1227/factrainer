@@ -1,0 +1,20 @@
+{
+  "extends": [
+    "config:recommended",
+    ":semanticCommits",
+    ":timezone(Asia/Tokyo)"
+  ],
+  "labels": ["dependencies"],
+  "rangeStrategy": "bump",
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "description": "Group all dependencies from all workspace packages into one PR",
+      "matchPackageNames": ["*"],
+      "groupName": "all dependencies"
+    }
+  ],
+  "prHourlyLimit": 2
+}
