@@ -1,5 +1,7 @@
 {
-  "repositories": ["ritsuki1227/factrainer"],
+  "repositories": [
+    "ritsuki1227/factrainer"
+  ],
   "onboarding": false,
   "requireConfig": "required"
 }

@@ -4,15 +4,33 @@
     ":semanticCommits",
     ":timezone(Asia/Tokyo)"
   ],
-  "labels": ["dependencies"],
+  "labels": [
+    "dependencies"
+  ],
   "rangeStrategy": "bump",
   "lockFileMaintenance": {
     "enabled": true
   },
   "packageRules": [
     {
+      "description": "Disable requires-python updates (OSS package: supported Python versions are a manual decision)",
+      "matchDepTypes": [
+        "requires-python"
+      ],
+      "enabled": false
+    },
+    {
+      "description": "Disable .python-version updates (development environment pinning, not for auto-update)",
+      "matchFileNames": [
+        ".python-version"
+      ],
+      "enabled": false
+    },
+    {
       "description": "Group all dependencies from all workspace packages into one PR",
-      "matchPackageNames": ["*"],
+      "matchPackageNames": [
+        "*"
+      ],
       "groupName": "all dependencies"
     }
   ],
