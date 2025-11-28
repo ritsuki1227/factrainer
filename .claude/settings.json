@@ -32,7 +32,10 @@
       "WebFetch(domain:marketplace.visualstudio.com)",
       "WebFetch(domain:raw.githubusercontent.com)",
       "WebFetch(domain:github.blog)",
-      "WebFetch(domain:codeql.github.com)"
+      "WebFetch(domain:codeql.github.com)",
+      "WebFetch(domain:cli.github.com)",
+      "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)"
     ],
     "deny": []
   },
