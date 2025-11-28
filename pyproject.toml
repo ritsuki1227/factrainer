@@ -1,6 +1,6 @@
 [project]
 name = "factrainer"
-version = "0.1.27"
+version = "0.1.28"
 description = "Framework Agnostic Cross-validation Trainer"
 readme = "README.md"
 authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
