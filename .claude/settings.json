@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "WebFetch(domain:docs.anthropic.com)",
+      "Bash(uv run pytest tests/lightgbm/integration/test_evaluate.py -v)",
+      "Bash(uv run:*)",
+      "WebFetch(domain:lightgbm.readthedocs.io)",
+      "WebFetch(domain:docs.python.org)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:docs.pydantic.dev)",
+      "WebFetch(domain:github.com)",
+      "Bash(gh run list:*)",
+      "Bash(gh run view:*)",
+      "WebSearch",
+      "Bash(sw_vers)",
+      "WebFetch(domain:docs.github.com)",
+      "WebFetch(domain:www.githubstatus.com)",
+      "WebFetch(domain:docs.astral.sh)",
+      "Bash(gh pr list:*)",
+      "WebFetch(domain:peps.python.org)",
+      "WebFetch(domain:setuptools.pypa.io)",
+      "WebFetch(domain:packaging.python.org)",
+      "Bash(cat:*)",
+      "WebFetch(domain:pip.pypa.io)",
+      "WebFetch(domain:discuss.python.org)",
+      "WebFetch(domain:joblib.readthedocs.io)",
+      "Bash(uv lock --help:*)"
+    ],
+    "deny": []
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "serena"
+  ]
+}
