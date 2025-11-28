@@ -4,6 +4,7 @@
         "ms-python.mypy-type-checker",
         "charliermarsh.ruff",
         "ms-toolsai.jupyter",
-        "redhat.vscode-yaml"
+        "redhat.vscode-yaml",
+        "github.vscode-github-actions"
     ]
 }
