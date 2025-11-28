@@ -4,7 +4,7 @@ version = "0.1.27"
 description = "Framework Agnostic Cross-validation Trainer"
 readme = "README.md"
 authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
-requires-python = ">=3.12"
+requires-python = ">=3.14.0"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -49,11 +49,11 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "joblib-stubs>=1.5.2.0.20250831",
-    "jupyterlab>=4.4.10",
-    "mypy>=1.18.2",
+    "jupyterlab>=4.5.0",
+    "mypy>=1.19.0",
     "pytest-profiling>=1.8.1",
     "pytest>=9.0.1",
-    "ruff>=0.14.5",
+    "ruff>=0.14.6",
     "graphviz>=0.21",
     "line-profiler>=5.0.0",
     "pytest-cov>=7.0.0",

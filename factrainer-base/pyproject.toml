@@ -4,7 +4,7 @@ version = "0.1.27"
 description = "Add your description here"
 readme = "README.md"
 authors = [{ name = "ritsuki1227", email = "ritsuki1227@gmail.com" }]
-requires-python = ">=3.12"
+requires-python = ">=3.14.0"
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
@@ -12,7 +12,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
 ]
-dependencies = ["numpy>=2.3.5", "pydantic>=2.12.4", "scikit-learn>=1.7.2"]
+dependencies = ["numpy>=2.3.5", "pydantic>=2.12.5", "scikit-learn>=1.7.2"]
 
 [build-system]
 requires = ["hatchling"]
