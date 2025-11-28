@@ -25,7 +25,14 @@
       "WebFetch(domain:pip.pypa.io)",
       "WebFetch(domain:discuss.python.org)",
       "WebFetch(domain:joblib.readthedocs.io)",
-      "Bash(uv lock --help:*)"
+      "Bash(uv lock --help:*)",
+      "Bash(./test.sh:*)",
+      "Bash(tree:*)",
+      "WebFetch(domain:docs.renovatebot.com)",
+      "WebFetch(domain:marketplace.visualstudio.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.blog)",
+      "WebFetch(domain:codeql.github.com)"
     ],
     "deny": []
   },
