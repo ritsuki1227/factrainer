@@ -9,7 +9,10 @@
   ],
   "rangeStrategy": "bump",
   "lockFileMaintenance": {
-    "enabled": true
+    "enabled": true,
+    "schedule": [
+      "at any time"
+    ]
   },
   "packageRules": [
     {
@@ -34,5 +37,5 @@
       "groupName": "all dependencies"
     }
   ],
-  "prHourlyLimit": 2
+  "prHourlyLimit": 0
 }
