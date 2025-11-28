@@ -1,5 +1,6 @@
 name: Update app deps
 
+permissions: {}
 on:
   schedule:
     - cron: '0 0 * * 1'
