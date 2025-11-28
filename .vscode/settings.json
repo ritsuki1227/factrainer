@@ -1,46 +1,65 @@
 {
-    "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
-    "python.analysis.completeFunctionParens": true,
-    "python.analysis.typeCheckingMode": "off",
-    "python.analysis.diagnosticMode": "workspace",
-    "python.analysis.include": ["${workspaceFolder}/src"],
-    "python.languageServer": "Pylance",
-    "python.testing.pytestEnabled": true,
-    "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",
-    "python.testing.pytestArgs": ["--rootdir=.", "--config-file=pyproject.toml"],
-    "notebook.formatOnSave.enabled": true,
-    "notebook.lineNumbers": "on",
-    "notebook.codeActionsOnSave": {
-      "source.organizeImports": "explicit",
-      "source.formatOnSave": "explicit"
+  "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.typeCheckingMode": "off",
+  "python.analysis.diagnosticMode": "workspace",
+  "python.analysis.include": [
+    "${workspaceFolder}/src"
+  ],
+  "python.languageServer": "Pylance",
+  "python.testing.pytestEnabled": true,
+  "python.testing.pytestPath": "${workspaceFolder}/.venv/bin/pytest",
+  "python.testing.pytestArgs": [
+    "--rootdir=.",
+    "--config-file=pyproject.toml"
+  ],
+  "notebook.formatOnSave.enabled": true,
+  "notebook.lineNumbers": "on",
+  "notebook.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.formatOnSave": "explicit"
+  },
+  "[python]": {
+    "diffEditor.ignoreTrimWhitespace": false,
+    "editor.formatOnType": true,
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.wordBasedSuggestions": "matchingDocuments",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
     },
-    "[python]": {
-      "diffEditor.ignoreTrimWhitespace": false,
-      "editor.formatOnType": true,
-      "editor.defaultFormatter": "charliermarsh.ruff",
-      "editor.wordBasedSuggestions": "matchingDocuments",
-      "editor.codeActionsOnSave": {
-        "source.fixAll.ruff": "explicit",
-        "source.organizeImports.ruff": "explicit"
-      },
-      "editor.formatOnSaveMode": "file",
-      "editor.formatOnSave": true
-    },
-    "mypy-type-checker.args": ["--config-file=pyproject.toml"],
-    "mypy-type-checker.path": ["${workspaceFolder}/.venv/bin/mypy"],
-    "ruff.fixAll": true,
-    "ruff.organizeImports": true,
-    "ruff.path": ["${workspaceFolder}/.venv/bin/ruff"],
-    "yaml.schemas": {
-      "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yml"
-    },
-    "yaml.customTags": [
-      "!ENV scalar",
-      "!ENV sequence",
-      "!relative scalar",
-      "tag:yaml.org,2002:python/name:material.extensions.emoji.to_svg",
-      "tag:yaml.org,2002:python/name:material.extensions.emoji.twemoji",
-      "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format",
-      "tag:yaml.org,2002:python/object/apply:pymdownx.slugs.slugify mapping"
-    ]
+    "editor.formatOnSaveMode": "file",
+    "editor.formatOnSave": true
+  },
+  "mypy-type-checker.args": [
+    "--config-file=pyproject.toml"
+  ],
+  "mypy-type-checker.path": [
+    "${workspaceFolder}/.venv/bin/mypy"
+  ],
+  "ruff.fixAll": true,
+  "ruff.organizeImports": true,
+  "ruff.path": [
+    "${workspaceFolder}/.venv/bin/ruff"
+  ],
+  "yaml.schemas": {
+    "https://squidfunk.github.io/mkdocs-material/schema.json": "mkdocs.yml"
+  },
+  "yaml.customTags": [
+    "!ENV scalar",
+    "!ENV sequence",
+    "!relative scalar",
+    "tag:yaml.org,2002:python/name:material.extensions.emoji.to_svg",
+    "tag:yaml.org,2002:python/name:material.extensions.emoji.twemoji",
+    "tag:yaml.org,2002:python/name:pymdownx.superfences.fence_code_format",
+    "tag:yaml.org,2002:python/object/apply:pymdownx.slugs.slugify mapping"
+  ],
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnSave": true
+  }
 }
