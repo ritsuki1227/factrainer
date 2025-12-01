@@ -2,114 +2,114 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/_tutorial/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/tutorial/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/examples/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/examples/classification/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/examples/regression/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/catboost/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/core/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/core/cvmodelcontainer/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/core/evalmode/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/core/predmode/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/core/singlemodelcontainer/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/core/splitteddatasetsindices/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/lightgbm/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/lightgbm/lgbdataset/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/lightgbm/lgbmodel/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/lightgbm/lgbmodelconfig/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/lightgbm/lgbpredictconfig/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/lightgbm/lgbtrainconfig/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/sklearn/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/sklearn/sklearndataset/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/sklearn/sklearnmodel/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/sklearn/sklearnmodelconfig/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/sklearn/sklearnpredictconfig/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/sklearn/sklearnpredictmethod/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/sklearn/sklearntrainconfig/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
     <url>
          <loc>https://ritsuki1227.github.io/factrainer/latest/reference/xgboost/</loc>
-         <lastmod>2025-11-28</lastmod>
+         <lastmod>2025-12-01</lastmod>
     </url>
 </urlset>
