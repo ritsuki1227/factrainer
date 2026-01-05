@@ -36,7 +36,7 @@ jobs:
           private-key: ${{ secrets.FACTRAINER_GITHUB_APP_PRIVATE_KEY }}
 
       - name: Run Renovate
-        uses: renovatebot/github-action@v44.2.2
+        uses: renovatebot/github-action@v44.2.3
         with:
           configurationFile: .github/renovate-config.json
           token: ${{ steps.app-token.outputs.token }}
