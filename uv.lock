@@ -565,7 +565,7 @@ wheels = [
 
 [[package]]
 name = "factrainer"
-version = "0.1.28"
+version = "0.1.29"
 source = { editable = "." }
 dependencies = [
     { name = "factrainer-core" },
@@ -667,7 +667,7 @@ docs = [
 
 [[package]]
 name = "factrainer-base"
-version = "0.1.28"
+version = "0.1.29"
 source = { editable = "factrainer-base" }
 dependencies = [
     { name = "numpy" },
@@ -684,7 +684,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-catboost"
-version = "0.1.28"
+version = "0.1.29"
 source = { editable = "factrainer-catboost" }
 dependencies = [
     { name = "catboost" },
@@ -699,7 +699,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-core"
-version = "0.1.28"
+version = "0.1.29"
 source = { editable = "factrainer-core" }
 dependencies = [
     { name = "factrainer-base" },
@@ -714,7 +714,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-lightgbm"
-version = "0.1.28"
+version = "0.1.29"
 source = { editable = "factrainer-lightgbm" }
 dependencies = [
     { name = "factrainer-base" },
@@ -729,7 +729,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-sklearn"
-version = "0.1.28"
+version = "0.1.29"
 source = { editable = "factrainer-sklearn" }
 dependencies = [
     { name = "factrainer-base" },
@@ -740,7 +740,7 @@ requires-dist = [{ name = "factrainer-base", editable = "factrainer-base" }]
 
 [[package]]
 name = "factrainer-xgboost"
-version = "0.1.28"
+version = "0.1.29"
 source = { editable = "factrainer-xgboost" }
 dependencies = [
     { name = "factrainer-base" },
