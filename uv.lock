@@ -575,7 +575,7 @@ wheels = [
 
 [[package]]
 name = "factrainer"
-version = "0.1.29"
+version = "0.1.30"
 source = { editable = "." }
 dependencies = [
     { name = "factrainer-core" },
@@ -677,7 +677,7 @@ docs = [
 
 [[package]]
 name = "factrainer-base"
-version = "0.1.29"
+version = "0.1.30"
 source = { editable = "factrainer-base" }
 dependencies = [
     { name = "numpy" },
@@ -694,7 +694,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-catboost"
-version = "0.1.29"
+version = "0.1.30"
 source = { editable = "factrainer-catboost" }
 dependencies = [
     { name = "catboost" },
@@ -709,7 +709,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-core"
-version = "0.1.29"
+version = "0.1.30"
 source = { editable = "factrainer-core" }
 dependencies = [
     { name = "factrainer-base" },
@@ -724,7 +724,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-lightgbm"
-version = "0.1.29"
+version = "0.1.30"
 source = { editable = "factrainer-lightgbm" }
 dependencies = [
     { name = "factrainer-base" },
@@ -739,7 +739,7 @@ requires-dist = [
 
 [[package]]
 name = "factrainer-sklearn"
-version = "0.1.29"
+version = "0.1.30"
 source = { editable = "factrainer-sklearn" }
 dependencies = [
     { name = "factrainer-base" },
@@ -750,7 +750,7 @@ requires-dist = [{ name = "factrainer-base", editable = "factrainer-base" }]
 
 [[package]]
 name = "factrainer-xgboost"
-version = "0.1.29"
+version = "0.1.30"
 source = { editable = "factrainer-xgboost" }
 dependencies = [
     { name = "factrainer-base" },
@@ -2398,7 +2398,7 @@ name = "pyarrow-stubs"
 version = "20.0.0.20251215"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pyarrow" },
+    { name = "pyarrow", marker = "python_full_version < '3.14'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/30/16/ca991ada0416dc02c246e4b3c853f35053676eb704c63720ef24547d2d68/pyarrow_stubs-20.0.0.20251215.tar.gz", hash = "sha256:92c1fda4998f0c13e608d8abc7e4b8537e3ef108f6bf42c58e5af97e7d143e75", size = 236578, upload-time = "2025-12-15T06:47:46.187Z" }
 wheels = [
