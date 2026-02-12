@@ -654,7 +654,7 @@ dev = [
     { name = "line-profiler", specifier = ">=5.0.1" },
     { name = "mypy", specifier = ">=1.19.1" },
     { name = "pandas", specifier = ">=3.0.0" },
-    { name = "pandas-stubs", specifier = ">=2.3.3.260113" },
+    { name = "pandas-stubs", specifier = ">=3.0.0.260204" },
     { name = "polars", specifier = ">=1.38.1" },
     { name = "pyarrow", marker = "python_full_version < '3.14'", specifier = ">=23.0.0" },
     { name = "pyarrow-stubs", marker = "python_full_version < '3.14'", specifier = ">=20.0.0.20251215" },
