@@ -49,11 +49,11 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "joblib-stubs>=1.5.3.1.20260117",
-    "jupyterlab>=4.5.3",
+    "jupyterlab>=4.5.4",
     "mypy>=1.19.1",
     "pytest-profiling>=1.8.1",
     "pytest>=9.0.2",
-    "ruff>=0.15.0",
+    "ruff>=0.15.1",
     "graphviz>=0.21",
     "line-profiler>=5.0.1",
     "pytest-cov>=7.0.0",
@@ -72,7 +72,7 @@ docs = [
     "mkdocs-material>=9.7.1",
     "mkdocstrings[python]>=1.0.3",
     "mkdocs-section-index>=0.3.10",
-    "mkdocs-autorefs>=1.4.3",
+    "mkdocs-autorefs>=1.4.4",
     "mkdocs-literate-nav>=0.6.2",
 ]
 
