@@ -53,27 +53,27 @@ dev = [
     "mypy>=1.19.1",
     "pytest-profiling>=1.8.1",
     "pytest>=9.0.2",
-    "ruff>=0.15.6",
+    "ruff>=0.15.7",
     "graphviz>=0.21",
     "line-profiler>=5.0.2",
-    "pytest-cov>=7.0.0",
+    "pytest-cov>=7.1.0",
     "pytest-rerunfailures>=16.1",
     "pandas-stubs>=3.0.0.260204",
     "pandas>=3.0.1",
     "pyarrow>=23.0.1; python_full_version < '3.14'",
     "pyarrow-stubs>=20.0.0.20251215; python_full_version < '3.14'",
-    "polars>=1.39.0",
+    "polars>=1.39.3",
     "tqdm>=4.67.3",
     "ipywidgets>=8.1.8",
 ]
 docs = [
     "mike>=2.1.4",
     "mkdocs-macros-plugin>=1.5.0",
-    "mkdocs-material>=9.7.5",
+    "mkdocs-material>=9.7.6",
     "mkdocstrings[python]>=1.0.3",
-    "mkdocs-section-index>=0.3.10",
+    "mkdocs-section-index>=0.3.11",
     "mkdocs-autorefs>=1.4.4",
-    "mkdocs-literate-nav>=0.6.2",
+    "mkdocs-literate-nav>=0.6.3",
 ]
 
 [tool.uv.workspace]
