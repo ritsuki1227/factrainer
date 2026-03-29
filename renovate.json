@@ -2,8 +2,11 @@
   "extends": [
     "config:recommended",
     ":semanticCommits",
-    ":timezone(Asia/Tokyo)"
+    ":timezone(Asia/Tokyo)",
+    "mergeConfidence:all-badges"
   ],
+  "minimumReleaseAge": "7 days",
+  "osvVulnerabilityAlerts": true,
   "labels": [
     "dependencies"
   ],

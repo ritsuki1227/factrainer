@@ -76,6 +76,9 @@ docs = [
     "mkdocs-literate-nav>=0.6.3",
 ]
 
+[tool.uv]
+exclude-newer = "7 days"
+
 [tool.uv.workspace]
 members = [
     "factrainer-base",
