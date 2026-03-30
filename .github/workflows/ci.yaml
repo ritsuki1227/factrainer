@@ -54,7 +54,7 @@ jobs:
           ./test.sh
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         if: github.ref == 'refs/heads/main' && matrix.os == 'ubuntu-latest'
         with:
           use_oidc: true
