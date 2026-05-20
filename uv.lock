@@ -716,7 +716,7 @@ dev = [
     { name = "joblib-stubs", specifier = ">=1.5.3.1.20260117" },
     { name = "jupyterlab", specifier = ">=4.5.7" },
     { name = "line-profiler", specifier = ">=5.0.2" },
-    { name = "mypy", specifier = ">=1.20.2" },
+    { name = "mypy", specifier = ">=2.0.0" },
     { name = "pandas", specifier = ">=3.0.2" },
     { name = "pandas-stubs", specifier = ">=3.0.0.260204" },
     { name = "polars", specifier = ">=1.40.1" },
