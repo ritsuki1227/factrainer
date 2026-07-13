@@ -49,7 +49,7 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "joblib-stubs>=1.5.3.1.20260117",
-    "jupyterlab>=4.5.8",
+    "jupyterlab>=4.6.1",
     "mypy>=2.1.0",
     "pytest-profiling>=1.8.1",
     "pytest>=9.1.1",
@@ -57,12 +57,12 @@ dev = [
     "graphviz>=0.21",
     "line-profiler>=5.0.2",
     "pytest-cov>=7.1.0",
-    "pytest-rerunfailures>=16.3",
+    "pytest-rerunfailures>=16.4",
     "pandas-stubs>=3.0.3.260530",
     "pandas>=3.0.3",
     "pyarrow>=24.0.0; python_full_version < '3.14'",
     "pyarrow-stubs>=20.0.0.20260625; python_full_version < '3.14'",
-    "polars>=1.42.0",
+    "polars>=1.42.1",
     "tqdm>=4.68.3",
     "ipywidgets>=8.1.8",
 ]
