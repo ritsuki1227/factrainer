@@ -702,18 +702,18 @@ dev = [
     { name = "graphviz", specifier = ">=0.21" },
     { name = "ipywidgets", specifier = ">=8.1.8" },
     { name = "joblib-stubs", specifier = ">=1.5.3.1.20260117" },
-    { name = "jupyterlab", specifier = ">=4.5.8" },
+    { name = "jupyterlab", specifier = ">=4.6.1" },
     { name = "line-profiler", specifier = ">=5.0.2" },
     { name = "mypy", specifier = ">=2.1.0" },
     { name = "pandas", specifier = ">=3.0.3" },
     { name = "pandas-stubs", specifier = ">=3.0.3.260530" },
-    { name = "polars", specifier = ">=1.42.0" },
+    { name = "polars", specifier = ">=1.42.1" },
     { name = "pyarrow", marker = "python_full_version < '3.14'", specifier = ">=24.0.0" },
     { name = "pyarrow-stubs", marker = "python_full_version < '3.14'", specifier = ">=20.0.0.20260625" },
     { name = "pytest", specifier = ">=9.1.1" },
     { name = "pytest-cov", specifier = ">=7.1.0" },
     { name = "pytest-profiling", specifier = ">=1.8.1" },
-    { name = "pytest-rerunfailures", specifier = ">=16.3" },
+    { name = "pytest-rerunfailures", specifier = ">=16.4" },
     { name = "ruff", specifier = ">=0.15.20" },
     { name = "tqdm", specifier = ">=4.68.3" },
 ]
@@ -739,7 +739,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "numpy", specifier = ">=2.5.0" },
+    { name = "numpy", specifier = ">=2.5.1" },
     { name = "pydantic", specifier = ">=2.13.4" },
     { name = "scikit-learn", specifier = ">=1.9.0" },
 ]
